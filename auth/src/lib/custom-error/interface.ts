@@ -13,3 +13,7 @@ export interface ServerErrorBody {
   type: ServerErrorType
   message: string
 }
+
+export interface MessageOnlyBody {
+  message: string
+}

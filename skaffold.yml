@@ -1,7 +1,5 @@
 apiVersion: skaffold/v2beta5
 kind: Config
-metadata:
-  name: git-tix
 deploy:
   kubectl:
     manifests:
