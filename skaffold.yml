@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+metadata:
+  name: git-tix
+deploy:
+  kubectl:
+    manifests:
+    - ./infra/k8s/**
+build:
+  local:
+    push: false
+  artifacts:
+  - image: pramindanata/tix-auth
+    context: auth
+    docker:
+      dockerfile: DockerfileDev
+    sync:
+      manual:
+        - src: 'src/**/*.ts'
+          dest: .
