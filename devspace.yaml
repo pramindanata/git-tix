@@ -1,0 +1,19 @@
+version: v1beta9
+deployments:
+- name: git-tix
+  kubectl:
+    manifests:
+    - ./infra/k8s/**
+images:
+  auth:
+    image: pramindanata/tix-auth
+    dockerfile: auth/DockerfileDev
+    context: auth/
+dev: 
+  sync:
+    - imageName: pramindanata/tix-auth
+      localSubPath: ./auth
+      excludePaths:
+        - ./auth/node_modules/
+      labelSelector:
+        app: auth

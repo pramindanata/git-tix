@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: pramindanata/tix-auth
+          ports:
+            - containerPort: 4000
+          env:
+            - name: APP_PORT
+              value: '4000'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
