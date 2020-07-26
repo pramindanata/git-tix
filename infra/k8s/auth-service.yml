@@ -20,6 +20,10 @@ spec:
           env:
             - name: APP_PORT
               value: '4000'
+            - name: DB_HOST
+              value: 'mongodb://auth-mongo-cluster-ip'
+            - name: DB_NAME
+              value: 'auth'
 ---
 apiVersion: v1
 kind: Service

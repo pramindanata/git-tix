@@ -16,3 +16,8 @@ build:
       manual:
         - src: 'src/**/*.ts'
           dest: .
+portForward:
+  - resourceType: deployment
+    resourceName: auth-mongo-depl
+    port: 27017
+    localPort: 9001
