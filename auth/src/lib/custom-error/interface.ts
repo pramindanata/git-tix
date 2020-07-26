@@ -1,4 +1,5 @@
 export type ServerErrorType = 'DB_CONNECTION_ERROR' | 'SYNTAX_ERROR'
+export type ActionFailType = 'EMAIL_TAKEN'
 
 export interface ValidationErrorItem {
   message: string
@@ -15,5 +16,10 @@ export interface ServerErrorBody {
 }
 
 export interface MessageOnlyBody {
+  message: string
+}
+
+export interface ActionFailBody {
+  type: ActionFailType
   message: string
 }

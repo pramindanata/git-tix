@@ -1,7 +1,9 @@
 import express from 'express'
+import 'express-async-errors'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
 
 dotenv.config()
 
@@ -27,12 +29,29 @@ app.use(signInRouter)
 app.use(signOutRouter)
 app.use(signUpRouter)
 
-app.all('*', () => {
+app.all('*', async () => {
   throw new RouteNotFoundError()
 })
 
 app.use(errorHandler)
 
-app.listen(port, () => {
-  console.log(`auth-service listening on http://localhost:${port}`)
+const start = async () => {
+  const dbHost = config.db.host
+  const dbName = config.db.name
+
+  await mongoose.connect(`${dbHost}/${dbName}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+
+  app.listen(port, () => {
+    /* eslint-disable */
+    console.log(`auth-service listening on http://localhost:${port}`)
+  })
+}
+
+start().catch((err) => {
+  /* eslint-disable */
+  console.log(err)
 })

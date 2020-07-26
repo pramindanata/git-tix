@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { body, validationResult } from 'express-validator'
 import type { Request, Response } from 'express'
-import { RequestValidationError, DBConnectionError } from '../lib/custom-error'
+import { User } from '../models/user'
+import { RequestValidationError, ActionFailError } from '../lib/custom-error'
 
 const router = Router()
 
@@ -18,16 +19,23 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage('Password mus be between 4 and 20 characters'),
   ],
-  (req: Request<any, any, SignUpBody>, res: Response) => {
+  async (req: Request<any, any, SignUpBody>, res: Response) => {
     const validationErrors = validationResult(req)
 
     if (!validationErrors.isEmpty()) {
       throw new RequestValidationError(validationErrors.array())
     }
 
-    throw new DBConnectionError()
+    const { email, password } = req.body
+    const userWithSameEmail = await User.findOne({ email })
 
-    // const { email, password } = req.body
+    if (userWithSameEmail) {
+      throw new ActionFailError('EMAIL_TAKEN')
+    }
+
+    const user = User.build({ email, password })
+
+    await user.save()
 
     return res.status(201).send('User created')
   },
