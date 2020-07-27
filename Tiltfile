@@ -1,6 +1,7 @@
 k8s_yaml([
   './infra/k8s/auth-mongo.yml',
   './infra/k8s/auth-service.yml',
+  './infra/k8s/mongo-pvc.yml',
   './infra/k8s/ingress.yml',
 ])
 
@@ -17,4 +18,4 @@ docker_build(
   ]
 )
 
-k8s_resource('auth-mongo-depl', port_forwards='9001:27017')
+k8s_resource('auth-mongo', port_forwards='9001:27017')

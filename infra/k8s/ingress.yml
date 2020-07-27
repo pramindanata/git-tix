@@ -13,5 +13,5 @@ spec:
         paths:
           - path: /api/auth/?(.*)
             backend:
-              serviceName: auth-cluster-ip
+              serviceName: auth-service-cluster-ip
               servicePort: 4000
