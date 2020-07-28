@@ -1,0 +1,10 @@
+{
+  "Extensions": [
+    {
+      "Name": "namespace",
+      "GitCommitHash": "cae4f157bc5d43b1ef0c71c5972501bc1759dd75",
+      "ExtensionRegistry": "https://github.com/tilt-dev/tilt-extensions",
+      "TimeFetched": "2020-07-28T16:58:31.3705023+08:00"
+    }
+  ]
+}

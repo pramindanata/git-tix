@@ -1,8 +1,12 @@
+load('ext://namespace', 'namespace_create', 'namespace_inject')
+ns = 'dev-git-tix'
+namespace_create(ns)
+
 k8s_yaml([
-  './infra/k8s/auth-mongo.yml',
-  './infra/k8s/auth-service.yml',
-  './infra/k8s/mongo-pvc.yml',
-  './infra/k8s/ingress.yml',
+  namespace_inject(read_file('./infra/k8s/auth-mongo.yml'), ns),
+  namespace_inject(read_file('./infra/k8s/auth-service.yml'), ns),
+  namespace_inject(read_file('./infra/k8s/mongo-pvc.yml'), ns),
+  namespace_inject(read_file('./infra/k8s/ingress.yml'), ns),
 ])
 
 docker_build(
