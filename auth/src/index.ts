@@ -14,7 +14,7 @@ import { signInRouter } from './routes/signin'
 import { signOutRouter } from './routes/signout'
 import { signUpRouter } from './routes/signup'
 import { errorHandler } from './middlewares/error-handler'
-import { RouteNotFoundError } from './lib/custom-error'
+import { RouteNotFoundError } from './exception'
 
 const app = express()
 const { port } = config.app

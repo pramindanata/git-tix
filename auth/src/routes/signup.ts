@@ -6,6 +6,7 @@ import type { Request, Response } from 'express'
 import config from '../config'
 import { User } from '../models/user'
 import { RequestValidationError, ActionFailError } from '../exception'
+import { UserMapper } from '../util/mapper/user'
 
 const router = Router()
 
@@ -52,7 +53,9 @@ router.post(
       token: userToken,
     }
 
-    return res.status(201).send('User created')
+    return res.status(200).json({
+      data: UserMapper.toDTO(user),
+    })
   },
 )
 
