@@ -13,6 +13,7 @@ import { currentUserRouter } from './routes/current-user'
 import { signInRouter } from './routes/signin'
 import { signOutRouter } from './routes/signout'
 import { signUpRouter } from './routes/signup'
+import { setReqContext } from './middlewares/set-req-context'
 import { errorHandler } from './middlewares/error-handler'
 import { RouteNotFoundError } from './exception'
 
@@ -31,6 +32,7 @@ app.use(
 )
 app.use(bodyParser.json())
 app.use(logger)
+app.use(setReqContext)
 
 app.use(currentUserRouter)
 app.use(signInRouter)
