@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
-import { CustomError } from '../lib/custom-error'
+import { BaseError } from '../exception'
 
 export const errorHandler = (
   err: Error,
@@ -7,7 +7,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ): any => {
-  if (err instanceof CustomError) {
+  if (err instanceof BaseError) {
     const statusCode = err.getStatusCode()
     const errorData = err.serialize()
 

@@ -1,7 +1,7 @@
+import { BaseError } from './base'
 import type { ServerErrorBody } from '../interface'
-import { CustomError } from '../abstract'
 
-export class DBConnectionError extends CustomError<ServerErrorBody> {
+export class DBConnectionError extends BaseError<ServerErrorBody> {
   private statusCode: number
 
   constructor() {

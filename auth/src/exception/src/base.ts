@@ -1,4 +1,4 @@
-export abstract class CustomError<ErrorBody> extends Error {
+export abstract class BaseError<ErrorBody> extends Error {
   abstract getStatusCode(): number
   abstract serialize(): ErrorBody
 

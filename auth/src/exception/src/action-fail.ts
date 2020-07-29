@@ -1,7 +1,7 @@
+import { BaseError } from './base'
 import type { ActionFailBody, ActionFailType } from '../interface'
-import { CustomError } from '../abstract'
 
-export class ActionFailError extends CustomError<ActionFailBody> {
+export class ActionFailError extends BaseError<ActionFailBody> {
   private statusCode: number
   private type: ActionFailType
 

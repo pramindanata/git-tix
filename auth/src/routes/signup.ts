@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 
 import config from '../config'
 import { User } from '../models/user'
-import { RequestValidationError, ActionFailError } from '../lib/custom-error'
+import { RequestValidationError, ActionFailError } from '../exception'
 
 const router = Router()
 

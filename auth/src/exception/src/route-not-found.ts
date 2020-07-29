@@ -1,7 +1,7 @@
-import { CustomError } from '../abstract'
+import { BaseError } from './base'
 import type { MessageOnlyBody } from '../interface'
 
-export class RouteNotFoundError extends CustomError<MessageOnlyBody> {
+export class RouteNotFoundError extends BaseError<MessageOnlyBody> {
   private statusCode = 404
 
   constructor() {
