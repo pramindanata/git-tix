@@ -17,6 +17,8 @@ export class ActionFailError extends BaseError<ActionFailBody> {
   private setMessage(): void {
     if (this.type === 'EMAIL_TAKEN') {
       this.message = 'Email is already taken'
+    } else if (this.type === 'INVALID_CREDENTIAL') {
+      this.message = 'Invalid email or password given'
     }
   }
 
@@ -26,7 +28,7 @@ export class ActionFailError extends BaseError<ActionFailBody> {
 
   serialize(): ActionFailBody {
     return {
-      type: 'EMAIL_TAKEN',
+      type: this.type,
       message: this.message,
     }
   }
