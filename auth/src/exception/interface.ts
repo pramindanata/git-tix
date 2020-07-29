@@ -1,5 +1,9 @@
 export type ServerErrorType = 'DB_CONNECTION_ERROR' | 'SYNTAX_ERROR'
-export type ActionFailType = 'EMAIL_TAKEN' | 'INVALID_CREDENTIAL'
+export type ActionFailType =
+  | 'EMAIL_TAKEN'
+  | 'INVALID_CREDENTIAL'
+  | 'NO_TOKEN'
+  | 'INVALID_TOKEN'
 
 export interface ValidationErrorItem {
   message: string

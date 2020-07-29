@@ -11,7 +11,7 @@ export const errorHandler = (
     const statusCode = err.getStatusCode()
     const errorData = err.serialize()
 
-    return res.status(statusCode).json(errorData)
+    return res.status(statusCode).send(errorData)
   }
 
   return next(err)

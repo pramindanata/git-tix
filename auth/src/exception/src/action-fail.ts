@@ -15,10 +15,16 @@ export class ActionFailError extends BaseError<ActionFailBody> {
   }
 
   private setMessage(): void {
-    if (this.type === 'EMAIL_TAKEN') {
+    const type = this.type
+
+    if (type === 'EMAIL_TAKEN') {
       this.message = 'Email is already taken'
-    } else if (this.type === 'INVALID_CREDENTIAL') {
+    } else if (type === 'INVALID_CREDENTIAL') {
       this.message = 'Invalid email or password given'
+    } else if (type === 'NO_TOKEN') {
+      this.message = 'No token given'
+    } else if (type === 'INVALID_TOKEN') {
+      this.message = 'Invalid token given'
     }
   }
 

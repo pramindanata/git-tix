@@ -3,6 +3,7 @@ import { ActionFailError } from './src/action-fail'
 import { DBConnectionError } from './src/db-connection'
 import { RequestValidationError } from './src/req-validation'
 import { RouteNotFoundError } from './src/route-not-found'
+import { UnauthorizedError } from './src/unauthorized'
 
 export {
   BaseError,
@@ -10,4 +11,5 @@ export {
   DBConnectionError,
   RequestValidationError,
   RouteNotFoundError,
+  UnauthorizedError,
 }
