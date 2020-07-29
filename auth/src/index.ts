@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
+import cookieSession from 'cookie-session'
 
 dotenv.config()
 
@@ -21,6 +22,13 @@ const logger = morgan(
   ':method :url :status :res[content-length] - :response-time ms',
 )
 
+app.set('trust proxy', true)
+app.use(
+  cookieSession({
+    signed: false,
+    secure: config.app.useHttps,
+  }),
+)
 app.use(bodyParser.json())
 app.use(logger)
 
