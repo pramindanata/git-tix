@@ -3,7 +3,7 @@ import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import type { Request, Response } from 'express'
 
-import config from '../config'
+import { config } from '../config'
 import { User } from '../models/user'
 import { Password } from '../services/password'
 import { ActionFailError } from '../exception'
