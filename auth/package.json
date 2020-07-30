@@ -9,7 +9,7 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "lint": "eslint \"./src/**/*.ts\"",
     "start": "node ./dist/index.js",
-    "test": "jest --watchAll --no-cache",
+    "test": "jest",
     "tsc": "tsc"
   },
   "keywords": [],

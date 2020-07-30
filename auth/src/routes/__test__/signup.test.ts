@@ -1,16 +1,13 @@
 import request from 'supertest'
 import { app } from '../../app'
+import { composeSignupReq } from '../../test/util'
 
 async function expect422OnSignup(body: any) {
-  return composeSignup(body).expect(422)
-}
-
-function composeSignup(body: any) {
-  return request(app).post('/signup').send(body)
+  return composeSignupReq(body).expect(422)
 }
 
 describe('POST /signup', () => {
-  it('return 201 on successful signup', () => {
+  it('return 201 on successful signup', async () => {
     return request(app)
       .post('/signup')
       .send({
@@ -20,14 +17,14 @@ describe('POST /signup', () => {
       .expect(200)
   })
 
-  it('return 422 with an invalid email', () => {
+  it('return 422 with an invalid email', async () => {
     return expect422OnSignup({
       email: 'test@@',
       password: 'password',
     })
   })
 
-  it('return 422 with an invalid password', () => {
+  it('return 422 with an invalid password', async () => {
     return expect422OnSignup({
       email: 'test@@',
       password: 'xxx',
@@ -50,12 +47,12 @@ describe('POST /signup', () => {
       password: 'password',
     }
 
-    await composeSignup(body).expect(200)
-    await composeSignup(body).expect(403)
+    await composeSignupReq(body).expect(200)
+    await composeSignupReq(body).expect(403)
   })
 
   it('has set cookie after successful signup', async () => {
-    const res = await composeSignup({
+    const res = await composeSignupReq({
       email: 'test@test.com',
       password: 'password',
     }).expect(200)
