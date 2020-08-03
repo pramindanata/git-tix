@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Home: React.FC = () => {
+const Test: React.FC = () => {
   return (
     <div className="container">
       <h1>Welcome to Nuxt.js</h1>
@@ -14,4 +14,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Test;
