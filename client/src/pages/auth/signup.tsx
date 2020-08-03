@@ -1,41 +1,28 @@
 import React, { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import Head from '~/components/common/Head';
-import { Dto, HttpError } from '~/interface';
-import {
-  AxiosErrorHandler,
-  RequestValidationError,
-  ActionFailError,
-  HttpErrorTypes,
-} from '~/util';
+import { Dto } from '~/interfaces';
+import { useAxiosError } from '~/hooks';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmit, setIsSubmit] = useState(false);
-  const [
-    formErrors,
-    setFormErrors,
-  ] = useState<HttpError.RequestValidationDetail | null>(null);
-  const [
-    actionFailError,
-    setActionFailError,
-  ] = useState<HttpError.ActionFailDetail | null>(null);
+  const [error, setAxiosError, reset] = useAxiosError();
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!isSubmit) {
       setIsSubmit(true);
-      resetErrors();
+      reset();
       postSignup(email, password)
         .then(() => {
           setEmail('');
           setPassword('');
         })
         .catch((err: AxiosError) => {
-          const error = AxiosErrorHandler.composeDetail(err);
-          specifyError(error);
+          setAxiosError(err);
         })
         .finally(() => {
           setIsSubmit(false);
@@ -50,38 +37,25 @@ const Signup: React.FC = () => {
     });
   }
 
-  function resetErrors() {
-    setFormErrors(null);
-    setActionFailError(null);
-  }
-
-  function specifyError(error: HttpErrorTypes) {
-    if (error instanceof ActionFailError) {
-      setActionFailError(error.serialize());
-    } else if (error instanceof RequestValidationError) {
-      setFormErrors(error.serialize());
-    }
-  }
-
   return (
     <>
       <Head title="Sign Up" />
       <div className="container">
         <h1>Signup</h1>
 
-        {formErrors && (
+        {error.requestValidation && (
           <div className="alert alert-danger">
             <ul className="mb-0">
-              {formErrors?.data.map((error) => (
+              {error.requestValidation.serialize().map((error) => (
                 <li key={error.field}>{error.message}</li>
               ))}
             </ul>
           </div>
         )}
 
-        {actionFailError && (
+        {error.actionFail && (
           <div className="alert alert-danger">
-            <div>{actionFailError.message}</div>
+            <div>{error.actionFail.serialize().message}</div>
           </div>
         )}
 
@@ -90,7 +64,6 @@ const Signup: React.FC = () => {
             <label htmlFor="email-input">Email</label>
             <input
               id="email-input"
-              type="email"
               required
               className="form-control"
               value={email}

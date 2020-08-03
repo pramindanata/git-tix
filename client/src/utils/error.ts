@@ -1,9 +1,9 @@
 import { AxiosError } from 'axios';
 import { HTTPCode } from '~/constant';
-import { HttpError } from '~/interface';
+import { HttpError, Dto } from '~/interfaces';
 
-export class AxiosErrorHandler {
-  static composeDetail(
+export class AxiosErrorTypeFactory {
+  static produce(
     error: AxiosError,
   ): UnauthenticatedError | ActionFailError | RequestValidationError {
     const errorStatus = error.response?.status;
@@ -12,11 +12,13 @@ export class AxiosErrorHandler {
     if (errorStatus === HTTPCode.UNAUTHORIZED) {
       return new UnauthenticatedError();
     } else if (errorStatus === HTTPCode.FORBIDDEN) {
-      const { type, message } = errorData;
+      const data = errorData as Dto.ActionFailRes;
 
-      return new ActionFailError(type, message);
+      return new ActionFailError(data);
     } else if (errorStatus === HTTPCode.UNPROCESSABLE_ENTITY) {
-      return new RequestValidationError(errorData);
+      const data = errorData as Dto.RequestValidationRes;
+
+      return new RequestValidationError(data);
     }
 
     throw new HTTPErrorTypeNotFoundException();
@@ -38,11 +40,17 @@ export class UnauthenticatedError extends BaseHTTPError {
 }
 
 export class ActionFailError extends BaseHTTPError {
-  constructor(private type: string, private message: string) {
+  private type: string;
+  private message: string;
+
+  constructor(data: Dto.ActionFailRes) {
     super();
+
+    this.type = data.type;
+    this.message = data.message;
   }
 
-  serialize(): HttpError.ActionFailDetail {
+  serialize(): HttpError.SerializedActionFailDetail {
     return {
       type: this.type,
       message: this.message,
@@ -51,12 +59,15 @@ export class ActionFailError extends BaseHTTPError {
 }
 
 export class RequestValidationError extends BaseHTTPError {
-  constructor(private data: HttpError.RequestValidationDetail) {
+  private list: HttpError.SerializedRequestValidationDetail;
+  constructor(data: Dto.RequestValidationRes) {
     super();
+
+    this.list = data.data;
   }
 
-  serialize(): HttpError.RequestValidationDetail {
-    return this.data;
+  serialize(): HttpError.SerializedRequestValidationDetail {
+    return this.list;
   }
 }
 
