@@ -16,9 +16,8 @@ interface ErrorResult {
 type ResetType = 'all' | 'actionFail' | 'requestValidation' | 'unauthenticated';
 type SetAxiosErrorFn = Dispatch<SetStateAction<AxiosError | null>>;
 type ResetFn = (type?: ResetType) => void;
-type UseAxiosErrorResult = [ErrorResult, SetAxiosErrorFn, ResetFn];
 
-export const useAxiosError = (): UseAxiosErrorResult => {
+export const useAxiosError = (): [ErrorResult, SetAxiosErrorFn, ResetFn] => {
   const initialError: ErrorResult = {
     actionFail: undefined,
     requestValidation: undefined,

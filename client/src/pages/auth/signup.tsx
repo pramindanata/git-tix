@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+import Router from 'next/router';
 import Head from '~/components/common/Head';
 import { Dto } from '~/interfaces';
 import { useAxiosError } from '~/hooks';
@@ -10,23 +11,23 @@ const Signup: React.FC = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [error, setAxiosError, reset] = useAxiosError();
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!isSubmit) {
       setIsSubmit(true);
       reset();
-      postSignup(email, password)
-        .then(() => {
-          setEmail('');
-          setPassword('');
-        })
-        .catch((err: AxiosError) => {
-          setAxiosError(err);
-        })
-        .finally(() => {
-          setIsSubmit(false);
-        });
+
+      try {
+        await postSignup(email, password);
+
+        setEmail('');
+        setPassword('');
+        Router.push('/');
+      } catch (err) {
+        setAxiosError(err);
+        setIsSubmit(false);
+      }
     }
   }
 
@@ -83,8 +84,8 @@ const Signup: React.FC = () => {
             />
           </div>
 
-          <button className="btn btn-primary" type="submit">
-            Sign Up
+          <button className="btn btn-primary" type="submit" disabled={isSubmit}>
+            {isSubmit ? 'Loading' : 'Sign Up'}
           </button>
         </form>
       </div>
