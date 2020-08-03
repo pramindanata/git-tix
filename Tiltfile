@@ -3,6 +3,7 @@ ns = 'dev-git-tix'
 namespace_create(ns)
 
 k8s_yaml([
+  namespace_inject(read_file('./infra/k8s/client.yml'), ns),
   namespace_inject(read_file('./infra/k8s/auth-mongo.yml'), ns),
   namespace_inject(read_file('./infra/k8s/auth-service.yml'), ns),
   namespace_inject(read_file('./infra/k8s/mongo-pvc.yml'), ns),
@@ -10,12 +11,25 @@ k8s_yaml([
 ])
 
 docker_build(
+  'pramindanata/tix-client',
+  'client',
+  dockerfile='./client/DockerfileDev',
+  live_update=[
+    sync('./client', '/app'),
+    run('cd /app && npm install --only prod', trigger=[
+      'client/package.json',
+      'client/package-lock.json'
+    ])
+  ]
+)
+
+docker_build(
   'pramindanata/tix-auth',
   'auth',
   dockerfile='./auth/DockerfileDev',
   live_update=[
     sync('./auth', '/app'),
-    run('cd /app && npm install --only=prod', trigger=[
+    run('cd /app && npm install --only prod', trigger=[
       'auth/package.json',
       'auth/package-lock.json'
     ])

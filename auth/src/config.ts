@@ -1,7 +1,7 @@
 const env = process.env
 
 export enum AppEnv {
-  dev = 'dev',
+  dev = 'development',
   production = 'production',
   test = 'test',
 }

@@ -15,3 +15,7 @@ spec:
             backend:
               serviceName: auth-service-cluster-ip
               servicePort: 4000
+          - path: /?(.*)
+            backend:
+              serviceName: client-service-cluster-ip
+              servicePort: 3000
