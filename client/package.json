@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lint:fix": "npm run lint -- ./src/**/*.{tsx,ts} --fix"
   },
   "dependencies": {
     "@types/node": "^14.0.27",
