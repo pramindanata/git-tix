@@ -40,7 +40,7 @@ const Signin: React.FC = () => {
 
   return (
     <>
-      <Head title="Sign Up" />
+      <Head title="Sign In" />
       <div className="container">
         <h1>Signin</h1>
 

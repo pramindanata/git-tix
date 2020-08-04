@@ -6,6 +6,7 @@ import { Dto, Domain } from '~/interfaces';
 
 interface Props {
   user: Domain.CurrentUser | null;
+  xx: number;
 }
 
 const Home: React.FC<Props> = (props) => {
@@ -28,28 +29,33 @@ const Home: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { headers } = ctx.req;
-  const initialProps: Props = {
-    user: null,
+  return {
+    props: {
+      xx: 123,
+    },
   };
+  //   const { headers } = ctx.req;
+  //   const initialProps: Props = {
+  //     user: null,
+  //   };
 
-  try {
-    const res = await serverAxios.get<Dto.CurrentUserRes>(
-      'api/auth/current-user',
-      { headers },
-    );
+  //   try {
+  //     const res = await serverAxios.get<Dto.CurrentUserRes>(
+  //       'api/auth/current-user',
+  //       { headers },
+  //     );
 
-    return {
-      props: {
-        ...initialProps,
-        user: res.data.data,
-      },
-    };
-  } catch (err) {
-    return {
-      props: initialProps,
-    };
-  }
+  //     return {
+  //       props: {
+  //         ...initialProps,
+  //         user: res.data.data,
+  //       },
+  //     };
+  //   } catch (err) {
+  //     return {
+  //       props: initialProps,
+  //     };
+  //   }
 };
 
 export default Home;
