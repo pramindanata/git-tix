@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 export const serverAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_PROXY_HOST,
@@ -10,3 +10,11 @@ export const serverAxios = axios.create({
 export const clientAxios = axios.create({
   baseURL: '/',
 });
+
+export function getHttpClient(): AxiosInstance {
+  if (typeof window !== 'undefined') {
+    return clientAxios;
+  } else {
+    return serverAxios;
+  }
+}

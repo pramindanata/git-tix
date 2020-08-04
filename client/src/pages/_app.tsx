@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppProps, AppContext } from 'next/app';
-import { serverAxios } from '~/lib/axios';
+import { getHttpClient } from '~/lib/axios';
 
 import '~/assets/index.scss';
 import { AxiosRequestConfig } from 'axios';
@@ -60,10 +60,12 @@ MyApp.getInitialProps = async ({
 async function getCurrentUser(
   headers: AxiosRequestConfig['headers'],
 ): Promise<Dto.CurrentUserRes> {
-  const res = await serverAxios.get<Dto.CurrentUserRes>(
-    '/api/auth/current-user',
-    { headers },
-  );
+  const httpClient = getHttpClient();
+  const getCurrentUserUrl = '/api/auth/current-user';
+
+  const res = await httpClient.get<Dto.CurrentUserRes>(getCurrentUserUrl, {
+    headers,
+  });
 
   return res.data;
 }

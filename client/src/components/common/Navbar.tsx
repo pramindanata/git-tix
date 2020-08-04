@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
           <ul className="navbar-nav d-flex align-items-center flex-row">
             {activeLinks.map((link) => (
               <li key={link.label} className="nav-item">
-                <Link href="/">
+                <Link href={link.href}>
                   <a className="nav-link p-2">{link.label}</a>
                 </Link>
               </li>
