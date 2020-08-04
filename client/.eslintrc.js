@@ -23,5 +23,6 @@ module.exports = {
     'react/prop-types': 'off',
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     '@typescript-eslint/no-explicit-any': 'off',
+    'no-console': 'warn',
   },
 };

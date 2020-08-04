@@ -18,3 +18,10 @@ export interface RequestValidationRes {
 }
 
 export type UnauthenticatedRes = string;
+
+export interface CurrentUserRes {
+  data: {
+    id: string;
+    email: string;
+  };
+}

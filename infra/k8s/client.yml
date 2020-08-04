@@ -17,6 +17,11 @@ spec:
           image: pramindanata/tix-client
           ports:
             - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_HOST
+              value: 'git-tix.dev'
+            - name: NEXT_PUBLIC_PROXY_HOST
+              value: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local'
 ---
 apiVersion: v1
 kind: Service
