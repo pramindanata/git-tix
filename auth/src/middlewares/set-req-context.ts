@@ -14,6 +14,10 @@ export const setReqContext = (
 
   const token = req.session?.token as string | null
 
+  // Only set user context here.
+  // The checking process if the token payload is invalid
+  // (empty, expired, wrong schema, or etc) will be done
+  //  in `auth` middleware
   if (token) {
     try {
       const tokenPayload = jwt.verify(token, config.jwt.secret) as JWTPayload
