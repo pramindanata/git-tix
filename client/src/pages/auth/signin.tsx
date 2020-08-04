@@ -4,7 +4,7 @@ import Head from '~/components/common/Head';
 import { Dto } from '~/interfaces';
 import { useAxiosError } from '~/hooks';
 import { clientAxios } from '~/lib/axios';
-import { ActionFailError, RequestValidationError } from '~/utils';
+import { ActionFailError, RequestValidationError, AuthService } from '~/utils';
 
 const Signin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,6 +24,7 @@ const Signin: React.FC = () => {
 
         setEmail('');
         setPassword('');
+        AuthService.enableStatus();
         Router.push('/');
       } catch (err) {
         setAxiosError(err);

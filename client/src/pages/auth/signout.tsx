@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Router from 'next/router';
 import { clientAxios } from '~/lib/axios';
+import { AuthService } from '~/utils';
 
 const Signout: React.FC = () => {
   useEffect(() => {
@@ -10,6 +11,7 @@ const Signout: React.FC = () => {
   async function logout() {
     await clientAxios.post('/api/auth/signout');
 
+    AuthService.disableStatus();
     Router.push('/');
   }
 
