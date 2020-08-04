@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import Head from '~/components/common/Head';
-import { serverAxios } from '~/lib';
+import { serverAxios } from '~/lib/axios';
 import { Dto, Domain } from '~/interfaces';
 
 interface Props {

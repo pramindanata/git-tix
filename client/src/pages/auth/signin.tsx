@@ -3,7 +3,7 @@ import Router from 'next/router';
 import Head from '~/components/common/Head';
 import { Dto } from '~/interfaces';
 import { useAxiosError } from '~/hooks';
-import { clientAxios } from '~/lib';
+import { clientAxios } from '~/lib/axios';
 
 const Signin: React.FC = () => {
   const [email, setEmail] = useState('');
