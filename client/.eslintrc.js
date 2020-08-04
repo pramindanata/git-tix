@@ -24,5 +24,13 @@ module.exports = {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     '@typescript-eslint/no-explicit-any': 'off',
     'no-console': 'warn',
+    'jsx-a11y/anchor-is-valid': [
+      'error',
+      {
+        components: ['Link'],
+        specialLink: ['hrefLeft', 'hrefRight'],
+        aspects: ['invalidHref', 'preferButton'],
+      },
+    ],
   },
 };

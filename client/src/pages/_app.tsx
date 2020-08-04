@@ -6,8 +6,10 @@ import '~/assets/index.scss';
 import { AxiosRequestConfig } from 'axios';
 import { GlobalContext } from '~/context';
 import { Dto, Domain, Context } from '~/interfaces';
+import Navbar from '~/components/common/Navbar';
 
 interface MyAppProps {
+  pageProps: any;
   user: Domain.CurrentUser | null;
 }
 
@@ -19,7 +21,12 @@ const MyApp = (appProps: AppProps & MyAppProps): JSX.Element => {
 
   return (
     <GlobalContext.Provider value={contextValue}>
-      <Component {...pageProps} />
+      <nav>
+        <Navbar />
+      </nav>
+      <main>
+        <Component {...pageProps} />
+      </main>
     </GlobalContext.Provider>
   );
 };
@@ -29,26 +36,25 @@ MyApp.getInitialProps = async ({
   Component,
 }: AppContext): Promise<MyAppProps> => {
   const headers = ctx.req?.headers;
-  let myAppProps: MyAppProps = {
-    user: null,
-  };
+  let pageProps = {};
+  let user: Domain.CurrentUser | null = null;
 
   try {
     const currentUserResDto = await getCurrentUser(headers);
 
-    myAppProps = {
-      ...myAppProps,
-      user: currentUserResDto.data,
-    };
+    user = currentUserResDto.data;
   } catch (err) {
-    myAppProps = { ...myAppProps };
+    user = null;
   }
 
   if (Component.getInitialProps) {
-    await Component.getInitialProps(ctx);
+    pageProps = await Component.getInitialProps(ctx);
   }
 
-  return myAppProps;
+  return {
+    pageProps,
+    user,
+  };
 };
 
 async function getCurrentUser(
