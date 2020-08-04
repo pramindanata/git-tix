@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Router from 'next/router';
 import Head from '~/components/common/Head';
 import { Dto } from '~/interfaces';
 import { useAxiosError } from '~/hooks';
+import { clientAxios } from '~/lib';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ const Signup: React.FC = () => {
   }
 
   function postSignup(email: string, password: string) {
-    return axios.post<Dto.SignUpRes>('/api/auth/signup', {
+    return clientAxios.post<Dto.SignUpRes>('/api/auth/signup', {
       email,
       password,
     });
