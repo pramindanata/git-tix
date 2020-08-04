@@ -34,28 +34,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       xx: 123,
     },
   };
-  //   const { headers } = ctx.req;
-  //   const initialProps: Props = {
-  //     user: null,
-  //   };
-
-  //   try {
-  //     const res = await serverAxios.get<Dto.CurrentUserRes>(
-  //       'api/auth/current-user',
-  //       { headers },
-  //     );
-
-  //     return {
-  //       props: {
-  //         ...initialProps,
-  //         user: res.data.data,
-  //       },
-  //     };
-  //   } catch (err) {
-  //     return {
-  //       props: initialProps,
-  //     };
-  //   }
 };
 
 export default Home;

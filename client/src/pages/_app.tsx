@@ -4,6 +4,7 @@ import { serverAxios } from '~/lib/axios';
 
 import '~/assets/index.scss';
 import { Dto, Domain } from '~/interfaces';
+import { AxiosRequestConfig } from 'axios';
 
 interface MyAppProps {
   user: Domain.CurrentUser | null;
@@ -25,14 +26,11 @@ MyApp.getInitialProps = async ({
   };
 
   try {
-    const res = await serverAxios.get<Dto.CurrentUserRes>(
-      '/api/auth/current-user',
-      { headers },
-    );
+    const currentUserResDto = await getCurrentUser(headers);
 
     myAppProps = {
       ...myAppProps,
-      user: res.data.data,
+      user: currentUserResDto.data,
     };
   } catch (err) {
     myAppProps = { ...myAppProps };
@@ -44,5 +42,16 @@ MyApp.getInitialProps = async ({
 
   return myAppProps;
 };
+
+async function getCurrentUser(
+  headers: AxiosRequestConfig['headers'],
+): Promise<Dto.CurrentUserRes> {
+  const res = await serverAxios.get<Dto.CurrentUserRes>(
+    '/api/auth/current-user',
+    { headers },
+  );
+
+  return res.data;
+}
 
 export default MyApp;
