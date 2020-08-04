@@ -4,6 +4,7 @@ import Head from '~/components/common/Head';
 import { Dto } from '~/interfaces';
 import { useAxiosError } from '~/hooks';
 import { clientAxios } from '~/lib/axios';
+import { ActionFailError, RequestValidationError } from '~/utils';
 
 const Signin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -44,19 +45,19 @@ const Signin: React.FC = () => {
       <div className="container">
         <h1>Signin</h1>
 
-        {error.requestValidation && (
+        {error instanceof RequestValidationError && (
           <div className="alert alert-danger">
             <ul className="mb-0">
-              {error.requestValidation.serialize().map((error) => (
+              {error.serialize().map((error) => (
                 <li key={error.field}>{error.message}</li>
               ))}
             </ul>
           </div>
         )}
 
-        {error.actionFail && (
+        {error instanceof ActionFailError && (
           <div className="alert alert-danger">
-            <div>{error.actionFail.serialize().message}</div>
+            <div>{error.serialize().message}</div>
           </div>
         )}
 

@@ -78,7 +78,7 @@ export class HTTPErrorTypeNotFoundException extends Error {
   }
 }
 
-export type HttpErrorTypes =
+export type HttpErrorType =
   | UnauthenticatedError
   | RequestValidationError
   | ActionFailError;
