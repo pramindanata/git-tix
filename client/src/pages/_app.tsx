@@ -3,17 +3,25 @@ import { AppProps, AppContext } from 'next/app';
 import { serverAxios } from '~/lib/axios';
 
 import '~/assets/index.scss';
-import { Dto, Domain } from '~/interfaces';
 import { AxiosRequestConfig } from 'axios';
+import { GlobalContext } from '~/context';
+import { Dto, Domain, Context } from '~/interfaces';
 
 interface MyAppProps {
   user: Domain.CurrentUser | null;
 }
 
 const MyApp = (appProps: AppProps & MyAppProps): JSX.Element => {
-  const { Component, pageProps } = appProps;
+  const { Component, pageProps, user } = appProps;
+  const contextValue: Context.Global = {
+    user,
+  };
 
-  return <Component {...pageProps} />;
+  return (
+    <GlobalContext.Provider value={contextValue}>
+      <Component {...pageProps} />
+    </GlobalContext.Provider>
+  );
 };
 
 MyApp.getInitialProps = async ({

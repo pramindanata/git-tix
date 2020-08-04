@@ -85,7 +85,7 @@ const Signin: React.FC = () => {
           </div>
 
           <button className="btn btn-primary" type="submit" disabled={isSubmit}>
-            {isSubmit ? 'Loading' : 'Sign Up'}
+            {isSubmit ? 'Loading' : 'Sign In'}
           </button>
         </form>
       </div>

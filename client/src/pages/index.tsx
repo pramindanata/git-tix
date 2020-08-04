@@ -1,22 +1,18 @@
-import React from 'react';
-import { GetServerSideProps } from 'next';
+import React, { useContext } from 'react';
 import Head from '~/components/common/Head';
-import { serverAxios } from '~/lib/axios';
-import { Dto, Domain } from '~/interfaces';
+import { GlobalContext } from '~/context';
 
-interface Props {
-  user: Domain.CurrentUser | null;
-  xx: number;
-}
-
-const Home: React.FC<Props> = (props) => {
-  const { user } = props;
+const Home: React.FC = () => {
+  const user = useContext(GlobalContext).user;
 
   return (
     <>
       <Head title="Home" />
       <div className="container">
         <h1>{user ? 'You are signed in' : 'You are NOT signed in'}</h1>
+
+        {user && <p>Hello {user.email}</p>}
+
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Inx esse
           consectetur quod, iure quia aperiam rerum veniam dignissimos itaque
@@ -26,14 +22,6 @@ const Home: React.FC<Props> = (props) => {
       </div>
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return {
-    props: {
-      xx: 123,
-    },
-  };
 };
 
 export default Home;
