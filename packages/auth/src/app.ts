@@ -3,11 +3,8 @@ import 'express-async-errors'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import cookieSession from 'cookie-session'
-import {
-  RouteNotFoundError,
-  setReqContext,
-  errorHandler,
-} from '@teh-tix/common'
+import { RouteNotFoundError } from '@teh-tix/common/exception'
+import { setReqContext, errorHandler } from '@teh-tix/common/middleware'
 
 import { config, AppEnv } from './config'
 import { currentUserRouter } from './routes/current-user'
