@@ -1,0 +1,45 @@
+export interface JWTPayload {
+  id: string;
+  email: string;
+  iat: number;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+}
+
+export interface RequestContext {
+  authUser?: AuthUser;
+}
+
+export type ServerErrorType = 'DB_CONNECTION_ERROR' | 'SYNTAX_ERROR';
+
+export type ActionFailType =
+  | 'EMAIL_TAKEN'
+  | 'INVALID_CREDENTIAL'
+  | 'NO_TOKEN'
+  | 'INVALID_TOKEN';
+
+export interface ValidationErrorItem {
+  message: string;
+  field?: string;
+}
+
+export interface ValidationErrorBody {
+  data: ValidationErrorItem[];
+}
+
+export interface ServerErrorBody {
+  type: ServerErrorType;
+  message: string;
+}
+
+export interface MessageOnlyBody {
+  message: string;
+}
+
+export interface ActionFailBody {
+  type: ActionFailType;
+  message: string;
+}
