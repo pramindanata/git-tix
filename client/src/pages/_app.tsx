@@ -22,10 +22,19 @@ const MyApp = (appProps: AppProps & MyAppProps): JSX.Element => {
     user: userStore || user,
   };
 
-  if (user && EnvService.isInClient()) {
-    userStore = user;
-    // Make sure auth is active on each navigation if user data exist.
-    AuthService.enableStatus();
+  if (EnvService.isInClient()) {
+    if (user) {
+      userStore = user;
+      // Make sure auth is active on each navigation if user data exist.
+      AuthService.enableStatus();
+    }
+
+    // This code alwasy run after loading new page
+    // because Next.js run/render this component
+    // twice (on client and server side)
+    if (!userStore && AuthService.getStatus()) {
+      AuthService.disableStatus();
+    }
   }
 
   return (
@@ -71,6 +80,25 @@ MyApp.getInitialProps = async ({
   };
 };
 
+async function getCurrentUserByEnv(
+  isInServer: boolean,
+  reqHeaders: any,
+): Promise<Dto.CurrentUserRes | null> {
+  let res: Dto.CurrentUserRes | null = null;
+
+  if (isInServer) {
+    res = await getCurrentUser(reqHeaders);
+  } else {
+    const isSignin = AuthService.getStatus();
+
+    if (isSignin && !userStore) {
+      res = await getCurrentUser(reqHeaders);
+    }
+  }
+
+  return res;
+}
+
 async function getCurrentUser(
   headers: AxiosRequestConfig['headers'],
 ): Promise<Dto.CurrentUserRes> {
@@ -90,25 +118,6 @@ function resetUserStoreIfAuthStatusEmpty(): void {
   if (!isSignin) {
     userStore = null;
   }
-}
-
-async function getCurrentUserByEnv(
-  isInServer: boolean,
-  reqHeaders: any,
-): Promise<Dto.CurrentUserRes | null> {
-  let res: Dto.CurrentUserRes | null = null;
-
-  if (isInServer) {
-    res = await getCurrentUser(reqHeaders);
-  } else {
-    const isSignin = AuthService.getStatus();
-
-    if (isSignin && !userStore) {
-      res = await getCurrentUser(reqHeaders);
-    }
-  }
-
-  return res;
 }
 
 export default MyApp;
