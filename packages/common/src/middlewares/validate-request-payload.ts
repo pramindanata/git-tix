@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { RequestValidationError } from '../exceptions';
 
-export const validateRequestPayload = (
+export const validateRequestPayload = () => (
   req: Request,
   res: Response,
   next: NextFunction,
