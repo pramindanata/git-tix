@@ -1,0 +1,29 @@
+{
+  "name": "@teh-tix/common",
+  "version": "1.0.1",
+  "description": "Common functionality for git-tix app.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run tsc",
+    "clean": "del-cli ./dist/*",
+    "tsc": "tsc"
+  },
+  "keywords": [],
+  "author": "pramindanata.eksa@gmail.com",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
+    "del-cli": "^3.0.1",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.7"
+  }
+}
