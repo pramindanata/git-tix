@@ -1,6 +1,6 @@
 {
   "name": "@teh-tix/common",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Common functionality for git-tix app.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,7 +15,6 @@
   "keywords": [],
   "author": "pramindanata.eksa@gmail.com",
   "license": "ISC",
-  "dependencies": {},
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
