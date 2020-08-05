@@ -1,6 +1,10 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "build:common": "npm run build --prefix ./packages/common",
+    "release": "npm run build:common && lerna publish"
+  },
   "devDependencies": {
     "lerna": "^3.22.1"
   }
