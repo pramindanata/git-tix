@@ -35,22 +35,24 @@ const Navbar: React.FC = () => {
   const activeLinks = links.filter((link) => link !== false) as NavLink[];
 
   return (
-    <div className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div className="bg-dark">
       <div className="container">
-        <Link href="/">
-          <a className="navbar-brand">GitTix</a>
-        </Link>
+        <div className="navbar navbar-expand-lg navbar-dark bg-dark px-0">
+          <Link href="/">
+            <a className="navbar-brand">GitTix</a>
+          </Link>
 
-        <div className="d-flex justify-content-end">
-          <ul className="navbar-nav d-flex align-items-center flex-row">
-            {activeLinks.map((link) => (
-              <li key={link.label} className="nav-item">
-                <Link href={link.href}>
-                  <a className="nav-link p-2">{link.label}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="d-flex justify-content-end">
+            <ul className="navbar-nav d-flex align-items-center flex-row">
+              {activeLinks.map((link) => (
+                <li key={link.label} className="nav-item">
+                  <Link href={link.href}>
+                    <a className="nav-link p-2">{link.label}</a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

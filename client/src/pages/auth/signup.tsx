@@ -43,7 +43,7 @@ const Signup: React.FC = () => {
   return (
     <>
       <Head title="Sign Up" />
-      <div className="container">
+      <div className="container mt-4">
         <h1>Signup</h1>
 
         {error instanceof RequestValidationError && (

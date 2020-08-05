@@ -5,7 +5,7 @@ const Test: React.FC = () => {
   return (
     <>
       <Head title="Test" />
-      <div className="container">
+      <div className="container mt-4">
         <h1>Welcome to Nuxt.js</h1>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Inx esse

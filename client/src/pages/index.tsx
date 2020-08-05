@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Head title="Home" />
-      <div className="container">
+      <div className="container mt-4">
         <h1>{user ? 'You are signed in' : 'You are NOT signed in'}</h1>
 
         {user && <p>Hello {user.email}</p>}
