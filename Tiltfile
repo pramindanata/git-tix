@@ -8,26 +8,26 @@ k8s_yaml([
 
 docker_build(
   'pramindanata/tix-client',
-  'client',
-  dockerfile='./client/DockerfileDev',
+  'packages/client',
+  dockerfile='./packages/client/DockerfileDev',
   live_update=[
-    sync('./client', '/app'),
+    sync('./packages/client', '/app'),
     run('cd /app && npm install --only prod', trigger=[
-      'client/package.json',
-      'client/package-lock.json'
+      'packages/client/package.json',
+      'packages/client/package-lock.json'
     ])
   ]
 )
 
 docker_build(
   'pramindanata/tix-auth',
-  'auth',
-  dockerfile='./auth/DockerfileDev',
+  'packages/auth',
+  dockerfile='./packages/auth/DockerfileDev',
   live_update=[
-    sync('./auth', '/app'),
+    sync('./packages/auth', '/app'),
     run('cd /app && npm install --only prod', trigger=[
-      'auth/package.json',
-      'auth/package-lock.json'
+      'packages/auth/package.json',
+      'packages/auth/package-lock.json'
     ])
   ]
 )
