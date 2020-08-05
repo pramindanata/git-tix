@@ -1,13 +1,12 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
+import { ActionFailError, validateRequestPayload } from '@teh-tix/common'
 import type { Request, Response } from 'express'
 
 import { config } from '../config'
 import { User } from '../models/user'
-import { ActionFailError } from '../exception'
 import { UserMapper } from '../util/mapper'
-import { validateRequestPayload } from '../middlewares/validate-request-payload'
 
 const router = Router()
 
@@ -24,7 +23,7 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage('Password mus be between 4 and 20 characters'),
   ],
-  validateRequestPayload,
+  validateRequestPayload(),
   async (req: Request<any, any, SignUpPayload>, res: Response) => {
     const { email, password } = req.body
     const userWithSameEmail = await User.findOne({ email })

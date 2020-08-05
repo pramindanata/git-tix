@@ -3,15 +3,17 @@ import 'express-async-errors'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import cookieSession from 'cookie-session'
+import {
+  RouteNotFoundError,
+  setReqContext,
+  errorHandler,
+} from '@teh-tix/common'
 
 import { config, AppEnv } from './config'
 import { currentUserRouter } from './routes/current-user'
 import { signInRouter } from './routes/signin'
 import { signOutRouter } from './routes/signout'
 import { signUpRouter } from './routes/signup'
-import { setReqContext } from './middlewares/set-req-context'
-import { errorHandler } from './middlewares/error-handler'
-import { RouteNotFoundError } from './exception'
 
 const app = express()
 const logger = morgan(
@@ -32,7 +34,7 @@ if (appEnv !== AppEnv.test) {
   app.use(logger)
 }
 
-app.use(setReqContext)
+app.use(setReqContext(config.jwt.secret))
 
 app.use(currentUserRouter)
 app.use(signInRouter)
@@ -43,6 +45,6 @@ app.all('*', async () => {
   throw new RouteNotFoundError()
 })
 
-app.use(errorHandler)
+app.use(errorHandler())
 
 export { app }

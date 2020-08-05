@@ -1,13 +1,12 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
+import { ActionFailError, validateRequestPayload } from '@teh-tix/common'
 import type { Request, Response } from 'express'
 
 import { config } from '../config'
 import { User } from '../models/user'
 import { Password } from '../services/password'
-import { ActionFailError } from '../exception'
-import { validateRequestPayload } from '../middlewares/validate-request-payload'
 
 interface SignInPayload {
   email: string
@@ -22,7 +21,7 @@ router.post(
     body('email').isEmail().withMessage('Email must be valid'),
     body('password').trim().notEmpty(),
   ],
-  validateRequestPayload,
+  validateRequestPayload(),
   async (req: Request<any, any, SignInPayload>, res: Response) => {
     const { email, password } = req.body
     const existingUser = await User.findOne({ email })
