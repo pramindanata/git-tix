@@ -1,9 +1,9 @@
 k8s_yaml([
-  './infra/k8s/client.yml',
-  './infra/k8s/auth-mongo.yml',
-  './infra/k8s/auth-service.yml',
-  './infra/k8s/mongo-pvc.yml',
-  './infra/k8s/ingress.yml',
+  './packages/infra/k8s/client.yml',
+  './packages/infra/k8s/auth-mongo.yml',
+  './packages/infra/k8s/auth-service.yml',
+  './packages/infra/k8s/mongo-pvc.yml',
+  './packages/infra/k8s/ingress.yml',
 ])
 
 docker_build(
