@@ -1,11 +1,15 @@
 {
   "name": "@teh-tix/common",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Common functionality for git-tix app.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "exception.js",
+    "exception.d.ts",
+    "middleware.js",
+    "middleware.d.ts"
   ],
   "scripts": {
     "build": "npm run clean && npm run tsc",
