@@ -25,11 +25,24 @@ docker_build(
   dockerfile='./packages/auth/DockerfileDev',
   live_update=[
     sync('./packages/auth', '/app'),
-    run('cd /app && npm install --only prod', trigger=[
-      'packages/auth/package.json',
-      'packages/auth/package-lock.json'
-    ])
+    npmInstallTrigger()
   ]
 )
+
+docker_build(
+  'pramindanata/tix-common',
+  'package/common',
+  dockerfile='./packages/common/Dockerfile',
+  live_update=[
+    sync('./packages/common', '/app')
+  ]
+)
+
+def npmInstallTrigger():
+  return run('cd /app && npm install --only prod', trigger=[
+    'packages/auth/package.json',
+    'packages/auth/package-lock.json'
+  ])
+
 
 k8s_resource('auth-mongo', port_forwards='9001:27017')
