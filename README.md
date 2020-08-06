@@ -4,9 +4,15 @@
 
 Ticketing app built with microservice approach.
 
-## K8S Setup
+## Development
+
+### With K8S
 
 Make sure your cluster already has NGINX Ingress Controller installed. Please read [this](https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac) about NGINX Ingress Controller installation.
+
+### Without K8S
+
+...
 
 ```sh
 # Setup secret object, this method may not safe for production env.
