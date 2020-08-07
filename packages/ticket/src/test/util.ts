@@ -18,6 +18,20 @@ export function composeCreateTicketReq(
   return req.send((body as any) || {})
 }
 
+export function composeUpdateTicketReq(
+  ticketId: string,
+  authCookie?: string,
+  body?: unknown,
+): request.Test {
+  const req = request(app).put(`/${ticketId}`)
+
+  if (authCookie) {
+    req.set('Cookie', [authCookie])
+  }
+
+  return req.send((body as any) || {})
+}
+
 export function generateMongooseId(): string {
   return mongoose.Types.ObjectId().toHexString()
 }

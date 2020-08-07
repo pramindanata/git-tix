@@ -4,6 +4,7 @@ import {
   generateMongooseId,
   createAuthCookie,
   composeCreateTicketReq,
+  composeUpdateTicketReq,
 } from '../../test/util'
 import type { RP, RO, DTO } from '../../interface'
 
@@ -12,17 +13,16 @@ describe('PUT /:id', () => {
     const mongooseId = generateMongooseId()
     const authCookie = createAuthCookie()
 
-    await request(app)
-      .put(`/${mongooseId}`)
-      .set('Cookie', [authCookie])
-      .send({})
-      .expect(404)
+    await composeUpdateTicketReq(mongooseId, authCookie, {
+      title: 'title',
+      price: 1,
+    }).expect(404)
   })
 
   it('return 401 if user is not signed in', async () => {
     const mongooseId = generateMongooseId()
 
-    await request(app).put(`/${mongooseId}`).send({}).expect(401)
+    await composeUpdateTicketReq(mongooseId).expect(401)
   })
 
   it('return 403 if user does not own the ticket', async () => {
@@ -40,11 +40,11 @@ describe('PUT /:id', () => {
     const createdTicketResBody = res.body as RO.Item<DTO.Ticket>
     const createdTicket = createdTicketResBody.data
 
-    await request(app)
-      .put(`/${createdTicket.id}`)
-      .set('Cookie', [secondAuthCookie])
-      .send(ticketPayload)
-      .expect(403)
+    await composeUpdateTicketReq(
+      createdTicket.id,
+      secondAuthCookie,
+      ticketPayload,
+    ).expect(403)
   })
 
   it('return 422 if invalid title or price given ', async () => {
@@ -59,25 +59,17 @@ describe('PUT /:id', () => {
     const createdTicketResBody = res.body as RO.Item<DTO.Ticket>
     const createdTicket = createdTicketResBody.data
 
-    await request(app)
-      .put(`/${createdTicket.id}`)
-      .set('Cookie', [authCookie])
-      .send({
-        title: '',
-        price: 20,
-      })
-      .expect(422)
-    await request(app)
-      .put(`/${createdTicket.id}`)
-      .set('Cookie', [authCookie])
-      .send({
-        title: 'test',
-        price: -1,
-      })
-      .expect(422)
+    await composeUpdateTicketReq(createdTicket.id, authCookie, {
+      title: '',
+      price: 20,
+    }).expect(422)
+    await composeUpdateTicketReq(createdTicket.id, authCookie, {
+      title: 'new title',
+      price: -1,
+    }).expect(422)
   })
 
-  it.only('update the ticket if provided with valid title and price', async () => {
+  it('update the ticket if provided with valid title and price', async () => {
     const authCookie = createAuthCookie()
     const ticketPayload: RP.CreateTicketBody = {
       title: 'test ticket',
@@ -94,11 +86,11 @@ describe('PUT /:id', () => {
     const createdTicketResBody = createdTicketRes.body as RO.Item<DTO.Ticket>
     const createdTicket = createdTicketResBody.data
 
-    await request(app)
-      .put(`/${createdTicket.id}`)
-      .set('Cookie', [authCookie])
-      .send(updatedTicketPayload)
-      .expect(200)
+    await composeUpdateTicketReq(
+      createdTicket.id,
+      authCookie,
+      updatedTicketPayload,
+    ).expect(200)
 
     const showedTicketRes = await request(app)
       .get(`/${createdTicket.id}`)
