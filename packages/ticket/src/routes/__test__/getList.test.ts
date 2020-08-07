@@ -1,12 +1,12 @@
 import request from 'supertest'
 import { app } from '../../app'
 import { createAuthCookie, composeCreateTicketReq } from '../../test/util'
-import type { RequestPayload, RO, DTO } from '../../interface'
+import type { RP, RO, DTO } from '../../interface'
 
 describe('GET /', () => {
   it('return list of tickets', async () => {
     const authCookie = createAuthCookie()
-    const ticketPayloads: RequestPayload.CreateTicketBody[] = [
+    const ticketPayloads: RP.CreateTicketBody[] = [
       {
         title: 'ticket A',
         price: 20,

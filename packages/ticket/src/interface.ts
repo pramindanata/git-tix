@@ -17,7 +17,10 @@ export interface SessionPayload {
   token: string
 }
 
-export namespace RequestPayload {
+/**
+ * Request Payload
+ */
+export namespace RP {
   interface CoreParams {
     [key: string]: string
   }
@@ -32,6 +35,9 @@ export namespace RequestPayload {
   }
 }
 
+/**
+ * Data Transfer Object
+ */
 export namespace DTO {
   interface WithCreatedAt {
     createdAt: number
@@ -52,7 +58,9 @@ export namespace DTO {
   }
 }
 
-// Response Object
+/**
+ * Response Object
+ */
 export namespace RO {
   export interface Item<DTO> {
     data: DTO
