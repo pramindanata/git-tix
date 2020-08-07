@@ -11,6 +11,8 @@ k8s_yaml([
   './packages/infra/k8s/client.yml',
   './packages/infra/k8s/auth-mongo.yml',
   './packages/infra/k8s/auth-service.yml',
+  './packages/infra/k8s/ticket-mongo.yml',
+  './packages/infra/k8s/ticket-service.yml',
   './packages/infra/k8s/mongo-pvc.yml',
   './packages/infra/k8s/ingress.yml',
 ])
@@ -32,6 +34,16 @@ docker_build(
   live_update=[
     sync('./packages/auth', '/app'),
     genNpmInstallTrigger('auth')
+  ]
+)
+
+docker_build(
+  'pramindanata/tix-ticket',
+  'packages/ticket',
+  dockerfile='./packages/ticket/DockerfileDev',
+  live_update=[
+    sync('./packages/ticket', '/app'),
+    genNpmInstallTrigger('ticket')
   ]
 )
 

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ticket-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-mongo
+  template:
+    metadata:
+      labels:
+        app: ticket-mongo
+    spec:
+      containers:
+        - name: ticket-mongo
+          image: mongo:4.2.3
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: ticket-mongo-storage
+              mountPath: /data/db
+              subPath: ticket-service
+      volumes:
+        - name: ticket-mongo-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-mongo-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: ticket-mongo
+  ports:
+    - name: ticket-mongo
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
