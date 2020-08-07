@@ -18,9 +18,17 @@ export interface SessionPayload {
 }
 
 export namespace RequestPayload {
+  interface CoreParams {
+    [key: string]: string
+  }
+
   export interface CreateTicketBody {
     title: string
     price: number
+  }
+
+  export interface GetOneTicketParams extends CoreParams {
+    id: string
   }
 }
 

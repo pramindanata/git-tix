@@ -1,5 +1,6 @@
 import request from 'supertest'
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
 import { app } from '../app'
 import { config } from '../config'
 import type { JWTPayload, SessionPayload } from '../interface'
@@ -15,6 +16,10 @@ export function composeCreateTicketReq(
   }
 
   return req.send((body as any) || {})
+}
+
+export function generateMongooseId(): string {
+  return mongoose.Types.ObjectId().toHexString()
 }
 
 export function createAuthCookie(): string {
