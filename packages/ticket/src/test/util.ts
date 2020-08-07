@@ -4,24 +4,17 @@ import { app } from '../app'
 import { config } from '../config'
 import type { JWTPayload, SessionPayload } from '../interface'
 
-export function composeSigninReq(body: unknown): request.Test {
-  return request(app)
-    .post('/signin')
-    .send(body as any)
-}
+export function composeCreateTicketReq(
+  authCookie?: string,
+  body?: unknown,
+): request.Test {
+  const req = request(app).post('/')
 
-export function composeSignupReq(body: unknown): request.Test {
-  return request(app)
-    .post('/signup')
-    .send(body as any)
-}
+  if (authCookie) {
+    req.set('Cookie', [authCookie])
+  }
 
-export function composeSignoutReq(): request.Test {
-  return request(app).post('/signout')
-}
-
-export function composeGetCurUser(): request.Test {
-  return request(app).get('/current-user')
+  return req.send((body as any) || {})
 }
 
 export function createAuthCookie(): string {

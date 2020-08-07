@@ -22,15 +22,20 @@ export interface CreateTicketReqDTO {
   price: number
 }
 
-interface ModelWithCreatedAt {
+// DTO
+export interface WithCreatedAt {
   createdAt: number
 }
 
-interface ModelWithUpdatedAt {
+export interface WithUpdatedAt {
   updatedAt: number
 }
 
-export interface TicketResDTO extends ModelWithCreatedAt, ModelWithUpdatedAt {
+export interface WithUserId {
+  userId: string
+}
+
+export interface TicketCatalogDTO extends WithUserId, WithCreatedAt {
   id: string
   title: string
   price: number
