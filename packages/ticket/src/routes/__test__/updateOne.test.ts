@@ -102,4 +102,33 @@ describe('PUT /:id', () => {
     expect(showedTicket.title).toEqual(updatedTicketPayload.title)
     expect(showedTicket.price).toEqual(updatedTicketPayload.price)
   })
+
+  it('return updated ticket', async () => {
+    const authCookie = createAuthCookie()
+    const ticketPayload: RP.CreateTicketBody = {
+      title: 'test ticket',
+      price: 20,
+    }
+    const updatedTicketPayload: RP.UpdateTicketBody = {
+      title: 'new ticket',
+      price: 50,
+    }
+    const createdTicketRes = await composeCreateTicketReq(
+      authCookie,
+      ticketPayload,
+    ).expect(200)
+    const createdTicketResBody = createdTicketRes.body as RO.Item<DTO.Ticket>
+    const createdTicket = createdTicketResBody.data
+
+    const updatedTicketRes = await composeUpdateTicketReq(
+      createdTicket.id,
+      authCookie,
+      updatedTicketPayload,
+    ).expect(200)
+    const updatedTicketResBody = updatedTicketRes.body as RO.Item<DTO.Ticket>
+    const updatedTicket = updatedTicketResBody.data
+
+    expect(updatedTicket.title).toEqual(updatedTicketPayload.title)
+    expect(updatedTicket.price).toEqual(updatedTicketPayload.price)
+  })
 })

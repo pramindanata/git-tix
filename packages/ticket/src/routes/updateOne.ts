@@ -38,13 +38,15 @@ router.put(
       throw new ActionFailError('FORBIDDEN')
     }
 
-    const updatedTicket = await Ticket.updateOne(
-      { _id: ticket.id },
-      { title, price },
-    )
+    ticket.set({
+      price,
+      title,
+    })
+
+    await ticket.save()
 
     return res.json({
-      data: TicketMapper.toDTO(updatedTicket),
+      data: TicketMapper.toDTO(ticket),
     })
   },
 )

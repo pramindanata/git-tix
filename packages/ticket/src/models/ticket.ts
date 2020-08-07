@@ -13,6 +13,9 @@ export interface TicketDocument extends Document, TicketWriteAttrs {
   userId: string
   createdAt: number
   updatedAt: number
+  set(path: string, val: any, options?: any): this
+  set(path: string, val: any, type: any, options?: any): this
+  set(value: Partial<TicketWriteAttrs>): this
 }
 
 export interface ExtendedTicketModel extends Model<TicketDocument> {
