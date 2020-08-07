@@ -19,7 +19,8 @@ export type ActionFailType =
   | 'EMAIL_TAKEN'
   | 'INVALID_CREDENTIAL'
   | 'NO_TOKEN'
-  | 'INVALID_TOKEN';
+  | 'INVALID_TOKEN'
+  | 'FORBIDDEN';
 
 export interface ValidationErrorItem {
   message: string;

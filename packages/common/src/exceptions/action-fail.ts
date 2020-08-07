@@ -25,6 +25,8 @@ export class ActionFailError extends BaseError<ActionFailBody> {
       this.message = 'No token given';
     } else if (type === 'INVALID_TOKEN') {
       this.message = 'Invalid token given';
+    } else if (type === 'FORBIDDEN') {
+      this.message = 'Resource access is forbidden';
     }
   }
 
