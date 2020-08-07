@@ -4,7 +4,7 @@ import { body } from 'express-validator'
 import { Ticket } from '../models/ticket'
 import { TicketMapper } from '../util'
 import type { Response, Request } from 'express'
-import type { CreateTicketReqDTO } from '../interface'
+import type { RequestPayload } from '../interface'
 
 const router = Router()
 
@@ -18,7 +18,10 @@ router.post(
       .withMessage('Price must be greater than zero'),
   ],
   validateRequestPayload(),
-  async (req: Request<any, any, CreateTicketReqDTO>, res: Response) => {
+  async (
+    req: Request<any, any, RequestPayload.CreateTicketBody>,
+    res: Response,
+  ) => {
     const { title, price } = req.body
     const { id } = req.ctx.authUser!
     const ticket = Ticket.build({ title, price, userId: id })

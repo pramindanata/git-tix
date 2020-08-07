@@ -17,26 +17,29 @@ export interface SessionPayload {
   token: string
 }
 
-export interface CreateTicketReqDTO {
-  title: string
-  price: number
+export namespace RequestPayload {
+  export interface CreateTicketBody {
+    title: string
+    price: number
+  }
 }
 
-// DTO
-export interface WithCreatedAt {
-  createdAt: number
-}
+export namespace DTO {
+  interface WithCreatedAt {
+    createdAt: number
+  }
 
-export interface WithUpdatedAt {
-  updatedAt: number
-}
+  interface WithUpdatedAt {
+    updatedAt: number
+  }
 
-export interface WithUserId {
-  userId: string
-}
+  interface WithUserId {
+    userId: string
+  }
 
-export interface TicketCatalogDTO extends WithUserId, WithCreatedAt {
-  id: string
-  title: string
-  price: number
+  export interface TicketCatalog extends WithUserId, WithCreatedAt {
+    id: string
+    title: string
+    price: number
+  }
 }

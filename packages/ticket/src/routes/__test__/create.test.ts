@@ -1,6 +1,6 @@
 import { Ticket } from '../../models/ticket'
 import { createAuthCookie, composeCreateTicketReq } from '../../test/util'
-import type { CreateTicketReqDTO } from '../../interface'
+import type { RequestPayload } from '../../interface'
 
 describe('# POST /', () => {
   it('it has a POST / route', async () => {
@@ -48,7 +48,7 @@ describe('# POST /', () => {
 
   it('create a ticket with valid inputs', async () => {
     let tickets = await Ticket.find()
-    const newTicketPayload: CreateTicketReqDTO = {
+    const newTicketPayload: RequestPayload.CreateTicketBody = {
       title: 'Sport event',
       price: 10,
     }
