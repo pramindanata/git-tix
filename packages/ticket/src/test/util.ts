@@ -1,5 +1,8 @@
 import request from 'supertest'
+import jwt from 'jsonwebtoken'
 import { app } from '../app'
+import { config } from '../config'
+import type { JWTPayload, SessionPayload } from '../interface'
 
 export function composeSigninReq(body: unknown): request.Test {
   return request(app)
@@ -21,12 +24,21 @@ export function composeGetCurUser(): request.Test {
   return request(app).get('/current-user')
 }
 
-export async function getAuthCookies(): Promise<string[]> {
-  const body = {
-    email: 'test@test.com',
-    password: 'password',
+export function createAuthCookie(): string {
+  const jwtPayload: JWTPayload = {
+    id: 'random_id',
+    email: 'user@test.com',
+    iat: new Date().getTime(),
   }
-  const res = await composeSignupReq(body).expect(200)
+  const token = jwt.sign(jwtPayload, config.jwt.secret)
+  const sessionPayload: SessionPayload = {
+    token,
+  }
+  const sessionPayloadJSON = JSON.stringify(sessionPayload)
+  const encodedSessionPayload = Buffer.from(sessionPayloadJSON).toString(
+    'base64',
+  )
+  const session = `express:sess=${encodedSessionPayload}`
 
-  return res.get('Set-Cookie')
+  return session
 }

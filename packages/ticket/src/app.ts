@@ -8,6 +8,8 @@ import { setReqContext, errorHandler } from '@teh-tix/common/middleware'
 
 import { config, AppEnv } from './config'
 
+import { createTicketRouter } from './routes/create'
+
 const app = express()
 const logger = morgan(
   ':method :url :status :res[content-length] - :response-time ms',
@@ -28,6 +30,7 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
+app.use(createTicketRouter)
 
 app.all('*', async () => {
   throw new RouteNotFoundError()

@@ -12,3 +12,26 @@ export interface AuthUser {
 export interface RequestContext {
   authUser?: AuthUser
 }
+
+export interface SessionPayload {
+  token: string
+}
+
+export interface CreateTicketReqDTO {
+  title: string
+  price: number
+}
+
+interface ModelWithCreatedAt {
+  createdAt: number
+}
+
+interface ModelWithUpdatedAt {
+  updatedAt: number
+}
+
+export interface TicketResDTO extends ModelWithCreatedAt, ModelWithUpdatedAt {
+  id: string
+  title: string
+  price: number
+}
