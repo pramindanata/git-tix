@@ -9,7 +9,8 @@ import { setReqContext, errorHandler } from '@teh-tix/common/middleware'
 import { config, AppEnv } from './config'
 
 import { createTicketRouter } from './routes/create'
-import { GetOnRouter } from './routes/getOne'
+import { getListRouter } from './routes/getList'
+import { getOneRouter } from './routes/getOne'
 
 const app = express()
 const logger = morgan(
@@ -32,7 +33,8 @@ if (appEnv !== AppEnv.test) {
 
 app.use(setReqContext(config.jwt.secret))
 app.use(createTicketRouter)
-app.use(GetOnRouter)
+app.use(getOneRouter)
+app.use(getListRouter)
 
 app.all('*', async () => {
   throw new NotFoundError()

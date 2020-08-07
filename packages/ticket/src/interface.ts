@@ -45,9 +45,20 @@ export namespace DTO {
     userId: string
   }
 
-  export interface TicketCatalog extends WithUserId, WithCreatedAt {
+  export interface Ticket extends WithUserId, WithCreatedAt {
     id: string
     title: string
     price: number
+  }
+}
+
+// Response Object
+export namespace RO {
+  export interface Item<DTO> {
+    data: DTO
+  }
+
+  export interface List<DTO> {
+    data: DTO[]
   }
 }

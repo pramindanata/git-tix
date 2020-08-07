@@ -24,11 +24,11 @@ describe('GET /:id', () => {
       authCookie,
       ticket,
     ).expect(200)
-    const createdTicket = createTicketRes.body.data as DTO.TicketCatalog
+    const createdTicket = createTicketRes.body.data as DTO.Ticket
     const showTicketRes = await request(app)
       .get(`/${createdTicket.id}`)
       .expect(200)
-    const showedTicket = showTicketRes.body.data as DTO.TicketCatalog
+    const showedTicket = showTicketRes.body.data as DTO.Ticket
 
     expect(showedTicket).toMatchObject(createdTicket)
   })

@@ -29,7 +29,7 @@ router.post(
     await ticket.save()
 
     return res.json({
-      data: TicketMapper.toCatalogDTO(ticket),
+      data: TicketMapper.toDTO(ticket),
     })
   },
 )

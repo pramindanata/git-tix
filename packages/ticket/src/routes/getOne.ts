@@ -18,9 +18,9 @@ router.get(
     }
 
     return res.json({
-      data: TicketMapper.toCatalogDTO(ticket),
+      data: TicketMapper.toDTO(ticket),
     })
   },
 )
 
-export { router as GetOnRouter }
+export { router as getOneRouter }
