@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "packages\\ticket"
+		},
+		{
+			"path": "packages\\auth"
+		},
+		{
+			"path": "packages\\client"
+		},
+		{
+			"path": "packages\\common"
+		},
+		{
+			"path": "packages\\infra"
+		}
+	],
+	"settings": {}
+}
