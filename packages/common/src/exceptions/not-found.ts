@@ -5,7 +5,7 @@ export class NotFoundError extends BaseError<MessageOnlyBody> {
   private statusCode = 404;
 
   constructor() {
-    super('Route not found');
+    super('Resource not found');
   }
 
   getStatusCode(): number {
@@ -14,7 +14,7 @@ export class NotFoundError extends BaseError<MessageOnlyBody> {
 
   serialize(): MessageOnlyBody {
     return {
-      message: 'Route not found',
+      message: 'Resource not found',
     };
   }
 }

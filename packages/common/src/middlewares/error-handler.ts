@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { BaseError } from '../exceptions';
+import { BaseError, NotFoundError } from '../exceptions';
 
 export const errorHandler = () => (
   err: Error,
@@ -10,6 +10,14 @@ export const errorHandler = () => (
   if (err instanceof BaseError) {
     const statusCode = err.getStatusCode();
     const errorData = err.serialize();
+
+    return res.status(statusCode).send(errorData);
+  }
+
+  if (err.constructor.name === 'CastError') {
+    const notFoundError = new NotFoundError();
+    const statusCode = notFoundError.getStatusCode();
+    const errorData = notFoundError.serialize();
 
     return res.status(statusCode).send(errorData);
   }
