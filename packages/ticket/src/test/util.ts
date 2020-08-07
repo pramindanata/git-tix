@@ -22,9 +22,9 @@ export function generateMongooseId(): string {
   return mongoose.Types.ObjectId().toHexString()
 }
 
-export function createAuthCookie(): string {
+export function createAuthCookie(userId = 'random_id'): string {
   const jwtPayload: JWTPayload = {
-    id: 'random_id',
+    id: userId,
     email: 'user@test.com',
     iat: new Date().getTime(),
   }

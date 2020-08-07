@@ -33,6 +33,15 @@ export namespace RP {
   export interface GetOneTicketParams extends CoreParams {
     id: string
   }
+
+  export interface UpdateTicketParams extends CoreParams {
+    id: string
+  }
+
+  export interface UpdateTicketBody {
+    title: string
+    price: number
+  }
 }
 
 /**

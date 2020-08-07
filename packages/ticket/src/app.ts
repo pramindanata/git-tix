@@ -11,6 +11,7 @@ import { config, AppEnv } from './config'
 import { createTicketRouter } from './routes/create'
 import { getListRouter } from './routes/getList'
 import { getOneRouter } from './routes/getOne'
+import { updateOneRouter } from './routes/updateOne'
 
 const app = express()
 const logger = morgan(
@@ -35,6 +36,7 @@ app.use(setReqContext(config.jwt.secret))
 app.use(createTicketRouter)
 app.use(getOneRouter)
 app.use(getListRouter)
+app.use(updateOneRouter)
 
 app.all('*', async () => {
   throw new NotFoundError()
