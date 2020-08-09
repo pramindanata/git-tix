@@ -14,6 +14,7 @@ k8s_yaml([
   './packages/infra/k8s/ticket-mongo.yml',
   './packages/infra/k8s/ticket-service.yml',
   './packages/infra/k8s/mongo-pvc.yml',
+  './packages/infra/k8s/nats.yml',
   './packages/infra/k8s/ingress.yml',
 ])
 
@@ -48,3 +49,5 @@ docker_build(
 )
 
 k8s_resource('auth-mongo', port_forwards='9001:27017')
+k8s_resource('ticket-mongo', port_forwards='9002:27017')
+k8s_resource('stan', port_forwards=['5001:4222', '6001:8222'])
