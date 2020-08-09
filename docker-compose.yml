@@ -10,7 +10,7 @@ services:
     volumes:
       - git-tix-db:/data/db
 
-  nats:
+  stan:
     image: nats-streaming:0.18-alpine
     command: [
       '-st', 'FILE',
@@ -30,6 +30,19 @@ services:
       - git-tix-net
     volumes:
       - git-tix-nats:/data/nats
+    
+  stan-console:
+    image: mozgoo/nats-streaming-console
+    depends_on:
+      - stan
+    ports:
+      - 8282:8282
+    networks:
+      - git-tix-net
+    environment: 
+      - 'STAN_URL=http://stan:4222'
+      - 'STAN_MONITOR_URL=http://stan:8222'
+      - 'STAN_CLUSTER=git-tix'
 
 networks:
   git-tix-net:
