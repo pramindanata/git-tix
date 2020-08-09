@@ -8,12 +8,29 @@ services:
     networks:
       - git-tix-net
     volumes:
-      - git-tix-vol:/data/db
+      - ./storage/db:/data/db
+
+  nats:
+    image: nats-streaming:0.18-alpine
+    command: [
+      '-st', 'FILE',
+      '--dir', '/data/nats',
+      '-m', '8222',
+      '-p', '4222',
+      '-hbi', '5s',
+      '-hbt', '5s',
+      '-hbf', '2',
+      '-SD',
+      '-cid', 'git-tix'
+    ]
+    ports:
+      - 4222:4222
+      - 8222:8222
+    networks:
+      - git-tix-net
+    volumes:
+      - ./storage/nats:/data/nats
 
 networks:
   git-tix-net:
     driver: bridge
-
-volumes:
-  git-tix-vol:
-    driver: local

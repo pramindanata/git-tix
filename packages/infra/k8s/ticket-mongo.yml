@@ -4,6 +4,7 @@ metadata:
   name: ticket-mongo
 spec:
   replicas: 1
+  serviceName: ticket-mongo-cluster-ip
   selector:
     matchLabels:
       app: ticket-mongo

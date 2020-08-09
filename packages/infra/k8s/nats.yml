@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stan
+spec:
+  replicas: 1
+  serviceName: stan-cluster-ip
+  selector:
+    matchLabels:
+      app: stan
+  template:
+    metadata:
+      labels:
+        app: stan
+    spec:
+      containers:
+        - name: stan
+          image: nats-streaming:0.18-alpine
+          ports:
+            - containerPort: 4222
+            - containerPort: 8222
+          args: [
+            '-st', 'FILE',
+            '--dir', '/data/nats',
+            '-m', '8222',
+            '-p', '4222',
+            '-hbi', '5s',
+            '-hbt', '5s',
+            '-hbf', '2',
+            '-SD',
+            '-cid', 'git-tix'
+          ]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stan-cluster-ip
+spec:
+  selector:
+    app: stan
+  ports:
+    - name: stan-client
+      protocol: TCP
+      port: 4222
+      targetPort: 4222
+    - name: stan-monitoring
+      protocol: TCP
+      port: 8222
+      targetPort: 8222

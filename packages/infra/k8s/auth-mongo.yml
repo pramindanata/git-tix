@@ -4,6 +4,7 @@ metadata:
   name: auth-mongo
 spec:
   replicas: 1
+  serviceName: 'auth-mongo-cluster-ip'
   selector:
     matchLabels:
       app: auth-mongo
