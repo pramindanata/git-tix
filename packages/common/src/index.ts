@@ -4,3 +4,4 @@ import cookieSession from 'cookie-session'; // Cookie session must be imported o
 export * from './exceptions';
 export * from './interface';
 export * from './middlewares';
+export * from './pubsub'
