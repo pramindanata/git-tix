@@ -5,9 +5,9 @@
   "main": "index.js",
   "private": "true",
   "scripts": {
-    "build": "cross-env NODE_ENV=production tsc -p ./tsconfig.prod.json",
-    "dev:pub": "cross-env NODE_ENV=development nodemon --config nodemon.pub.json",
-    "dev:sub": "cross-env NODE_ENV=development nodemon --config nodemon.sub.json",
+    "build": "tsc -p ./tsconfig.prod.json",
+    "dev:pub": "ts-node-dev --rs --notify false src/publisher.ts",
+    "dev:sub": "ts-node-dev --rs --notify false src/subscriber.ts",
     "lint": "eslint",
     "lint:check": "eslint ./src/**/*.ts",
     "lint:fix": "eslint ./src/**/*.ts --fix",
@@ -26,12 +26,11 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.0.0",
     "@typescript-eslint/parser": "^3.0.0",
-    "cross-env": "^7.0.2",
     "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
-    "ts-node": "^8.10.2"
+    "ts-node-dev": "^1.0.0-pre.56"
   }
 }
