@@ -1,17 +1,13 @@
-import nodeStan, { Message } from 'node-nats-streaming'
+import nodeStan from 'node-nats-streaming'
 import { randomBytes } from 'crypto'
+import { TicketCreatedSubscriber } from './pubsub/ticket-created-subscriber'
 
 console.clear()
 
 const clientId = randomBytes(4).toString('hex')
-const stan = nodeStan.connect('git-tix', 'some-client-id3', {
+const stan = nodeStan.connect('git-tix', clientId, {
   url: 'http://localhost:4222',
 })
-const getStanData = <Result = any>(msg: Message): Result => {
-  const data = msg.getData()
-
-  return JSON.parse(data.toString())
-}
 
 stan.on('connect', () => {
   console.log('subscriber is connected')
@@ -21,22 +17,7 @@ stan.on('connect', () => {
     process.exit()
   })
 
-  const options = stan
-    .subscriptionOptions()
-    .setManualAckMode(true)
-    .setDeliverAllAvailable()
-    .setDurableName('nats-test')
-
-  const ticketCreatedSubscriber = stan.subscribe('ticket:created', options)
-
-  ticketCreatedSubscriber.on('message', (msg: Message) => {
-    const data = getStanData(msg)
-    const sequence = msg.getSequence()
-
-    console.log(`Received message #${sequence}:`, data)
-
-    msg.ack()
-  })
+  new TicketCreatedSubscriber(stan).listen()
 })
 
 process.on('SIGINT', () => stan.close())
