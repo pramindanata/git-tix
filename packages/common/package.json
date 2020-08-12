@@ -9,7 +9,9 @@
     "exception.js",
     "exception.d.ts",
     "middleware.js",
-    "middleware.d.ts"
+    "middleware.d.ts",
+    "pubsub.js",
+    "pubsub.d.ts"
   ],
   "scripts": {
     "build": "npm run clean && npm run tsc",
