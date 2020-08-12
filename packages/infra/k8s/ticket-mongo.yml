@@ -25,7 +25,7 @@ spec:
       volumes:
         - name: ticket-mongo-storage
           persistentVolumeClaim:
-            claimName: mongo-pvc
+            claimName: app-pvc
 ---
 apiVersion: v1
 kind: Service

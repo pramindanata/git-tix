@@ -13,8 +13,8 @@ k8s_yaml([
   './packages/infra/k8s/auth-service.yml',
   './packages/infra/k8s/ticket-mongo.yml',
   './packages/infra/k8s/ticket-service.yml',
-  './packages/infra/k8s/mongo-pvc.yml',
-  './packages/infra/k8s/nats.yml',
+  './packages/infra/k8s/pvc.yml',
+  './packages/infra/k8s/stan.yml',
   './packages/infra/k8s/ingress.yml',
 ])
 

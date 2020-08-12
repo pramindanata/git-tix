@@ -40,6 +40,12 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_SECRET
+            - name: STAN_CLUSTER_ID
+              value: 'git-tix'
+            - name: STAN_CLIENT_ID
+              value: 'ticket'
+            - name: STAN_URL
+              value: 'http://stan-cluster-ip:4222'
 ---
 apiVersion: v1
 kind: Service

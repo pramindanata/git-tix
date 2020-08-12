@@ -30,6 +30,13 @@ spec:
             '-SD',
             '-cid', 'git-tix'
           ]
+          volumeMounts:
+            - name: nats-storage
+              mountPath: /data/nats
+      volumes:
+        - name: nats-storage
+          persistentVolumeClaim:
+            claimName: app-pvc
 ---
 apiVersion: v1
 kind: Service
