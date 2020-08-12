@@ -2,10 +2,11 @@ import { Router } from 'express'
 import { body } from 'express-validator'
 import { NotFoundError, ActionFailError } from '@teh-tix/common'
 import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
-import type { Request, Response } from 'express'
-import type { RP, RO, DTO } from '../interface'
 import { Ticket } from '../models/ticket'
 import { TicketMapper } from '../util'
+import { stan } from '../lib/stan'
+import type { Request, Response } from 'express'
+import type { RP, RO, DTO } from '../interface'
 
 const router = Router()
 
@@ -45,8 +46,12 @@ router.put(
 
     await ticket.save()
 
+    const ticketDTO = TicketMapper.toDTO(ticket)
+
+    await stan.getPubs().ticketUpdatedPub.publish(ticketDTO)
+
     return res.json({
-      data: TicketMapper.toDTO(ticket),
+      data: ticketDTO,
     })
   },
 )

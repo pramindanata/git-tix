@@ -3,6 +3,7 @@ import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
 import { body } from 'express-validator'
 import { Ticket } from '../models/ticket'
 import { TicketMapper } from '../util'
+import { stan } from '../lib/stan'
 import type { Response, Request } from 'express'
 import type { RP, RO, DTO } from '../interface'
 
@@ -28,8 +29,12 @@ router.post(
 
     await ticket.save()
 
+    const ticketDTO = TicketMapper.toDTO(ticket)
+
+    await stan.getPubs().ticketCreatedPub.publish(ticketDTO)
+
     return res.json({
-      data: TicketMapper.toDTO(ticket),
+      data: ticketDTO,
     })
   },
 )

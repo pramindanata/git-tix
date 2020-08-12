@@ -19,4 +19,9 @@ export const config = {
   jwt: {
     secret: env.JWT_SECRET || 'jsonwebtoken_secret_123!',
   },
+  stan: {
+    clusterId: env.STAN_CLUSTER_ID || 'git-tix',
+    clientId: env.STAN_CLIENT_ID || 'ticket',
+    url: env.STAN_URL || 'http://localhost:4222',
+  },
 }
