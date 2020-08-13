@@ -1,5 +1,6 @@
 import request from 'supertest'
 import { app } from '../../app'
+import { stan } from '../../lib/stan'
 import {
   generateMongooseId,
   createAuthCookie,
@@ -130,5 +131,37 @@ describe('PUT /:id', () => {
 
     expect(updatedTicket.title).toEqual(updatedTicketPayload.title)
     expect(updatedTicket.price).toEqual(updatedTicketPayload.price)
+  })
+
+  it('publish an event after successfully update a ticket', async () => {
+    const authCookie = createAuthCookie()
+    const ticketPayload: RP.CreateTicketBody = {
+      title: 'test ticket',
+      price: 20,
+    }
+    const updatedTicketPayload: RP.UpdateTicketBody = {
+      title: 'new ticket',
+      price: 50,
+    }
+    const createdTicketRes = await composeCreateTicketReq(
+      authCookie,
+      ticketPayload,
+    ).expect(200)
+    const createdTicketResBody = createdTicketRes.body as RO.Item<DTO.Ticket>
+    const createdTicket = createdTicketResBody.data
+
+    const updatedTicketRes = await composeUpdateTicketReq(
+      createdTicket.id,
+      authCookie,
+      updatedTicketPayload,
+    ).expect(200)
+    const updatedTicketResBody = updatedTicketRes.body as RO.Item<DTO.Ticket>
+    const updatedTicket = updatedTicketResBody.data
+
+    const pubFnMock = jest.spyOn(stan.getPubs().ticketUpdatedPub, 'publish')
+    const mockedTicketArg = pubFnMock.mock.calls[0][0] as DTO.Ticket
+
+    expect(pubFnMock).toHaveBeenCalledTimes(1)
+    expect(mockedTicketArg).toEqual(updatedTicket)
   })
 })

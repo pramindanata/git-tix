@@ -5,6 +5,7 @@ dotenv.config()
 
 import { stan } from './lib/stan'
 import { config } from './config'
+
 import { app } from './app'
 
 const start = async () => {

@@ -28,6 +28,7 @@ export class Stan {
       })
 
       this.connection?.on('error', (err) => {
+        console.error(err)
         return reject(err)
       })
     })

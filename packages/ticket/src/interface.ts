@@ -49,11 +49,11 @@ export namespace RP {
  */
 export namespace DTO {
   interface WithCreatedAt {
-    createdAt: number
+    createdAt: string
   }
 
   interface WithUpdatedAt {
-    updatedAt: number
+    updatedAt: string
   }
 
   interface WithUserId {

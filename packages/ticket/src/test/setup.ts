@@ -8,6 +8,8 @@ process.env.NODE_ENV = AppEnv.test
 
 let mongo: MongoMemoryServer
 
+jest.mock('../lib/stan')
+
 beforeAll(async () => {
   const mongooseConnectionState = mongoose.connection.readyState
 
@@ -23,6 +25,10 @@ beforeAll(async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
+})
+
+beforeEach(() => {
+  jest.clearAllMocks()
 })
 
 beforeEach(async () => {

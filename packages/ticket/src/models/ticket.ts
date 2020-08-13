@@ -11,8 +11,8 @@ export interface TicketDocument extends Document, TicketWriteAttrs {
   title: string
   price: number
   userId: string
-  createdAt: number
-  updatedAt: number
+  createdAt: Date
+  updatedAt: Date
   set(path: string, val: any, options?: any): this
   set(path: string, val: any, type: any, options?: any): this
   set(value: Partial<TicketWriteAttrs>): this

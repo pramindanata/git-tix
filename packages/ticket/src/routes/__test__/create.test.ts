@@ -1,6 +1,7 @@
 import { Ticket } from '../../models/ticket'
 import { createAuthCookie, composeCreateTicketReq } from '../../test/util'
-import type { RP } from '../../interface'
+import { stan } from '../../lib/stan'
+import type { RP, RO, DTO } from '../../interface'
 
 describe('# POST /', () => {
   it('it has a POST / route', async () => {
@@ -64,5 +65,22 @@ describe('# POST /', () => {
     expect(tickets.length).toEqual(1)
     expect(newTicket.title).toEqual(newTicketPayload.title)
     expect(newTicket.price).toEqual(newTicketPayload.price)
+  })
+
+  it('publish an event after successfully create a ticket', async () => {
+    const ticket: RP.CreateTicketBody = {
+      title: 'Sport event',
+      price: 10,
+    }
+    const authCookie = createAuthCookie()
+    const res = await composeCreateTicketReq(authCookie, ticket).expect(200)
+    const pubFnMock = jest.spyOn(stan.getPubs().ticketCreatedPub, 'publish')
+
+    const resBody = res.body as RO.Item<DTO.Ticket>
+    const createdTicket = resBody.data
+    const mockedTicketArg = pubFnMock.mock.calls[0][0] as DTO.Ticket
+
+    expect(pubFnMock).toHaveBeenCalled()
+    expect(mockedTicketArg).toEqual(createdTicket)
   })
 })
