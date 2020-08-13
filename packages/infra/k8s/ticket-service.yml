@@ -43,7 +43,9 @@ spec:
             - name: STAN_CLUSTER_ID
               value: 'git-tix'
             - name: STAN_CLIENT_ID
-              value: 'ticket'
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: STAN_URL
               value: 'http://stan-cluster-ip:4222'
 ---
