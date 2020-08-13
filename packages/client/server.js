@@ -2,7 +2,8 @@
 const express = require('express');
 const next = require('next');
 const dotenv = require('dotenv');
-const config = require('./serverConfig')
+const config = require('./serverConfig');
+const serverConfig = require('./serverConfig');
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ app
     server = express();
 
     // Set up the proxy.
-    if (isDev && devProxy) {
+    if (serverConfig.app.useLocalProxy) {
       /* eslint-disable */
       const { createProxyMiddleware } = require('http-proxy-middleware');
       Object.keys(devProxy).forEach(function (context) {
