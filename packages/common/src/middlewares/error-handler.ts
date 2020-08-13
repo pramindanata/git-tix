@@ -22,5 +22,8 @@ export const errorHandler = () => (
     return res.status(statusCode).send(errorData);
   }
 
+  /* eslint-disable */
+  console.error(err);
+
   return next(err);
 };
