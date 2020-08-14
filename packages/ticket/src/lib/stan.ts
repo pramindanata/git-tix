@@ -1,45 +1,16 @@
-import nodeStan from 'node-nats-streaming'
+import { StanClient, Publishable } from '@teh-tix/common/pubsub'
 import * as pubs from '../events/pubs'
 
-interface Options {
-  clusterId: string
-  clientId: string
-  url: string
-}
-
-interface PublisherDict {
+type PublisherDict = {
   ticketCreatedPub: pubs.TicketCreatedPublisher
   ticketUpdatedPub: pubs.TicketUpdatedPublisher
 }
 
-export class Stan {
-  private connection?: nodeStan.Stan
+export class Stan extends StanClient implements Publishable {
   private pubs?: PublisherDict
 
-  connect(options: Options): Promise<nodeStan.Stan> {
-    const { clientId, clusterId, url } = options
-    this.connection = nodeStan.connect(clusterId, clientId, { url })
-
-    return new Promise((resolve, reject) => {
-      this.connection?.on('connect', () => {
-        /* eslint-disable */
-        console.log('Connected to STAN server')
-        return resolve(this.connection)
-      })
-
-      this.connection?.on('error', (err) => {
-        console.error(err)
-        return reject(err)
-      })
-    })
-  }
-
-  getConnection(): nodeStan.Stan {
-    if (!this.connection) {
-      throw new Error('STAN Connection does not exist')
-    }
-
-    return this.connection
+  constructor() {
+    super()
   }
 
   getPubs(): PublisherDict {
@@ -55,7 +26,7 @@ export class Stan {
 
     this.pubs = {
       ticketCreatedPub: new pubs.TicketCreatedPublisher(connection),
-      ticketUpdatedPub: new pubs.TicketUpdatedPublisher(connection)
+      ticketUpdatedPub: new pubs.TicketUpdatedPublisher(connection),
     }
   }
 }
