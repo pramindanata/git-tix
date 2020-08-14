@@ -56,6 +56,8 @@ export namespace DTO {
 
   export interface Order {
     id: string
+    status: string
+    expiredAt: string | null
   }
 }
 

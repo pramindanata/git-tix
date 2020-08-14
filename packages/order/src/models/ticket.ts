@@ -4,13 +4,9 @@ import type { Document, Model } from 'mongoose'
 export interface TicketWriteAttrs {
   title: string
   price: number
-  userId: string
 }
 
 export interface TicketDocument extends Document, TicketWriteAttrs {
-  title: string
-  price: number
-  userId: string
   createdAt: Date
   updatedAt: Date
   set(path: string, val: any, options?: any): this
@@ -31,10 +27,7 @@ const schema = new Schema(
     price: {
       type: Number,
       required: true,
-    },
-    userId: {
-      type: String,
-      required: true,
+      min: 0,
     },
   },
   {
