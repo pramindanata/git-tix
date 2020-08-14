@@ -11,7 +11,9 @@
     "middleware.js",
     "middleware.d.ts",
     "pubsub.js",
-    "pubsub.d.ts"
+    "pubsub.d.ts",
+    "constant.js",
+    "constant.d.ts"
   ],
   "scripts": {
     "build": "npm run clean && npm run tsc",
