@@ -27,6 +27,8 @@ export class ActionFailError extends BaseError<ActionFailBody> {
       this.message = 'Invalid token given';
     } else if (type === 'FORBIDDEN') {
       this.message = 'Resource access is forbidden';
+    } else if (type === 'RESERVED_TICKET') {
+      this.message = 'Ticket is still reserved';
     }
   }
 

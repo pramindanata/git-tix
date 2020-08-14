@@ -20,7 +20,8 @@ export type ActionFailType =
   | 'INVALID_CREDENTIAL'
   | 'NO_TOKEN'
   | 'INVALID_TOKEN'
-  | 'FORBIDDEN';
+  | 'FORBIDDEN'
+  | 'RESERVED_TICKET';
 
 export interface ValidationErrorItem {
   message: string;
