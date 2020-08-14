@@ -24,6 +24,18 @@ export namespace RP {
   interface CoreParams {
     [key: string]: string
   }
+
+  export interface GetOneOrderParams extends CoreParams {
+    orderId: string
+  }
+
+  export interface CancelOrderParams extends CoreParams {
+    orderId: string
+  }
+
+  export interface CreateOrderBody {
+    ticketId: string
+  }
 }
 
 /**
@@ -40,6 +52,10 @@ export namespace DTO {
 
   interface WithUserId {
     userId: string
+  }
+
+  export interface Order {
+    id: string
   }
 }
 

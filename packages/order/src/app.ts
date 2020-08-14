@@ -8,6 +8,11 @@ import { setReqContext, errorHandler } from '@teh-tix/common/middleware'
 
 import { config, AppEnv } from './config'
 
+import { getOrderListRouter } from './routes/getList'
+import { getOrderDetailRouter } from './routes/getDetail'
+import { createOrderRouter } from './routes/create'
+import { cancelOrderRouter } from './routes/cancel'
+
 const app = express()
 const logger = morgan(
   ':method :url :status :res[content-length] - :response-time ms',
@@ -28,6 +33,11 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
+
+app.use(getOrderListRouter)
+app.use(getOrderDetailRouter)
+app.use(createOrderRouter)
+app.use(cancelOrderRouter)
 
 app.all('*', async () => {
   throw new NotFoundError()
