@@ -2,6 +2,7 @@ import { OrderStatus } from '@teh-tix/common/constant'
 import { ActionFailType } from '@teh-tix/common/exception'
 import type { ActionFailBody } from '@teh-tix/common/exception'
 
+import { stan } from '../../lib/stan'
 import {
   createAuthCookie,
   composeCreateOrderReq,
@@ -63,5 +64,18 @@ describe('# POST /', () => {
     expect(createdOrder.status).toEqual(OrderStatus.CREATED)
   })
 
-  it.todo('publish event after successfully create an ticket order')
+  it('publish event after successfully create an ticket order', async () => {
+    const authCookie = createAuthCookie()
+    const ticket = await createTicket({
+      price: 10,
+      title: 'ticket',
+    })
+    const pubFnMock = jest.spyOn(stan.getPubs().orderCreatedPub, 'publish')
+
+    await composeCreateOrderReq(authCookie, {
+      ticketId: ticket.id,
+    }).expect(200)
+
+    expect(pubFnMock).toHaveBeenCalled()
+  })
 })

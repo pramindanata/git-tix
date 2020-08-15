@@ -10,6 +10,7 @@ const router = Router()
 
 router.get('/', auth(), async (req, res: Response<RO.List<DTO.Order>>) => {
   const user = req.ctx.authUser!
+
   const orders = await Order.find({
     userId: user.id,
   }).populate('ticket')

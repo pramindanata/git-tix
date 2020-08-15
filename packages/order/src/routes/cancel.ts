@@ -8,6 +8,7 @@ import {
 } from '@teh-tix/common/exception'
 import type { Request, Response } from 'express'
 
+import { stan } from '../lib/stan'
 import { Order } from '../models/order'
 import { OrderMapper } from '../util'
 import type { DTO, RO, RP } from '../interface'
@@ -36,6 +37,15 @@ router.patch(
     order.status = OrderStatus.CANCELLED
 
     await order.save()
+
+    const orderDTO = OrderMapper.toDTO(order)
+
+    await stan.getPubs().orderCancelledPub.publish({
+      id: orderDTO.id,
+      ticket: {
+        id: orderDTO.ticket.id,
+      },
+    })
 
     return res.json({
       data: OrderMapper.toDTO(order),

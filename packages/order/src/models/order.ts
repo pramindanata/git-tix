@@ -6,7 +6,7 @@ import type { TicketDocument } from './ticket'
 export interface OrderWriteAttrs {
   status: OrderStatus
   userId: string
-  expiredAt: Date | null
+  expiredAt: Date
   ticket?: TicketDocument
 }
 

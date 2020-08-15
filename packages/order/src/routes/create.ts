@@ -6,6 +6,7 @@ import { ActionFailError, ActionFailType } from '@teh-tix/common/exception'
 import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
 import type { Request, Response } from 'express'
 
+import { stan } from '../lib/stan'
 import { Order } from '../models/order'
 import { Ticket } from '../models/ticket'
 import { getOneReservedOrder } from '../service'
@@ -53,8 +54,21 @@ router.post(
 
     await order.save()
 
+    const orderDTO = OrderMapper.toDTO(order)
+
+    await stan.getPubs().orderCreatedPub.publish({
+      id: orderDTO.id,
+      status: orderDTO.status,
+      expiredAt: orderDTO.expiredAt,
+      userId: user.id,
+      ticket: {
+        id: orderDTO.ticket.id,
+        price: orderDTO.ticket.price,
+      },
+    })
+
     return res.json({
-      data: OrderMapper.toDTO(order),
+      data: orderDTO,
     })
   },
 )

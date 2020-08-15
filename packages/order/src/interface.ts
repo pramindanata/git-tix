@@ -65,7 +65,7 @@ export namespace DTO {
   export interface Order extends WithCreatedAt {
     id: string
     status: OrderStatus
-    expiredAt: string | null
+    expiredAt: string
     ticket: Ticket
   }
 }
