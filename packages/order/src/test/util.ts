@@ -40,6 +40,7 @@ export function composeGetOrderListReq(authCookie?: string): request.Test {
 
   return req.send()
 }
+
 export function composeGetOrderDetailReq(
   orderId: string,
   authCookie?: string,
@@ -64,6 +65,19 @@ export function composeCreateOrderReq(
   }
 
   return req.send((body as any) || {})
+}
+
+export function composeCancelOrderReq(
+  orderId: string,
+  authCookie?: string,
+): request.Test {
+  const req = request(app).patch(`/${orderId}/cancel`)
+
+  if (authCookie) {
+    req.set('Cookie', [authCookie])
+  }
+
+  return req.send()
 }
 
 export function createAuthCookie(userId = 'random_id'): string {

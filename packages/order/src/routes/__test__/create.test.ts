@@ -63,5 +63,5 @@ describe('# POST /', () => {
     expect(createdOrder.status).toEqual(OrderStatus.CREATED)
   })
 
-  it('publish event after successfully create an ticket order', () => {})
+  it.todo('publish event after successfully create an ticket order')
 })
