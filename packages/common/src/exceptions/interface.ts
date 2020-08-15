@@ -1,13 +1,6 @@
-export type ServerErrorType = 'DB_CONNECTION_ERROR' | 'SYNTAX_ERROR';
+import { ActionFailType } from './constant';
 
-export type ActionFailType =
-  | 'EMAIL_TAKEN'
-  | 'INVALID_CREDENTIAL'
-  | 'NO_TOKEN'
-  | 'INVALID_TOKEN'
-  | 'FORBIDDEN'
-  | 'RESERVED_TICKET'
-  | 'TICKET_NOT_FOUND';
+export type ServerErrorType = 'DB_CONNECTION_ERROR' | 'SYNTAX_ERROR';
 
 export interface ValidationErrorItem {
   message: string;

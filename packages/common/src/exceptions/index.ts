@@ -5,3 +5,4 @@ export * from './req-validation';
 export * from './not-found';
 export * from './unauthorized';
 export * from './interface';
+export * from './constant';
