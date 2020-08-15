@@ -1,5 +1,5 @@
 import { BaseError } from './base';
-import type { ServerErrorBody } from '../interface';
+import type { ServerErrorBody } from './interface';
 
 export class DBConnectionError extends BaseError<ServerErrorBody> {
   private statusCode: number;

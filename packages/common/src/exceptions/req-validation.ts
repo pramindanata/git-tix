@@ -1,7 +1,7 @@
 import type { ValidationError } from 'express-validator';
 
 import { BaseError } from './base';
-import type { ValidationErrorBody, ValidationErrorItem } from '../interface';
+import type { ValidationErrorBody, ValidationErrorItem } from './interface';
 
 export class RequestValidationError extends BaseError<ValidationErrorBody> {
   private errors: ValidationError[];

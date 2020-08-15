@@ -1,18 +1,3 @@
-export interface JWTPayload {
-  id: string;
-  email: string;
-  iat: number;
-}
-
-export interface AuthUser {
-  id: string;
-  email: string;
-}
-
-export interface RequestContext {
-  authUser?: AuthUser;
-}
-
 export type ServerErrorType = 'DB_CONNECTION_ERROR' | 'SYNTAX_ERROR';
 
 export type ActionFailType =

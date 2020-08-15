@@ -4,3 +4,4 @@ export * from './db-connection';
 export * from './req-validation';
 export * from './not-found';
 export * from './unauthorized';
+export * from './interface';

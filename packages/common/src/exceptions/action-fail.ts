@@ -1,5 +1,5 @@
 import { BaseError } from './base';
-import type { ActionFailBody, ActionFailType } from '../interface';
+import type { ActionFailBody, ActionFailType } from './interface';
 
 export class ActionFailError extends BaseError<ActionFailBody> {
   private statusCode: number;
@@ -29,6 +29,8 @@ export class ActionFailError extends BaseError<ActionFailBody> {
       this.message = 'Resource access is forbidden';
     } else if (type === 'RESERVED_TICKET') {
       this.message = 'Ticket is still reserved';
+    } else if (type === 'TICKET_NOT_FOUND') {
+      this.message = 'Ticket is not found';
     }
   }
 

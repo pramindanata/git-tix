@@ -1,5 +1,5 @@
 import { BaseError } from './base';
-import type { MessageOnlyBody } from '../interface';
+import type { MessageOnlyBody } from './interface';
 
 export class NotFoundError extends BaseError<MessageOnlyBody> {
   private statusCode = 404;
