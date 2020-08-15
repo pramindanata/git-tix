@@ -40,6 +40,18 @@ export function composeGetOrderListReq(authCookie?: string): request.Test {
 
   return req.send()
 }
+export function composeGetOrderDetailReq(
+  orderId: string,
+  authCookie?: string,
+): request.Test {
+  const req = request(app).get(`/${orderId}`)
+
+  if (authCookie) {
+    req.set('Cookie', [authCookie])
+  }
+
+  return req.send()
+}
 
 export function composeCreateOrderReq(
   authCookie?: string,

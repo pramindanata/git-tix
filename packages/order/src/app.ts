@@ -35,7 +35,7 @@ if (appEnv !== AppEnv.test) {
 app.use(setReqContext(config.jwt.secret))
 
 app.use(getOrderListRouter)
-// app.use(getOrderDetailRouter)
+app.use(getOrderDetailRouter)
 app.use(createOrderRouter)
 // app.use(cancelOrderRouter)
 
