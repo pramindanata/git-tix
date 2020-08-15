@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { Types } from 'mongoose'
 import { body } from 'express-validator'
 import { OrderStatus } from '@teh-tix/common/constant'
-import { NotFoundError, ActionFailError } from '@teh-tix/common/exception'
+import { ActionFailError, ActionFailType } from '@teh-tix/common/exception'
 import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
 import type { Request, Response } from 'express'
 
@@ -34,13 +34,13 @@ router.post(
     const ticket = await Ticket.findById(ticketId)
 
     if (!ticket) {
-      throw new ActionFailError('TICKET_NOT_FOUND')
+      throw new ActionFailError(ActionFailType.TICKET_NOT_FOUND)
     }
 
     const reservedOrder = await getOneReservedOrder(ticket)
 
     if (reservedOrder) {
-      throw new ActionFailError('RESERVED_TICKET')
+      throw new ActionFailError(ActionFailType.RESERVED_TICKET)
     }
 
     const expirationDate = generateOrderExpirationDate()

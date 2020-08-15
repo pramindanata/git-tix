@@ -1,4 +1,5 @@
 import { OrderStatus } from '@teh-tix/common/constant'
+import { ActionFailType } from '@teh-tix/common/exception'
 import type { ActionFailBody } from '@teh-tix/common/exception'
 
 import {
@@ -20,7 +21,7 @@ describe('# POST /', () => {
     }).expect(403)
     const resBody = res.body as ActionFailBody
 
-    expect(resBody.type).toEqual('TICKET_NOT_FOUND')
+    expect(resBody.type).toEqual(ActionFailType.TICKET_NOT_FOUND)
   })
 
   it('returns error if ticket is already reserved', async () => {
@@ -42,7 +43,7 @@ describe('# POST /', () => {
     }).expect(403)
     const resBody = res.body as ActionFailBody
 
-    expect(resBody.type).toEqual('RESERVED_TICKET')
+    expect(resBody.type).toEqual(ActionFailType.RESERVED_TICKET)
   })
 
   it('successfully create an ticket order', async () => {
