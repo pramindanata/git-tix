@@ -7,7 +7,7 @@ export interface OrderWriteAttrs {
   status: OrderStatus
   userId: string
   expiredAt: Date | null
-  ticket: TicketDocument
+  ticket?: TicketDocument
 }
 
 export interface OrderDocument extends Document, OrderWriteAttrs {

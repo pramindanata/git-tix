@@ -31,6 +31,16 @@ export async function createOrder(
   return createdOrder
 }
 
+export function composeGetOrderListReq(authCookie?: string): request.Test {
+  const req = request(app).get('/')
+
+  if (authCookie) {
+    req.set('Cookie', [authCookie])
+  }
+
+  return req.send()
+}
+
 export function composeCreateOrderReq(
   authCookie?: string,
   body?: unknown,

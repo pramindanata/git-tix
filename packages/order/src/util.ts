@@ -11,9 +11,9 @@ export class OrderMapper {
       expiredAt: order.expiredAt && order.expiredAt.toISOString(),
       createdAt: order.createdAt.toISOString(),
       ticket: {
-        id: order.ticket.id,
-        title: order.ticket.title,
-        price: order.ticket.price,
+        id: order.ticket!.id,
+        title: order.ticket!.title,
+        price: order.ticket!.price,
       },
     }
   }
