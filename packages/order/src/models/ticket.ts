@@ -12,6 +12,7 @@ export interface TicketDocument extends Document, TicketWriteAttrs {
   set(path: string, val: any, options?: any): this
   set(path: string, val: any, type: any, options?: any): this
   set(value: Partial<TicketWriteAttrs>): this
+  isReserved(): Promise<boolean>
 }
 
 export interface ExtendedTicketModel extends Model<TicketDocument> {

@@ -24,4 +24,12 @@ export const config = {
     clientId: env.STAN_CLIENT_ID || 'order',
     url: env.STAN_URL || 'http://localhost:4222',
   },
+  domain: {
+    order: {
+      expirationDurationMinute:
+        (env.DOMAIN_ORDER_EXPIRED_MINUTE &&
+          parseInt(env.DOMAIN_ORDER_EXPIRED_MINUTE)) ||
+        15,
+    },
+  },
 }
