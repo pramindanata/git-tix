@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import { validateRequestPayload } from '@teh-tix/common/middleware'
-import { ActionFailError } from '@teh-tix/common/exception'
+import { ActionFailError, ActionFailType } from '@teh-tix/common/exception'
 import type { Request, Response } from 'express'
 
 import { config } from '../config'
@@ -28,7 +28,7 @@ router.post(
     const existingUser = await User.findOne({ email })
 
     if (!existingUser) {
-      throw new ActionFailError('INVALID_CREDENTIAL')
+      throw new ActionFailError(ActionFailType.INVALID_CREDENTIAL)
     }
 
     const isPasswordMatch = await Password.compare(
@@ -37,7 +37,7 @@ router.post(
     )
 
     if (!isPasswordMatch) {
-      throw new ActionFailError('INVALID_CREDENTIAL')
+      throw new ActionFailError(ActionFailType.INVALID_CREDENTIAL)
     }
 
     const userToken = jwt.sign(

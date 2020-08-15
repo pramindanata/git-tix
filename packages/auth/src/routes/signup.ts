@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import { validateRequestPayload } from '@teh-tix/common/middleware'
-import { ActionFailError } from '@teh-tix/common/exception'
+import { ActionFailError, ActionFailType } from '@teh-tix/common/exception'
 import type { Request, Response } from 'express'
 
 import { config } from '../config'
@@ -30,7 +30,7 @@ router.post(
     const userWithSameEmail = await User.findOne({ email })
 
     if (userWithSameEmail) {
-      throw new ActionFailError('EMAIL_TAKEN')
+      throw new ActionFailError(ActionFailType.EMAIL_TAKEN)
     }
 
     const user = User.build({ email, password })
