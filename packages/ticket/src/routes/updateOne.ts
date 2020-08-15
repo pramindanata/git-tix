@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { NotFoundError, ActionFailError } from '@teh-tix/common'
+import { NotFoundError, ActionFailError, ActionFailType } from '@teh-tix/common'
 import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
 import { Ticket } from '../models/ticket'
 import { TicketMapper } from '../util'
@@ -36,7 +36,7 @@ router.put(
     }
 
     if (ticket.userId !== authUser!.id) {
-      throw new ActionFailError('FORBIDDEN')
+      throw new ActionFailError(ActionFailType.FORBIDDEN)
     }
 
     ticket.set({
