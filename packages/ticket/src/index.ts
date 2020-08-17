@@ -23,14 +23,14 @@ const start = async () => {
     useCreateIndex: true,
   })
 
-  stan.getConnection().on('close', () => {
+  stan.getInstance().on('close', () => {
     /* eslint-disable */
     console.log('STAN connection closed')
     process.exit()
   })
 
-  process.on('SIGINT', () => stan.getConnection().close())
-  process.on('SIGTERM', () => stan.getConnection().close())
+  process.on('SIGINT', () => stan.getInstance().close())
+  process.on('SIGTERM', () => stan.getInstance().close())
 
   app.listen(config.app.port, () => {
     /* eslint-disable */

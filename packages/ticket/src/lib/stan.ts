@@ -15,14 +15,14 @@ export class Stan extends StanClient implements Publishable {
 
   getPubs(): PublisherDict {
     if (!this.pubs) {
-      this.initPubs()
+      this.setPubs()
     }
 
     return this.pubs!
   }
 
-  private initPubs(): void {
-    const connection = this.getConnection()
+  private setPubs(): void {
+    const connection = this.getInstance()
 
     this.pubs = {
       ticketCreatedPub: new pubs.TicketCreatedPublisher(connection),
