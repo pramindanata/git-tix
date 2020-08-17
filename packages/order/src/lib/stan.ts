@@ -1,5 +1,16 @@
-import { StanClient, Publishable } from '@teh-tix/common/pubsub'
+import {
+  StanClient,
+  Publishable,
+  Subscriber,
+  Event,
+} from '@teh-tix/common/pubsub'
+import nodeStan from 'node-nats-streaming'
+
 import { OrderCancelledPublisher, OrderCreatedPublisher } from '../events/pubs'
+import {
+  TicketCreatedSubscriber,
+  TicketUpdatedSubscriber,
+} from '../events/subs'
 
 type PublisherDict = {
   orderCreatedPub: OrderCreatedPublisher
@@ -9,21 +20,34 @@ type PublisherDict = {
 export class Stan extends StanClient implements Publishable {
   private pubs?: PublisherDict
 
+  constructor() {
+    super()
+
+    this.createSubcribers = this.createSubcribers
+  }
+
   getPubs(): PublisherDict {
     if (!this.pubs) {
-      this.initPubs()
+      this.setPubs()
     }
 
     return this.pubs!
   }
 
-  private initPubs(): void {
-    const connection = this.getConnection()
+  private setPubs(): void {
+    const stan = this.getInstance()
 
     this.pubs = {
-      orderCreatedPub: new OrderCreatedPublisher(connection),
-      orderCancelledPub: new OrderCancelledPublisher(connection),
+      orderCreatedPub: new OrderCreatedPublisher(stan),
+      orderCancelledPub: new OrderCancelledPublisher(stan),
     }
+  }
+
+  private createSubcribers(stan: nodeStan.Stan): Subscriber<Event>[] {
+    return [
+      new TicketCreatedSubscriber(stan),
+      new TicketUpdatedSubscriber(stan),
+    ]
   }
 }
 

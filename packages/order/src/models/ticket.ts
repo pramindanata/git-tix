@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose'
 import type { Document, Model } from 'mongoose'
 
 export interface TicketWriteAttrs {
+  id?: any
   title: string
   price: number
 }
