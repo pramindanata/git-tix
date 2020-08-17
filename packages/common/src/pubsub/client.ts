@@ -1,5 +1,6 @@
 import nodeStan from 'node-nats-streaming';
 import { Publisher } from './publisher';
+import { Subscriber } from './subscriber';
 import type { Event } from './interface';
 
 interface Options {
@@ -18,21 +19,29 @@ export interface Publishable {
 }
 
 export abstract class StanClient {
-  private connection?: nodeStan.Stan;
+  private stan?: nodeStan.Stan;
+  private subscribers: Subscriber<Event>[] = [];
+  protected createSubscribers?: (stan: nodeStan.Stan) => Subscriber<Event>[];
 
   connect(options: Options): Promise<nodeStan.Stan> {
     const { clientId, clusterId, url } = options;
-    this.connection = nodeStan.connect(clusterId, clientId, { url });
+    this.stan = nodeStan.connect(clusterId, clientId, { url });
 
     return new Promise((resolve, reject) => {
-      this.connection?.on('connect', () => {
+      this.stan?.on('connect', () => {
         /* eslint-disable */
         console.log(`Connected to STAN server as ${clientId}`)
 
-        return resolve(this.connection)
+        if (this.createSubscribers) {
+          this.subscribers = this.createSubscribers(this.stan!)
+        }
+
+        this.attachSubscribers()
+
+        return resolve(this.stan)
       })
 
-      this.connection?.on('error', (err) => {
+      this.stan?.on('error', (err) => {
         console.error(err)
 
         return reject(err)
@@ -40,11 +49,17 @@ export abstract class StanClient {
     })
   }
 
-  getConnection(): nodeStan.Stan {
-    if (!this.connection) {
+  getInstance(): nodeStan.Stan {
+    if (!this.stan) {
       throw new Error('STAN Connection does not exist')
     }
 
-    return this.connection
+    return this.stan
+  }
+
+  private attachSubscribers(): void {
+    for (const subscriber of this.subscribers) {
+      subscriber.listen()
+    }
   }
 }

@@ -12,3 +12,7 @@ export interface AuthUser {
 export interface RequestContext {
   authUser?: AuthUser;
 }
+
+export interface Constructor<T = any> {
+  new (...args: any[]): T;
+}
