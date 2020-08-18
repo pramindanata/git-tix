@@ -9,14 +9,15 @@ export class TicketUpdatedSubscriber extends Subscriber<TicketUpdatedEvent> {
   readonly queueGroupName = config.app.name
 
   async handle(data: TicketUpdatedEvent['data'], msg: Message): Promise<void> {
-    const { id, title, price } = data
-    const ticket = await Ticket.findById(id)
+    const { id, title, price, version } = data
+    const prevVersion = version - 1
+    const ticket = await Ticket.findOne({
+      _id: id,
+      version: prevVersion,
+    })
 
     if (!ticket) {
-      // throw new Error('Ticket not found')
-      msg.ack()
-
-      return
+      throw new Error('Ticket not found')
     }
 
     ticket.set({

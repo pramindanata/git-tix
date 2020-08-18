@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import type { Document, Model } from 'mongoose'
 
 export interface TicketWriteAttrs {
@@ -8,6 +9,7 @@ export interface TicketWriteAttrs {
 }
 
 export interface TicketDocument extends Document, TicketWriteAttrs {
+  version: number
   createdAt: Date
   updatedAt: Date
   set(path: string, val: any, options?: any): this
@@ -36,6 +38,9 @@ const schema = new Schema(
     timestamps: true,
   },
 )
+
+schema.set('versionKey', 'version')
+schema.plugin(updateIfCurrentPlugin)
 
 schema.statics.build = (attrs: TicketWriteAttrs): TicketDocument => {
   return new Ticket({
