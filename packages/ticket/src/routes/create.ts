@@ -31,7 +31,10 @@ router.post(
 
     const ticketDTO = TicketMapper.toDTO(ticket)
 
-    await stan.getPubs().ticketCreatedPub.publish(ticketDTO)
+    await stan.getPubs().ticketCreatedPub.publish({
+      ...ticketDTO,
+      version: ticket.version,
+    })
 
     return res.json({
       data: ticketDTO,
