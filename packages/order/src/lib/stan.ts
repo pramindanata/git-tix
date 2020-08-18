@@ -23,7 +23,7 @@ export class Stan extends StanClient implements Publishable {
   constructor() {
     super()
 
-    this.createSubcribers = this.createSubcribers
+    this.createSubscribers = this._createSubscribers
   }
 
   getPubs(): PublisherDict {
@@ -43,7 +43,7 @@ export class Stan extends StanClient implements Publishable {
     }
   }
 
-  private createSubcribers(stan: nodeStan.Stan): Subscriber<Event>[] {
+  private _createSubscribers(stan: nodeStan.Stan): Subscriber<Event>[] {
     return [
       new TicketCreatedSubscriber(stan),
       new TicketUpdatedSubscriber(stan),

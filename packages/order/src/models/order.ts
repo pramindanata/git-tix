@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose'
 import { OrderStatus } from '@teh-tix/common/constant'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import type { Document, Model } from 'mongoose'
 import type { TicketDocument } from './ticket'
 
@@ -11,6 +12,7 @@ export interface OrderWriteAttrs {
 }
 
 export interface OrderDocument extends Document, OrderWriteAttrs {
+  version: number
   createdAt: Date
   updatedAt: Date
   set(path: string, val: any, options?: any): this
@@ -46,6 +48,9 @@ const schema = new Schema(
     timestamps: true,
   },
 )
+
+schema.set('versionKey', 'version')
+schema.plugin(updateIfCurrentPlugin)
 
 schema.statics.build = (attrs: OrderWriteAttrs): OrderDocument => {
   return new Order(attrs)

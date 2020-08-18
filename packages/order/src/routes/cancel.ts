@@ -42,6 +42,7 @@ router.patch(
 
     await stan.getPubs().orderCancelledPub.publish({
       id: orderDTO.id,
+      version: order.version,
       ticket: {
         id: orderDTO.ticket.id,
       },

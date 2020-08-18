@@ -38,7 +38,10 @@ const schema = new Schema(
 )
 
 schema.statics.build = (attrs: TicketWriteAttrs): TicketDocument => {
-  return new Ticket(attrs)
+  return new Ticket({
+    ...attrs,
+    _id: attrs.id,
+  })
 }
 
 export const Ticket = model<TicketDocument, ExtendedTicketModel>(
