@@ -16,6 +16,7 @@ export interface TicketCreatedEventData {
   title: string;
   price: number;
   userId: string;
+  version: number;
 }
 
 export interface TicketUpdatedEvent {
@@ -28,6 +29,7 @@ export interface TicketUpdatedEventData {
   title: string;
   price: number;
   userId: string;
+  version: number;
 }
 
 export interface OrderCreatedEvent {
@@ -40,6 +42,7 @@ export interface OrderCreatedEventData {
   status: OrderStatus;
   userId: string;
   expiredAt: string;
+  version: number;
   ticket: {
     id: string;
     price: number;
@@ -53,6 +56,7 @@ export interface OrderCancelledEvent {
 
 export interface OrderCancelledEventData {
   id: string;
+  version: number;
   ticket: {
     id: string;
   };

@@ -58,8 +58,16 @@ export abstract class StanClient {
   }
 
   private attachSubscribers(): void {
+    const subscribersLength = this.subscribers.length
+
+    console.log('# Attaching STAN Subscriber')
+
     for (const subscriber of this.subscribers) {
+      console.log(`> ${subscriber.subject} attached`)
+
       subscriber.listen()
     }
+
+    console.log(`${subscribersLength} STAN subscriber(s) attached`)
   }
 }
