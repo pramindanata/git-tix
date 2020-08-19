@@ -9,6 +9,7 @@ export enum AppEnv {
 export const config = {
   app: {
     env: env.NODE_ENV || AppEnv.dev,
+    name: env.APP_NAME || 'svc-ticket',
     port: env.APP_PORT || '4001',
     useHttps: env.APP_USE_HTTPS === 'true' || false,
   },

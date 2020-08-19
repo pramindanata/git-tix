@@ -2,6 +2,7 @@ import { Ticket } from '../../models/ticket'
 import { createAuthCookie, composeCreateTicketReq } from '../../test/util'
 import { stan } from '../../lib/stan'
 import type { RP, RO, DTO } from '../../interface'
+import { TicketCreatedEventData } from '@teh-tix/common'
 
 describe('# POST /', () => {
   it('it has a POST / route', async () => {
@@ -78,7 +79,7 @@ describe('# POST /', () => {
 
     const resBody = res.body as RO.Item<DTO.Ticket>
     const createdTicket = resBody.data
-    const mockedTicketArg = pubFnMock.mock.calls[0][0] as DTO.Ticket
+    const mockedTicketArg = pubFnMock.mock.calls[0][0] as TicketCreatedEventData
 
     expect(pubFnMock).toHaveBeenCalled()
     expect(mockedTicketArg).toEqual(createdTicket)

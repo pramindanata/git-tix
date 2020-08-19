@@ -6,15 +6,17 @@ export interface TicketWriteAttrs {
   title: string
   price: number
   userId: string
+  orderId?: string
 }
 
-export interface TicketDocument extends Document, TicketWriteAttrs {
+export interface TicketDocument extends Document {
   title: string
   price: number
   userId: string
   version: number
   createdAt: Date
   updatedAt: Date
+  orderId: string | null
   set(path: string, val: any, options?: any): this
   set(path: string, val: any, type: any, options?: any): this
   set(value: Partial<TicketWriteAttrs>): this
@@ -37,6 +39,10 @@ const schema = new Schema(
     userId: {
       type: String,
       required: true,
+    },
+    orderId: {
+      type: String,
+      default: null,
     },
   },
   {
