@@ -8,7 +8,7 @@ export enum AppEnv {
 
 export const config = {
   app: {
-    name: env.APP_ENV || 'svc-order',
+    name: env.APP_NAME || 'svc-order',
     env: env.NODE_ENV || AppEnv.dev,
     port: env.APP_PORT || '4001',
     useHttps: env.APP_USE_HTTPS === 'true' || false,
