@@ -8,6 +8,7 @@ import {
   composeUpdateTicketReq,
 } from '../../test/util'
 import type { RP, RO, DTO } from '../../interface'
+import { TicketUpdatedEventData } from '@teh-tix/common'
 
 describe('PUT /:id', () => {
   it('return 404 if ticket does not exist', async () => {
@@ -159,9 +160,12 @@ describe('PUT /:id', () => {
     const updatedTicket = updatedTicketResBody.data
 
     const pubFnMock = jest.spyOn(stan.getPubs().ticketUpdatedPub, 'publish')
-    const mockedTicketArg = pubFnMock.mock.calls[0][0] as DTO.Ticket
+    const mockedTicketArg = pubFnMock.mock.calls[0][0] as TicketUpdatedEventData
 
     expect(pubFnMock).toHaveBeenCalledTimes(1)
-    expect(mockedTicketArg).toEqual(updatedTicket)
+    expect({
+      ...mockedTicketArg,
+      version: undefined,
+    }).toEqual(updatedTicket)
   })
 })

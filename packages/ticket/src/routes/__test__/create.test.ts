@@ -82,6 +82,9 @@ describe('# POST /', () => {
     const mockedTicketArg = pubFnMock.mock.calls[0][0] as TicketCreatedEventData
 
     expect(pubFnMock).toHaveBeenCalled()
-    expect(mockedTicketArg).toEqual(createdTicket)
+    expect({
+      ...mockedTicketArg,
+      version: undefined,
+    }).toEqual(createdTicket)
   })
 })
