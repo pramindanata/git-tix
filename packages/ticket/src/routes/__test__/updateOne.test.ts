@@ -11,6 +11,7 @@ import {
 } from '../../test/util'
 import { TicketDTO } from '../../dto'
 import type { RP, RO } from '../../interface'
+import { Ticket } from '../../models/ticket'
 
 describe('PUT /:id', () => {
   it('return 404 if ticket does not exist', async () => {
@@ -151,5 +152,31 @@ describe('PUT /:id', () => {
       version: undefined,
       orderId: undefined,
     }).toEqual(updatedTicket)
+  })
+
+  it('reject update if the ticket is reserved', async () => {
+    const authCookie = createAuthCookie()
+    const ticketPayload: RP.CreateTicketBody = {
+      title: 'test ticket',
+      price: 20,
+    }
+    const createdTicket = await fetchCreateTicketResult(
+      authCookie,
+      ticketPayload,
+    )
+    const orderId = generateMongooseId()
+    const reservedTicket = await Ticket.findById(createdTicket.id)
+
+    reservedTicket!.set({
+      orderId,
+    })
+
+    await reservedTicket!.save()
+
+    await composeUpdateTicketReq(
+      createdTicket.id,
+      authCookie,
+      ticketPayload,
+    ).expect(403)
   })
 })

@@ -40,6 +40,10 @@ router.put(
       throw new ActionFailError(ActionFailType.FORBIDDEN)
     }
 
+    if (ticket.orderId) {
+      throw new ActionFailError(ActionFailType.RESERVED_TICKET)
+    }
+
     ticket.set({
       price,
       title,

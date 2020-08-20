@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import { app } from '../app'
 import { config } from '../config'
-import type { JWTPayload, SessionPayload } from '../interface'
+import { TicketDTO } from '../dto'
+import type { JWTPayload, SessionPayload, RP, RO } from '../interface'
 
 export function composeCreateTicketReq(
   authCookie?: string,
@@ -30,6 +31,43 @@ export function composeUpdateTicketReq(
   }
 
   return req.send((body as any) || {})
+}
+
+export async function fetchGetTicketDetailResult(
+  ticketId: string,
+): Promise<TicketDTO> {
+  const ticketDetailRes = await request(app).get(`/${ticketId}`).send()
+  const ticketDetailResBody = ticketDetailRes.body as RO.Item<TicketDTO>
+  const ticketDetail = ticketDetailResBody.data
+
+  return ticketDetail
+}
+
+export async function fetchCreateTicketResult(
+  authCookie: string,
+  body: RP.CreateTicketBody,
+): Promise<TicketDTO> {
+  const createdTicketRes = await composeCreateTicketReq(authCookie, body)
+  const createdTicketResBody = createdTicketRes.body as RO.Item<TicketDTO>
+  const createdTicket = createdTicketResBody.data
+
+  return createdTicket
+}
+
+export async function fetchUpdateTicketResult(
+  ticketId: string,
+  authCookie: string,
+  body: RP.UpdateTicketBody,
+): Promise<TicketDTO> {
+  const updatedTicketRes = await composeUpdateTicketReq(
+    ticketId,
+    authCookie,
+    body,
+  )
+  const updatedTicketResBody = updatedTicketRes.body as RO.Item<TicketDTO>
+  const updatedTicket = updatedTicketResBody.data
+
+  return updatedTicket
 }
 
 export function generateMongooseId(): string {
