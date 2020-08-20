@@ -10,7 +10,8 @@ import {
   createTicket,
   createOrder,
 } from '../../test/util'
-import type { RO, DTO } from '../../interface'
+import { OrderDTO } from '../../dto'
+import type { RO } from '../../interface'
 
 describe('# POST /', () => {
   it('returns error if ticket does not exist', async () => {
@@ -57,7 +58,7 @@ describe('# POST /', () => {
     const res = await composeCreateOrderReq(authCookie, {
       ticketId: ticket.id,
     }).expect(200)
-    const resBody = res.body as RO.Item<DTO.Order>
+    const resBody = res.body as RO.Item<OrderDTO>
     const createdOrder = resBody.data
 
     expect(createdOrder.ticket.id).toEqual(ticket.id)

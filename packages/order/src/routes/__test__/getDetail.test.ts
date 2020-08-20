@@ -5,7 +5,8 @@ import {
   createTicket,
 } from '../../test/util'
 import { TicketWriteAttrs } from '../../models/ticket'
-import type { RO, DTO } from '../../interface'
+import { OrderDTO } from '../../dto'
+import type { RO } from '../../interface'
 
 const ticketPayload: TicketWriteAttrs = {
   price: 1,
@@ -20,13 +21,13 @@ describe('# GET /:orderId', () => {
     const createOrderRes = await composeCreateOrderReq(authCookie, {
       ticketId: ticket.id,
     }).expect(200)
-    const createdOrder = (createOrderRes.body as RO.Item<DTO.Order>).data
+    const createdOrder = (createOrderRes.body as RO.Item<OrderDTO>).data
 
     const orderDetailRes = await composeGetOrderDetailReq(
       createdOrder.id,
       authCookie,
     ).expect(200)
-    const orderDetail = (orderDetailRes.body as RO.Item<DTO.Order>).data
+    const orderDetail = (orderDetailRes.body as RO.Item<OrderDTO>).data
 
     expect(orderDetail.id).toEqual(createdOrder.id)
   })
@@ -39,7 +40,7 @@ describe('# GET /:orderId', () => {
     const createOrderRes = await composeCreateOrderReq(authCookieA, {
       ticketId: ticket.id,
     }).expect(200)
-    const createdOrder = (createOrderRes.body as RO.Item<DTO.Order>).data
+    const createdOrder = (createOrderRes.body as RO.Item<OrderDTO>).data
 
     await composeGetOrderDetailReq(createdOrder.id, authCookieB).expect(403)
   })

@@ -5,7 +5,8 @@ import {
   createTicket,
 } from '../../test/util'
 import { TicketWriteAttrs } from '../../models/ticket'
-import type { RO, DTO } from '../../interface'
+import { OrderDTO } from '../../dto'
+import type { RO } from '../../interface'
 
 const ticketPaylaods: TicketWriteAttrs[] = [
   {
@@ -41,14 +42,14 @@ describe('# GET /', () => {
     const userBCreateOrderResponses = await Promise.all(userBOrderBatch)
     const [createdOrderB, createdOrderC] = userBCreateOrderResponses.map(
       (res) => {
-        const body = res.body as RO.Item<DTO.Order>
+        const body = res.body as RO.Item<OrderDTO>
 
         return body.data
       },
     )
 
     const res = await composeGetOrderListReq(authCookieB).expect(200)
-    const resBody = res.body as RO.List<DTO.Order>
+    const resBody = res.body as RO.List<OrderDTO>
 
     expect(resBody.data.length).toEqual(2)
     expect(createdOrderB.id).toEqual(resBody.data[0].id)

@@ -8,8 +8,8 @@ import {
 import type { Request, Response } from 'express'
 
 import { Order } from '../models/order'
-import { OrderMapper } from '../util'
-import type { DTO, RO, RP } from '../interface'
+import { OrderDTO } from '../dto'
+import type { RO, RP } from '../interface'
 
 const router = Router()
 
@@ -18,7 +18,7 @@ router.get(
   auth(),
   async (
     req: Request<RP.GetOneOrderParams>,
-    res: Response<RO.Item<DTO.Order>>,
+    res: Response<RO.Item<OrderDTO>>,
   ) => {
     const { orderId } = req.params
     const user = req.ctx.authUser!
@@ -33,7 +33,7 @@ router.get(
     }
 
     return res.json({
-      data: OrderMapper.toDTO(order),
+      data: new OrderDTO(order),
     })
   },
 )

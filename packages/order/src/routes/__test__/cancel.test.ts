@@ -8,8 +8,9 @@ import {
   createTicket,
   composeGetOrderDetailReq,
 } from '../../test/util'
+import { OrderDTO } from '../../dto'
 import { TicketWriteAttrs } from '../../models/ticket'
-import type { RO, DTO } from '../../interface'
+import type { RO } from '../../interface'
 
 const ticketPayload: TicketWriteAttrs = {
   price: 1,
@@ -24,7 +25,7 @@ describe('# PATCH /:orderId/cancel', () => {
     const createOrderRes = await composeCreateOrderReq(authCookie, {
       ticketId: ticket.id,
     }).expect(200)
-    const createdOrder = (createOrderRes.body as RO.Item<DTO.Order>).data
+    const createdOrder = (createOrderRes.body as RO.Item<OrderDTO>).data
 
     await composeCancelOrderReq(createdOrder.id, authCookie).expect(200)
 
@@ -32,7 +33,7 @@ describe('# PATCH /:orderId/cancel', () => {
       createdOrder.id,
       authCookie,
     ).expect(200)
-    const orderDetail = (orderDetailRes.body as RO.Item<DTO.Order>).data
+    const orderDetail = (orderDetailRes.body as RO.Item<OrderDTO>).data
 
     expect(orderDetail.status).toEqual(OrderStatus.CANCELLED)
   })
@@ -44,7 +45,7 @@ describe('# PATCH /:orderId/cancel', () => {
     const createOrderRes = await composeCreateOrderReq(authCookie, {
       ticketId: ticket.id,
     }).expect(200)
-    const createdOrder = (createOrderRes.body as RO.Item<DTO.Order>).data
+    const createdOrder = (createOrderRes.body as RO.Item<OrderDTO>).data
     const pubFnMock = jest.spyOn(stan.getPubs().orderCancelledPub, 'publish')
 
     await composeCancelOrderReq(createdOrder.id, authCookie).expect(200)

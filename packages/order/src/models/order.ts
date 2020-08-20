@@ -11,10 +11,14 @@ export interface OrderWriteAttrs {
   ticket?: TicketDocument
 }
 
-export interface OrderDocument extends Document, OrderWriteAttrs {
+export interface OrderDocument extends Document {
+  status: OrderStatus
+  userId: string
+  expiredAt: Date
   version: number
   createdAt: Date
   updatedAt: Date
+  ticket: TicketDocument
   set(path: string, val: any, options?: any): this
   set(path: string, val: any, type: any, options?: any): this
   set(value: Partial<OrderWriteAttrs>): this

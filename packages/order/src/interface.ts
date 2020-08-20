@@ -1,5 +1,3 @@
-import { OrderStatus } from '@teh-tix/common/constant'
-
 export interface JWTPayload {
   id: string
   email: string
@@ -44,29 +42,16 @@ export namespace RP {
  * Data Transfer Object
  */
 export namespace DTO {
-  interface WithCreatedAt {
+  export interface WithCreatedAt {
     createdAt: string
   }
 
-  interface WithUpdatedAt {
+  export interface WithUpdatedAt {
     updatedAt: string
   }
 
-  interface WithUserId {
+  export interface WithUserId {
     userId: string
-  }
-
-  export interface Ticket {
-    id: string
-    title: string
-    price: number
-  }
-
-  export interface Order extends WithCreatedAt {
-    id: string
-    status: OrderStatus
-    expiredAt: string
-    ticket: Ticket
   }
 }
 

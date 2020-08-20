@@ -10,8 +10,8 @@ import type { Request, Response } from 'express'
 
 import { stan } from '../lib/stan'
 import { Order } from '../models/order'
-import { OrderMapper } from '../util'
-import type { DTO, RO, RP } from '../interface'
+import { OrderDTO, OrderCancelledEventDTO } from '../dto'
+import type { RO, RP } from '../interface'
 
 const router = Router()
 
@@ -20,7 +20,7 @@ router.patch(
   auth(),
   async (
     req: Request<RP.CancelOrderParams>,
-    res: Response<RO.Item<DTO.Order>>,
+    res: Response<RO.Item<OrderDTO>>,
   ) => {
     const { orderId } = req.params
     const user = req.ctx.authUser!
@@ -38,18 +38,13 @@ router.patch(
 
     await order.save()
 
-    const orderDTO = OrderMapper.toDTO(order)
+    const orderDTO = new OrderDTO(order)
+    const orderCancelledEventDTO = new OrderCancelledEventDTO(order)
 
-    await stan.getPubs().orderCancelledPub.publish({
-      id: orderDTO.id,
-      version: order.version,
-      ticket: {
-        id: orderDTO.ticket.id,
-      },
-    })
+    await stan.getPubs().orderCancelledPub.publish(orderCancelledEventDTO)
 
     return res.json({
-      data: OrderMapper.toDTO(order),
+      data: orderDTO,
     })
   },
 )

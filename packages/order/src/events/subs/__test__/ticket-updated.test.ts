@@ -23,6 +23,7 @@ async function setup() {
     price: 20,
     userId: 'user',
     version: createdTicket.version + 1,
+    orderId: null,
   }
   const message: Partial<Message> = {
     ack: jest.fn(),

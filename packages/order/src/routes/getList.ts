@@ -3,12 +3,12 @@ import { auth } from '@teh-tix/common/middleware'
 import type { Response } from 'express'
 
 import { Order } from '../models/order'
-import { OrderMapper } from '../util'
-import type { DTO, RO } from '../interface'
+import { OrderDTO } from '../dto'
+import type { RO } from '../interface'
 
 const router = Router()
 
-router.get('/', auth(), async (req, res: Response<RO.List<DTO.Order>>) => {
+router.get('/', auth(), async (req, res: Response<RO.List<OrderDTO>>) => {
   const user = req.ctx.authUser!
 
   const orders = await Order.find({
@@ -16,7 +16,7 @@ router.get('/', auth(), async (req, res: Response<RO.List<DTO.Order>>) => {
   }).populate('ticket')
 
   return res.json({
-    data: orders.map(OrderMapper.toDTO),
+    data: orders.map((ticket) => new OrderDTO(ticket)),
   })
 })
 

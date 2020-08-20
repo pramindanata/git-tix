@@ -10,8 +10,9 @@ import { stan } from '../lib/stan'
 import { Order } from '../models/order'
 import { Ticket } from '../models/ticket'
 import { getOneReservedOrder } from '../service'
-import { OrderMapper, generateOrderExpirationDate } from '../util'
-import type { DTO, RO, RP } from '../interface'
+import { OrderDTO, OrderCreatedEventDTO } from '../dto'
+import { generateOrderExpirationDate } from '../util'
+import type { RO, RP } from '../interface'
 
 const router = Router()
 
@@ -28,7 +29,7 @@ router.post(
   validateRequestPayload(),
   async (
     req: Request<any, any, RP.CreateOrderBody>,
-    res: Response<RO.Item<DTO.Order>>,
+    res: Response<RO.Item<OrderDTO>>,
   ) => {
     const user = req.ctx.authUser!
     const { ticketId } = req.body
@@ -54,19 +55,10 @@ router.post(
 
     await order.save()
 
-    const orderDTO = OrderMapper.toDTO(order)
+    const orderDTO = new OrderDTO(order)
+    const orderCreatedEventDTO = new OrderCreatedEventDTO(order)
 
-    await stan.getPubs().orderCreatedPub.publish({
-      id: orderDTO.id,
-      status: orderDTO.status,
-      expiredAt: orderDTO.expiredAt,
-      userId: user.id,
-      version: order.version,
-      ticket: {
-        id: orderDTO.ticket.id,
-        price: orderDTO.ticket.price,
-      },
-    })
+    await stan.getPubs().orderCreatedPub.publish(orderCreatedEventDTO)
 
     return res.json({
       data: orderDTO,
