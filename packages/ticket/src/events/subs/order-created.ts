@@ -3,6 +3,8 @@ import { Subscriber, Subject } from '@teh-tix/common/pubsub'
 import type { OrderCreatedEvent } from '@teh-tix/common/pubsub'
 import { config } from '../../config'
 import { Ticket } from '../../models/ticket'
+import { stan } from '../../lib/stan'
+import { TicketMapper } from '../../util'
 
 export class OrderCreatedSubscriber extends Subscriber<OrderCreatedEvent> {
   readonly subject = Subject.OrderCreated
@@ -23,6 +25,13 @@ export class OrderCreatedSubscriber extends Subscriber<OrderCreatedEvent> {
     })
 
     await ticket.save()
+
+    const ticketDTO = TicketMapper.toDTO(ticket)
+
+    await stan.getPubs().ticketUpdatedPub.publish({
+      ...ticketDTO,
+      version: ticket.version,
+    })
 
     message.ack()
   }
