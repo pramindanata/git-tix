@@ -48,22 +48,16 @@ export namespace RP {
  * Data Transfer Object
  */
 export namespace DTO {
-  interface WithCreatedAt {
+  export interface WithCreatedAt {
     createdAt: string
   }
 
-  interface WithUpdatedAt {
+  export interface WithUpdatedAt {
     updatedAt: string
   }
 
-  interface WithUserId {
+  export interface WithUserId {
     userId: string
-  }
-
-  export interface Ticket extends WithUserId, WithCreatedAt {
-    id: string
-    title: string
-    price: number
   }
 }
 

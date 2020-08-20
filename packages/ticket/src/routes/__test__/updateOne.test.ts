@@ -1,4 +1,5 @@
 import request from 'supertest'
+import { TicketUpdatedEventData } from '@teh-tix/common'
 import { app } from '../../app'
 import { stan } from '../../lib/stan'
 import {
@@ -7,8 +8,8 @@ import {
   composeCreateTicketReq,
   composeUpdateTicketReq,
 } from '../../test/util'
-import type { RP, RO, DTO } from '../../interface'
-import { TicketUpdatedEventData } from '@teh-tix/common'
+import { TicketDTO } from '../../dto'
+import type { RP, RO } from '../../interface'
 
 describe('PUT /:id', () => {
   it('return 404 if ticket does not exist', async () => {
@@ -39,7 +40,7 @@ describe('PUT /:id', () => {
       firstAuthCookie,
       ticketPayload,
     ).expect(200)
-    const createdTicketResBody = res.body as RO.Item<DTO.Ticket>
+    const createdTicketResBody = res.body as RO.Item<TicketDTO>
     const createdTicket = createdTicketResBody.data
 
     await composeUpdateTicketReq(
@@ -58,7 +59,7 @@ describe('PUT /:id', () => {
     const res = await composeCreateTicketReq(authCookie, ticketPayload).expect(
       200,
     )
-    const createdTicketResBody = res.body as RO.Item<DTO.Ticket>
+    const createdTicketResBody = res.body as RO.Item<TicketDTO>
     const createdTicket = createdTicketResBody.data
 
     await composeUpdateTicketReq(createdTicket.id, authCookie, {
@@ -85,7 +86,7 @@ describe('PUT /:id', () => {
       authCookie,
       ticketPayload,
     ).expect(200)
-    const createdTicketResBody = createdTicketRes.body as RO.Item<DTO.Ticket>
+    const createdTicketResBody = createdTicketRes.body as RO.Item<TicketDTO>
     const createdTicket = createdTicketResBody.data
 
     await composeUpdateTicketReq(
@@ -98,7 +99,7 @@ describe('PUT /:id', () => {
       .get(`/${createdTicket.id}`)
       .send()
       .expect(200)
-    const showedTicketResBody = showedTicketRes.body as RO.Item<DTO.Ticket>
+    const showedTicketResBody = showedTicketRes.body as RO.Item<TicketDTO>
     const showedTicket = showedTicketResBody.data
 
     expect(showedTicket.title).toEqual(updatedTicketPayload.title)
@@ -119,7 +120,7 @@ describe('PUT /:id', () => {
       authCookie,
       ticketPayload,
     ).expect(200)
-    const createdTicketResBody = createdTicketRes.body as RO.Item<DTO.Ticket>
+    const createdTicketResBody = createdTicketRes.body as RO.Item<TicketDTO>
     const createdTicket = createdTicketResBody.data
 
     const updatedTicketRes = await composeUpdateTicketReq(
@@ -127,7 +128,7 @@ describe('PUT /:id', () => {
       authCookie,
       updatedTicketPayload,
     ).expect(200)
-    const updatedTicketResBody = updatedTicketRes.body as RO.Item<DTO.Ticket>
+    const updatedTicketResBody = updatedTicketRes.body as RO.Item<TicketDTO>
     const updatedTicket = updatedTicketResBody.data
 
     expect(updatedTicket.title).toEqual(updatedTicketPayload.title)
@@ -148,7 +149,7 @@ describe('PUT /:id', () => {
       authCookie,
       ticketPayload,
     ).expect(200)
-    const createdTicketResBody = createdTicketRes.body as RO.Item<DTO.Ticket>
+    const createdTicketResBody = createdTicketRes.body as RO.Item<TicketDTO>
     const createdTicket = createdTicketResBody.data
 
     const updatedTicketRes = await composeUpdateTicketReq(
@@ -156,7 +157,7 @@ describe('PUT /:id', () => {
       authCookie,
       updatedTicketPayload,
     ).expect(200)
-    const updatedTicketResBody = updatedTicketRes.body as RO.Item<DTO.Ticket>
+    const updatedTicketResBody = updatedTicketRes.body as RO.Item<TicketDTO>
     const updatedTicket = updatedTicketResBody.data
 
     const pubFnMock = jest.spyOn(stan.getPubs().ticketUpdatedPub, 'publish')
@@ -166,6 +167,7 @@ describe('PUT /:id', () => {
     expect({
       ...mockedTicketArg,
       version: undefined,
+      orderId: undefined,
     }).toEqual(updatedTicket)
   })
 })

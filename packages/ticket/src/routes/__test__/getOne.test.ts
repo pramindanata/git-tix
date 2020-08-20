@@ -5,7 +5,7 @@ import {
   generateMongooseId,
   composeCreateTicketReq,
 } from '../../test/util'
-import type { DTO } from '../../interface'
+import { TicketDTO } from '../../dto'
 
 describe('GET /:id', () => {
   it('return 404 it ticket is not found', async () => {
@@ -24,11 +24,11 @@ describe('GET /:id', () => {
       authCookie,
       ticket,
     ).expect(200)
-    const createdTicket = createTicketRes.body.data as DTO.Ticket
+    const createdTicket = createTicketRes.body.data as TicketDTO
     const showTicketRes = await request(app)
       .get(`/${createdTicket.id}`)
       .expect(200)
-    const showedTicket = showTicketRes.body.data as DTO.Ticket
+    const showedTicket = showTicketRes.body.data as TicketDTO
 
     expect(showedTicket).toMatchObject(createdTicket)
   })

@@ -2,11 +2,12 @@ import { Router } from 'express'
 import { body } from 'express-validator'
 import { NotFoundError, ActionFailError, ActionFailType } from '@teh-tix/common'
 import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
-import { Ticket } from '../models/ticket'
-import { TicketMapper } from '../util'
-import { stan } from '../lib/stan'
 import type { Request, Response } from 'express'
-import type { RP, RO, DTO } from '../interface'
+
+import { Ticket } from '../models/ticket'
+import { stan } from '../lib/stan'
+import { TicketDTO, TicketUpdatedEventDTO } from '../dto'
+import type { RP, RO } from '../interface'
 
 const router = Router()
 
@@ -24,7 +25,7 @@ router.put(
   validateRequestPayload(),
   async (
     req: Request<RP.UpdateTicketParams, any, RP.UpdateTicketBody>,
-    res: Response<RO.Item<DTO.Ticket>>,
+    res: Response<RO.Item<TicketDTO>>,
   ) => {
     const { id } = req.params
     const { price, title } = req.body
@@ -46,12 +47,10 @@ router.put(
 
     await ticket.save()
 
-    const ticketDTO = TicketMapper.toDTO(ticket)
+    const ticketDTO = new TicketDTO(ticket)
+    const ticketUpdatedEventDTO = new TicketUpdatedEventDTO(ticket)
 
-    await stan.getPubs().ticketUpdatedPub.publish({
-      ...ticketDTO,
-      version: ticket.version,
-    })
+    await stan.getPubs().ticketUpdatedPub.publish(ticketUpdatedEventDTO)
 
     return res.json({
       data: ticketDTO,

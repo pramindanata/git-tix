@@ -1,7 +1,8 @@
 import request from 'supertest'
 import { app } from '../../app'
 import { createAuthCookie, composeCreateTicketReq } from '../../test/util'
-import type { RP, RO, DTO } from '../../interface'
+import { TicketDTO } from '../../dto'
+import type { RP, RO } from '../../interface'
 
 describe('GET /', () => {
   it('return list of tickets', async () => {
@@ -26,7 +27,7 @@ describe('GET /', () => {
     await Promise.all(getTicketBatch())
 
     const indexRes = await request(app).get('/').expect(200)
-    const ticketList = (indexRes.body as RO.List<DTO.Ticket>).data
+    const ticketList = (indexRes.body as RO.List<TicketDTO>).data
 
     expect(ticketList.length).toEqual(2)
   })

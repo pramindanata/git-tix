@@ -1,8 +1,9 @@
+import { TicketCreatedEventData } from '@teh-tix/common'
 import { Ticket } from '../../models/ticket'
 import { createAuthCookie, composeCreateTicketReq } from '../../test/util'
 import { stan } from '../../lib/stan'
-import type { RP, RO, DTO } from '../../interface'
-import { TicketCreatedEventData } from '@teh-tix/common'
+import { TicketDTO } from '../../dto'
+import type { RP, RO } from '../../interface'
 
 describe('# POST /', () => {
   it('it has a POST / route', async () => {
@@ -77,7 +78,7 @@ describe('# POST /', () => {
     const res = await composeCreateTicketReq(authCookie, ticket).expect(200)
     const pubFnMock = jest.spyOn(stan.getPubs().ticketCreatedPub, 'publish')
 
-    const resBody = res.body as RO.Item<DTO.Ticket>
+    const resBody = res.body as RO.Item<TicketDTO>
     const createdTicket = resBody.data
     const mockedTicketArg = pubFnMock.mock.calls[0][0] as TicketCreatedEventData
 

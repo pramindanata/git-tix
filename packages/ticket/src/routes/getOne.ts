@@ -1,9 +1,10 @@
 import { Router } from 'express'
-import type { Request, Response } from 'express'
 import { NotFoundError } from '@teh-tix/common/exception'
-import { RP, RO, DTO } from '../interface'
+import type { Request, Response } from 'express'
+
+import { RP, RO } from '../interface'
 import { Ticket } from '../models/ticket'
-import { TicketMapper } from '../util'
+import { TicketDTO } from '../dto'
 
 const router = Router()
 
@@ -11,7 +12,7 @@ router.get(
   '/:id',
   async (
     req: Request<RP.GetOneTicketParams>,
-    res: Response<RO.Item<DTO.Ticket>>,
+    res: Response<RO.Item<TicketDTO>>,
   ) => {
     const { id } = req.params
     const ticket = await Ticket.findById(id)
@@ -21,7 +22,7 @@ router.get(
     }
 
     return res.json({
-      data: TicketMapper.toDTO(ticket),
+      data: new TicketDTO(ticket),
     })
   },
 )
