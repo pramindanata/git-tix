@@ -1,8 +1,7 @@
-import { OrderCreatedEventData } from '@teh-tix/common/pubsub'
-import { OrderStatus } from '@teh-tix/common/constant'
+import { OrderCancelledEventData } from '@teh-tix/common/pubsub'
 import type { Message } from 'node-nats-streaming'
 
-import { OrderCreatedSubscriber } from '../order-created'
+import { OrderCancelledSubscriber } from '../order-cancelled'
 import { stan } from '../../../lib/stan'
 import { Ticket } from '../../../models/ticket'
 import { generateMongooseId } from '../../../test/util'
@@ -10,25 +9,22 @@ import { TicketUpdatedEventDTO } from '../../../dto'
 
 async function setup() {
   const stanMock = stan.getInstance()
-  const listener = new OrderCreatedSubscriber(stanMock)
-
+  const listener = new OrderCancelledSubscriber(stanMock)
+  const orderId = generateMongooseId()
   const createdTicket = Ticket.build({
     title: 'test',
-    price: 10,
+    price: 20,
     userId: 'user',
+    orderId: orderId,
   })
 
   await createdTicket.save()
 
-  const orderCreatedEventData: OrderCreatedEventData = {
-    id: generateMongooseId(),
-    status: OrderStatus.CREATED,
-    userId: 'user',
-    expiredAt: new Date().toISOString(),
+  const orderCancelledEventData: OrderCancelledEventData = {
+    id: orderId,
     version: 0,
     ticket: {
       id: createdTicket.id,
-      price: createdTicket.price,
     },
   }
 
@@ -39,43 +35,43 @@ async function setup() {
   return {
     listener,
     createdTicket,
-    orderCreatedEventData,
+    orderCancelledEventData,
     message,
   }
 }
 
-describe('# Subs: OrderCreated', () => {
+describe('# Subs: OrderCancelled', () => {
   it('set the orderId of the ticket', async () => {
     const {
       listener,
       createdTicket,
       message,
-      orderCreatedEventData,
+      orderCancelledEventData,
     } = await setup()
 
-    await listener.handle(orderCreatedEventData, message as Message)
+    await listener.handle(orderCancelledEventData, message as Message)
 
     const updatedTicket = await Ticket.findById(createdTicket.id)
 
-    expect(updatedTicket!.orderId).toEqual(orderCreatedEventData.id)
+    expect(updatedTicket!.orderId).toEqual(null)
   })
 
   it('acks the message', async () => {
-    const { listener, message, orderCreatedEventData } = await setup()
+    const { listener, message, orderCancelledEventData } = await setup()
 
-    await listener.handle(orderCreatedEventData, message as Message)
+    await listener.handle(orderCancelledEventData, message as Message)
 
     expect(message.ack).toHaveBeenCalled()
   })
 
   it('publishes a ticket updated event', async () => {
-    const { listener, message, orderCreatedEventData } = await setup()
+    const { listener, message, orderCancelledEventData } = await setup()
     const ticketUpdatedPubMock = jest.spyOn(
       stan.getPubs().ticketUpdatedPub,
       'publish',
     )
 
-    await listener.handle(orderCreatedEventData, message as Message)
+    await listener.handle(orderCancelledEventData, message as Message)
 
     const ticketUpdatedEventPayload = ticketUpdatedPubMock.mock
       .calls[0][0] as TicketUpdatedEventDTO
@@ -84,6 +80,6 @@ describe('# Subs: OrderCreated', () => {
     expect(ticketUpdatedEventPayload instanceof TicketUpdatedEventDTO).toEqual(
       true,
     )
-    expect(ticketUpdatedEventPayload.orderId).toEqual(orderCreatedEventData.id)
+    expect(ticketUpdatedEventPayload.orderId).toEqual(null)
   })
 })

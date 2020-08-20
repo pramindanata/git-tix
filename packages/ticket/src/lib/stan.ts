@@ -36,7 +36,10 @@ export class Stan extends StanClient implements Publishable {
   }
 
   private _createSubscribers(stan: nodeStan.Stan): Subscriber<Event>[] {
-    return [new subs.OrderCreatedSubscriber(stan)]
+    return [
+      new subs.OrderCreatedSubscriber(stan),
+      new subs.OrderCancelledSubscriber(stan),
+    ]
   }
 }
 

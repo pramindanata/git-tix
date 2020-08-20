@@ -12,6 +12,7 @@
     "lint:fix": "eslint ./src/**/*.ts --fix",
     "start": "node ./dist/index.js",
     "test": "jest",
+    "test:watch": "jest --runInBand --no-cache --watchAll",
     "tsc": "tsc"
   },
   "keywords": [],

@@ -18,6 +18,6 @@ export class TicketUpdatedEventDTO implements TicketUpdatedEventData {
     this.userId = props.userId
     this.createdAt = props.createdAt.toISOString()
     this.version = props.version
-    this.orderId = props.orderId
+    this.orderId = props.orderId || null
   }
 }
