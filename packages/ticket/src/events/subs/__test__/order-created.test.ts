@@ -6,6 +6,7 @@ import { OrderCreatedSubscriber } from '../order-created'
 import { stan } from '../../../lib/stan'
 import { Ticket } from '../../../models/ticket'
 import { generateMongooseId } from '../../../test/util'
+import { TicketUpdatedEventDTO } from '../../../dto'
 
 async function setup() {
   const stanMock = stan.getInstance()
@@ -65,5 +66,24 @@ describe('# Subs: OrderCreated', () => {
     await listener.handle(orderCreatedEventData, message as Message)
 
     expect(message.ack).toHaveBeenCalled()
+  })
+
+  it.only('publishes a ticket updated event', async () => {
+    const { listener, message, orderCreatedEventData } = await setup()
+    const ticketUpdatedPubMock = jest.spyOn(
+      stan.getPubs().ticketUpdatedPub,
+      'publish',
+    )
+
+    await listener.handle(orderCreatedEventData, message as Message)
+
+    const ticketUpdatedEventPayload = ticketUpdatedPubMock.mock
+      .calls[0][0] as TicketUpdatedEventDTO
+
+    expect(ticketUpdatedPubMock).toHaveBeenCalled()
+    expect(ticketUpdatedEventPayload instanceof TicketUpdatedEventDTO).toEqual(
+      true,
+    )
+    expect(ticketUpdatedEventPayload.orderId).toEqual(orderCreatedEventData.id)
   })
 })
