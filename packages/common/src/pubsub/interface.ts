@@ -30,6 +30,7 @@ export interface TicketUpdatedEventData {
   price: number;
   userId: string;
   version: number;
+  orderId?: string;
 }
 
 export interface OrderCreatedEvent {
