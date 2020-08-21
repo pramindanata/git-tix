@@ -22,6 +22,18 @@ services:
     volumes:
       - git-tix-redis:/data
 
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    depends_on:
+      - redis
+    ports:
+      - 8081:8081
+    environment: 
+      - 'REDIS_HOST=redis'
+      - 'REDIS_PORT=6379'
+    networks:
+      - git-tix-net
+
   stan:
     image: nats-streaming:0.18-alpine
     command: [
