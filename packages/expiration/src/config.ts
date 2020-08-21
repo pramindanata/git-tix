@@ -16,6 +16,10 @@ export const config = {
     clientId: env.STAN_CLIENT_ID || 'expiration',
     url: env.STAN_URL || 'http://localhost:4222',
   },
+  redis: {
+    host: env.REDIS_HOST || 'localhost',
+    port: (env.REDIS_PORT && parseInt(env.REDIS_PORT)) || 6379,
+  },
   domain: {
     order: {
       expirationDurationMinute:
