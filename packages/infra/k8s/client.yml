@@ -20,8 +20,6 @@ spec:
           env:
             - name: APP_PORT
               value: '3000'
-            - name: APP_USE_LOCAL_PROXY
-              value: 'false'
             - name: NEXT_PUBLIC_HOST
               value: 'git-tix.dev'
             - name: NEXT_PUBLIC_PROXY_HOST

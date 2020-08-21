@@ -1,12 +1,3 @@
-def genNpmInstallTrigger(app_folder_name):
-  packageJsonPath = 'packages/{}/package.json'.format(app_folder_name)
-  packageLockJsonPath = 'packages/{}/package-lock.json'.format(app_folder_name)
-
-  return run('cd /app && npm install --only prod', trigger=[
-    packageJsonPath,
-    packageLockJsonPath
-  ])
-
 k8s_yaml([
   './packages/infra/k8s/client.yml',
   './packages/infra/k8s/auth-mongo.yml',
@@ -23,41 +14,25 @@ k8s_yaml([
 docker_build(
   'pramindanata/tix-client',
   'packages/client',
-  dockerfile='./packages/client/DockerfileDev',
-  live_update=[
-    sync('./packages/client', '/app'),
-    genNpmInstallTrigger('client')
-  ]
+  dockerfile='./packages/client/Dockerfile'
 )
 
 docker_build(
   'pramindanata/tix-auth',
   'packages/auth',
-  dockerfile='./packages/auth/DockerfileDev',
-  live_update=[
-    sync('./packages/auth', '/app'),
-    genNpmInstallTrigger('auth')
-  ]
+  dockerfile='./packages/auth/Dockerfile'
 )
 
 docker_build(
   'pramindanata/tix-ticket',
   'packages/ticket',
-  dockerfile='./packages/ticket/DockerfileDev',
-  live_update=[
-    sync('./packages/ticket', '/app'),
-    genNpmInstallTrigger('ticket')
-  ]
+  dockerfile='./packages/ticket/Dockerfile'
 )
 
 docker_build(
   'pramindanata/tix-order',
   'packages/order',
-  dockerfile='./packages/order/DockerfileDev',
-  live_update=[
-    sync('./packages/order', '/app'),
-    genNpmInstallTrigger('order')
-  ]
+  dockerfile='./packages/order/Dockerfile'
 )
 
 k8s_resource('auth-mongo', port_forwards='9001:27017')
