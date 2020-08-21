@@ -1,6 +1,7 @@
 import Queue from 'bull'
 import { config } from '../config'
-import { DTO } from '../interface'
+import { stan } from '../lib/stan'
+import type { DTO } from '../interface'
 
 const expirationQueue = new Queue<DTO.OrderExpirationJob>('order:expiration', {
   redis: {
@@ -11,6 +12,10 @@ const expirationQueue = new Queue<DTO.OrderExpirationJob>('order:expiration', {
 
 expirationQueue.process(async (job, done) => {
   console.log('Processing order:expiration queue', job.data.orderId)
+
+  await stan.getPubs().expirationCompletePub.publish({
+    orderId: job.data.orderId,
+  })
 
   done()
 })
