@@ -17,6 +17,9 @@
 		},
 		{
 			"path": "packages\\order"
+		},
+		{
+			"path": "packages\\expiration"
 		}
 	],
 	"settings": {}
