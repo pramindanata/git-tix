@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: expiration-redis
+spec:
+  replicas: 1
+  serviceName: 'expiration-redis-cluster-ip'
+  selector:
+    matchLabels:
+      app: expiration-redis
+  template:
+    metadata:
+      labels:
+        app: expiration-redis
+    spec:
+      containers:
+        - name: expiration-redis
+          image: redis:6-alpine
+          ports:
+            - containerPort: 6379
+          args: [
+            '--appendonly', 'yes',
+          ]
+          volumeMounts:
+            - name: expiration-redis-storage
+              mountPath: /data
+              subPath: auth-service
+      volumes:
+        - name: expiration-redis-storage
+          persistentVolumeClaim:
+            claimName: app-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: expiration-redis-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: expiration-redis
+  ports:
+    - name: expiration-redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

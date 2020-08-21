@@ -10,6 +10,18 @@ services:
     volumes:
       - git-tix-db:/data/db
 
+  redis:
+    image: redis:6-alpine
+    command: [
+      '--appendonly', 'yes'
+    ]
+    ports:
+      - 6379:6379
+    networks:
+      - git-tix-net
+    volumes:
+      - git-tix-redis:/data
+
   stan:
     image: nats-streaming:0.18-alpine
     command: [
@@ -52,4 +64,6 @@ volumes:
   git-tix-db:
     driver: local
   git-tix-nats:
+    driver: local
+  git-tix-redis:
     driver: local

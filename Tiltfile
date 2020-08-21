@@ -6,6 +6,8 @@ k8s_yaml([
   './packages/infra/k8s/ticket-service.yml',
   './packages/infra/k8s/order-mongo.yml',
   './packages/infra/k8s/order-service.yml',
+  './packages/infra/k8s/expiration-redis.yml',
+  './packages/infra/k8s/expiration-service.yml',
   './packages/infra/k8s/pvc.yml',
   './packages/infra/k8s/stan.yml',
   './packages/infra/k8s/ingress.yml',
@@ -33,6 +35,12 @@ docker_build(
   'pramindanata/tix-order',
   'packages/order',
   dockerfile='./packages/order/Dockerfile'
+)
+
+docker_build(
+  'pramindanata/tix-expiration',
+  'packages/expiration',
+  dockerfile='./packages/expiration/Dockerfile'
 )
 
 k8s_resource('auth-mongo', port_forwards='9001:27017')
