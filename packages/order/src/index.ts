@@ -25,7 +25,7 @@ const start = async () => {
 
   stan.getInstance().on('close', () => {
     /* eslint-disable */
-    console.log('STAN connection closed')
+    console.log('# STAN connection closed')
     process.exit()
   })
 
@@ -34,7 +34,7 @@ const start = async () => {
 
   app.listen(config.app.port, () => {
     /* eslint-disable */
-    console.log(`order-service listening on http://localhost:${appConfig.port}`)
+    console.log(`# order-service is listening on http://localhost:${appConfig.port}`)
   })
 }
 

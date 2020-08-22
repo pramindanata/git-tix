@@ -16,7 +16,7 @@ const start = async () => {
 
   stan.getInstance().on('close', () => {
     /* eslint-disable */
-    console.log('STAN connection closed')
+    console.log('#STAN connection closed')
     process.exit()
   })
 
@@ -26,7 +26,7 @@ const start = async () => {
 
 start()
   .then(() => {
-    console.log('expiration-service is listening')
+    console.log('# expiration-service is listening')
   })
   .catch((err) => {
     /* eslint-disable */
