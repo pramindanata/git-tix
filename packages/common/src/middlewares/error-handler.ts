@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { BaseError, NotFoundError } from '../exceptions';
+import { BaseError, ActionFailError, ActionFailType } from '../exceptions';
 
 export const errorHandler = () => (
   err: Error,
@@ -15,11 +15,13 @@ export const errorHandler = () => (
   }
 
   if (err.constructor.name === 'CastError') {
-    const notFoundError = new NotFoundError();
-    const statusCode = notFoundError.getStatusCode();
-    const errorData = notFoundError.serialize();
+    const error = new ActionFailError(ActionFailType.CAST_ERROR);
+    const statusCode = error.getStatusCode();
+    const errorData = error.serialize();
 
-    return res.status(statusCode).send(errorData);
+    return res.status(statusCode).send({
+      errorData,
+    });
   }
 
   /* eslint-disable */
