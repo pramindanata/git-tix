@@ -53,7 +53,10 @@ schema.set('versionKey', 'version')
 schema.plugin(updateIfCurrentPlugin)
 
 schema.statics.build = (attrs: OrderWriteAttrs): OrderDocument => {
-  return new Order(attrs)
+  return new Order({
+    ...attrs,
+    _id: attrs.id,
+  })
 }
 
 export const Order = model<OrderDocument, ExtendedOrderModel>('Order', schema)
