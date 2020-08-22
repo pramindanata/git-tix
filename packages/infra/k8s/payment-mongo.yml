@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: payment-mongo
+spec:
+  replicas: 1
+  serviceName: payment-mongo-cluster-ip
+  selector:
+    matchLabels:
+      app: payment-mongo
+  template:
+    metadata:
+      labels:
+        app: payment-mongo
+    spec:
+      containers:
+        - name: payment-mongo
+          image: mongo:4.2.3
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: payment-mongo-storage
+              mountPath: /data/db
+              subPath: payment-service
+      volumes:
+        - name: payment-mongo-storage
+          persistentVolumeClaim:
+            claimName: app-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-mongo-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: payment-mongo
+  ports:
+    - name: payment-mongo
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

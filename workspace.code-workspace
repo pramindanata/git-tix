@@ -20,6 +20,9 @@
 		},
 		{
 			"path": "packages\\expiration"
+		},
+		{
+			"path": "packages\\payment"
 		}
 	],
 	"settings": {}
