@@ -6,7 +6,10 @@ import {
 } from '@teh-tix/common/pubsub'
 // import nodeStan from 'node-nats-streaming'
 import nodeStan from 'node-nats-streaming'
-import { OrderCreatedSubscriber } from '../events/subs/order-created'
+import {
+  OrderCreatedSubscriber,
+  OrderCancelledSubscriber,
+} from '../events/subs'
 
 export class Stan extends StanClient {
   constructor() {
@@ -16,7 +19,10 @@ export class Stan extends StanClient {
   }
 
   private _createSubscribers(stan: nodeStan.Stan): Subscriber<Event>[] {
-    return [new OrderCreatedSubscriber(stan)]
+    return [
+      new OrderCreatedSubscriber(stan),
+      new OrderCancelledSubscriber(stan),
+    ]
   }
 }
 
