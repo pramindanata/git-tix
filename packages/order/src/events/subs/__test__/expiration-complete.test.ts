@@ -83,9 +83,64 @@ describe('# Subs: ExpirationComplete', () => {
     expect(orderCancelledPubData.id).toEqual(createdOrder.id)
   })
 
-  it('ack the message', async () => {
+  it('ack the message if order is cancelled', async () => {
     const { expirationCompleteEventData, listener, message } = await setup()
 
+    await listener.handle(expirationCompleteEventData, message as Message)
+
+    expect(message.ack).toHaveBeenCalled()
+  })
+
+  it('does not emit OrderCancelled event if order is completed', async () => {
+    const {
+      expirationCompleteEventData,
+      createdOrder,
+      listener,
+      message,
+    } = await setup()
+
+    createdOrder.status = OrderStatus.COMPLETE
+
+    await createdOrder.save()
+    await listener.handle(expirationCompleteEventData, message as Message)
+
+    const orderCancelledPubMock = jest.spyOn(
+      stan.getPubs().orderCancelledPub,
+      'publish',
+    )
+
+    expect(orderCancelledPubMock).not.toHaveBeenCalled()
+  })
+
+  it('does not cancel order if order is completed', async () => {
+    const {
+      expirationCompleteEventData,
+      createdOrder,
+      listener,
+      message,
+    } = await setup()
+
+    createdOrder.status = OrderStatus.COMPLETE
+
+    await createdOrder.save()
+    await listener.handle(expirationCompleteEventData, message as Message)
+
+    const updatedOrder = await Order.findById(createdOrder.id)
+
+    expect(updatedOrder!.status).toEqual(OrderStatus.COMPLETE)
+  })
+
+  it('ack the message if order is completed', async () => {
+    const {
+      expirationCompleteEventData,
+      createdOrder,
+      listener,
+      message,
+    } = await setup()
+
+    createdOrder.status = OrderStatus.COMPLETE
+
+    await createdOrder.save()
     await listener.handle(expirationCompleteEventData, message as Message)
 
     expect(message.ack).toHaveBeenCalled()

@@ -20,19 +20,23 @@ export class ExpirationCompleteSubscriber extends Subscriber<
     data: ExpirationCompleteEvent['data'],
     message: Message,
   ): Promise<void> {
-    const expiredOrder = await Order.findById(data.orderId).populate('ticket')
+    const order = await Order.findById(data.orderId).populate('ticket')
 
-    if (!expiredOrder) {
+    if (!order) {
       throw new Error('Order not found')
     }
 
-    expiredOrder.set({
+    if (order.status === OrderStatus.COMPLETE) {
+      return message.ack()
+    }
+
+    order.set({
       status: OrderStatus.CANCELLED,
     })
 
-    await expiredOrder.save()
+    await order.save()
 
-    const orderCancelledDTO = new OrderCancelledEventDTO(expiredOrder)
+    const orderCancelledDTO = new OrderCancelledEventDTO(order)
 
     await stan.getPubs().orderCancelledPub.publish(orderCancelledDTO)
 
