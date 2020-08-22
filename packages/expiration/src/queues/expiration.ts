@@ -1,9 +1,9 @@
-import Queue from 'bull'
+import Bull from 'bull'
 import { config } from '../config'
 import { stan } from '../lib/stan'
 import type { DTO } from '../interface'
 
-const expirationQueue = new Queue<DTO.OrderExpirationJob>('order:expiration', {
+const expirationQueue = new Bull<DTO.OrderExpirationJob>('order:expiration', {
   redis: {
     host: config.redis.host,
     port: config.redis.port,
