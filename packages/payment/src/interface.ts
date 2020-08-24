@@ -25,16 +25,9 @@ export namespace RP {
     [key: string]: string
   }
 
-  export interface GetOneOrderParams extends CoreParams {
+  export interface CreateChargeBody {
+    token: string
     orderId: string
-  }
-
-  export interface CancelOrderParams extends CoreParams {
-    orderId: string
-  }
-
-  export interface CreateOrderBody {
-    ticketId: string
   }
 }
 

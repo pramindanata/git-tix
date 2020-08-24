@@ -7,6 +7,7 @@ import { NotFoundError } from '@teh-tix/common/exception'
 import { setReqContext, errorHandler } from '@teh-tix/common/middleware'
 
 import { config, AppEnv } from './config'
+import { createChargeRouter } from './routes/create'
 
 const app = express()
 const logger = morgan(
@@ -28,10 +29,11 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
+app.use(createChargeRouter)
 
-app.all('*', async () => {
-  throw new NotFoundError()
-})
+// app.all('*', async () => {
+//   throw new NotFoundError()
+// })
 
 app.use(errorHandler())
 
