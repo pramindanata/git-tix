@@ -11,7 +11,6 @@ export const stan = {
   connect: jest.fn().mockResolvedValue(connectionStr),
   getInstance: jest.fn().mockReturnValue(clientStr),
   getPubs: jest.fn().mockReturnValue({
-    orderCreatedPub: createPubMock(),
-    orderCancelledPub: createPubMock(),
+    paymentCreatedPub: createPubMock(),
   }),
 }

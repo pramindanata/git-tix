@@ -10,12 +10,35 @@ import {
   OrderCreatedSubscriber,
   OrderCancelledSubscriber,
 } from '../events/subs'
+import { PaymentCreatedPublisher } from '../events/pubs'
 
-export class Stan extends StanClient {
+type PublisherDict = {
+  paymentCreatedPub: PaymentCreatedPublisher
+}
+
+export class Stan extends StanClient implements Publishable {
+  private pubs?: PublisherDict
+
   constructor() {
     super()
 
     this.createSubscribers = this._createSubscribers
+  }
+
+  getPubs(): PublisherDict {
+    if (!this.pubs) {
+      this.setPubs()
+    }
+
+    return this.pubs!
+  }
+
+  private setPubs(): void {
+    const stan = this.getInstance()
+
+    this.pubs = {
+      paymentCreatedPub: new PaymentCreatedPublisher(stan),
+    }
   }
 
   private _createSubscribers(stan: nodeStan.Stan): Subscriber<Event>[] {

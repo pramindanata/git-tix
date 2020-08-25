@@ -8,12 +8,10 @@ import { Order } from '../models/order'
 import { Payment } from '../models/payment'
 import { RO, RP } from '../interface'
 import { stripe } from '../lib/stripe'
+import { stan } from '../lib/stan'
+import { PaymentDTO, PaymentCreatedEventDTO } from '../dto'
 
 const router = Router()
-
-interface CreateChargeDTO {
-  success: boolean
-}
 
 router.post(
   '/',
@@ -22,7 +20,7 @@ router.post(
   validateRequestPayload(),
   async (
     req: Request<any, any, RP.CreateChargeBody>,
-    res: Response<RO.Item<CreateChargeDTO>>,
+    res: Response<RO.Item<PaymentDTO>>,
   ) => {
     const user = req.ctx.authUser!
     const { orderId, token } = req.body
@@ -53,8 +51,13 @@ router.post(
 
     await payment.save()
 
+    const paymentDTO = new PaymentDTO(payment)
+    const paymentCreatedEventDTO = new PaymentCreatedEventDTO(payment)
+
+    await stan.getPubs().paymentCreatedPub.publish(paymentCreatedEventDTO)
+
     return res.json({
-      data: { success: true },
+      data: paymentDTO,
     })
   },
 )
