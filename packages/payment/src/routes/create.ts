@@ -6,6 +6,7 @@ import { ActionFailError, ActionFailType } from '@teh-tix/common/exception'
 import { OrderStatus } from '@teh-tix/common/constant'
 import { Order } from '../models/order'
 import { RO, RP } from '../interface'
+import { stripe } from '../lib/stripe'
 
 const router = Router()
 
@@ -37,6 +38,12 @@ router.post(
     if (order.status === OrderStatus.CANCELLED) {
       throw new ActionFailError(ActionFailType.PAY_CANCELLED_ORDER)
     }
+
+    await stripe.charges.create({
+      currency: 'usd',
+      amount: order.price * 100,
+      source: token,
+    })
 
     return res.json({
       data: { success: true },

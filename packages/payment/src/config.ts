@@ -25,4 +25,7 @@ export const config = {
     clientId: env.STAN_CLIENT_ID || 'payment',
     url: env.STAN_URL || 'http://localhost:4222',
   },
+  stripe: {
+    secret: env.STRIPE_SECRET,
+  },
 }

@@ -31,9 +31,9 @@ if (appEnv !== AppEnv.test) {
 app.use(setReqContext(config.jwt.secret))
 app.use(createChargeRouter)
 
-// app.all('*', async () => {
-//   throw new NotFoundError()
-// })
+app.all('*', async () => {
+  throw new NotFoundError()
+})
 
 app.use(errorHandler())
 

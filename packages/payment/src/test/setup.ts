@@ -1,9 +1,7 @@
-import dotenv from 'dotenv'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import { AppEnv } from '../config'
 
-dotenv.config()
 process.env.NODE_ENV = AppEnv.test
 
 let mongo: MongoMemoryServer

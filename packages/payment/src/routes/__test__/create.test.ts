@@ -6,6 +6,7 @@ import {
   doCreatePaymentReq,
 } from '../../test/util'
 import { Order } from '../../models/order'
+import { stripe } from '../../lib/stripe'
 
 describe('# POST /', () => {
   it('returns 403 when purchasing order does not found', async () => {
@@ -62,5 +63,34 @@ describe('# POST /', () => {
 
     expect(response.status).toEqual(403)
     expect(response.body.type).toEqual(ActionFailType.PAY_CANCELLED_ORDER)
+  })
+
+  it('returns 200 with valid input', async () => {
+    jest.spyOn(stripe.charges, 'create')
+
+    const orderId = generateMongooseId()
+    const authCookie = createAuthCookie('user')
+    const order = Order.build({
+      price: 25,
+      status: OrderStatus.CREATED,
+      userId: 'user',
+      version: 1,
+      id: orderId,
+    })
+    const reqBody = {
+      token: 'tok_visa',
+      orderId: order.id,
+    }
+
+    await order.save()
+
+    const response = await doCreatePaymentReq(authCookie, reqBody)
+
+    expect(response.status).toEqual(200)
+    expect(stripe.charges.create).toBeCalledWith({
+      currency: 'usd',
+      amount: order.price * 100,
+      source: reqBody.token,
+    })
   })
 })
