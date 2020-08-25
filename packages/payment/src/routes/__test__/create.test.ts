@@ -6,6 +6,7 @@ import {
   doCreatePaymentReq,
 } from '../../test/util'
 import { Order } from '../../models/order'
+import { Payment } from '../../models/payment'
 import { stripe } from '../../lib/stripe'
 
 describe('# POST /', () => {
@@ -85,6 +86,9 @@ describe('# POST /', () => {
     await order.save()
 
     const response = await doCreatePaymentReq(authCookie, reqBody)
+    const createdPayment = await Payment.findOne({
+      orderId: reqBody.orderId,
+    })
 
     expect(response.status).toEqual(200)
     expect(stripe.charges.create).toBeCalledWith({
@@ -92,5 +96,6 @@ describe('# POST /', () => {
       amount: order.price * 100,
       source: reqBody.token,
     })
+    expect(createdPayment).not.toBeNull()
   })
 })

@@ -5,6 +5,7 @@ import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
 import { ActionFailError, ActionFailType } from '@teh-tix/common/exception'
 import { OrderStatus } from '@teh-tix/common/constant'
 import { Order } from '../models/order'
+import { Payment } from '../models/payment'
 import { RO, RP } from '../interface'
 import { stripe } from '../lib/stripe'
 
@@ -39,11 +40,18 @@ router.post(
       throw new ActionFailError(ActionFailType.PAY_CANCELLED_ORDER)
     }
 
-    await stripe.charges.create({
+    const charge = await stripe.charges.create({
       currency: 'usd',
       amount: order.price * 100,
       source: token,
     })
+
+    const payment = Payment.build({
+      orderId: order.id,
+      stripeChargeId: charge.id,
+    })
+
+    await payment.save()
 
     return res.json({
       data: { success: true },
