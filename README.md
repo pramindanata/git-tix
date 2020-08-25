@@ -21,6 +21,13 @@ Make sure your cluster already has NGINX Ingress Controller installed. Please re
 kubectl create secret generic jwt-secret --from-literal JWT_SECRET=<your_jwt_secret>
 ```
 
+Stripe Secret
+
+```sh
+kubectl create secret generic stripe-secret --from-literal STRIPE_SECRET=<secret>
+```
+
 ## Note
 
 Don't forget to install `NGINX Inggress Controller ^0.34.1` before applying K8s configs. Please read [this](https://kubernetes.github.io/ingress-nginx/deploy) about `NGINX Ingress Controller` installation.
+```

@@ -41,6 +41,11 @@ spec:
                   fieldPath: metadata.name
             - name: STAN_URL
               value: 'http://stan-cluster-ip:4222'
+            - name: STRIPE_SECRET
+              valueFrom:  
+                secretKeyRef:
+                  name: stripe-secret
+                  key: STRIPE_SECRET
 ---
 apiVersion: v1
 kind: Service
