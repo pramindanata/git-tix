@@ -11,6 +11,7 @@ import {
   TicketCreatedSubscriber,
   TicketUpdatedSubscriber,
   ExpirationCompleteSubscriber,
+  PaymentCreatedSubscriber,
 } from '../events/subs'
 
 type PublisherDict = {
@@ -49,6 +50,7 @@ export class Stan extends StanClient implements Publishable {
       new TicketCreatedSubscriber(stan),
       new TicketUpdatedSubscriber(stan),
       new ExpirationCompleteSubscriber(stan),
+      new PaymentCreatedSubscriber(stan),
     ]
   }
 }
