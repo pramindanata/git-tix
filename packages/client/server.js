@@ -1,22 +1,24 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const express = require('express');
 const next = require('next');
 const dotenv = require('dotenv');
-const config = require('./serverConfig');
-const serverConfig = require('./serverConfig');
 
-dotenv.config();
+dotenv.config({
+  path: '.env.local',
+});
+
+const serverConfig = require('./serverConfig');
 
 const devProxy = {
   '/api/auth': {
-    target: config.service.authBaseUrl,
+    target: serverConfig.service.authBaseUrl,
     pathRewrite: { '^/api/auth': '/' },
     changeOrigin: true,
   },
 };
 
-const port = parseInt(config.app.port, 10) || 3000;
-const env = config.app.env;
+const port = parseInt(serverConfig.app.port, 10) || 3000;
+const env = serverConfig.app.env;
 const isDev = env !== 'production';
 const app = next({
   dir: '.', // base directory where everything is, could move to src later
