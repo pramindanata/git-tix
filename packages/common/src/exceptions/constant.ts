@@ -8,6 +8,7 @@ export enum ActionFailType {
   TICKET_NOT_FOUND = 'TICKET_NOT_FOUND',
   ORDER_NOT_FOUND = 'ORDER_NOT_FOUND',
   PAY_CANCELLED_ORDER = 'PAY_CANCELLED_ORDER',
+  ORDER_ALREADY_PAID = 'ORDER_ALREADY_PAID',
   CAST_ERROR = 'CAST_ERROR',
 }
 
@@ -25,5 +26,6 @@ export const actionFailMessageDict: ActionFailMessageDict = {
   TICKET_NOT_FOUND: 'Ticket is not found',
   ORDER_NOT_FOUND: 'Order is not found',
   PAY_CANCELLED_ORDER: 'Can not pay for a cancelled order',
+  ORDER_ALREADY_PAID: 'Order already paid',
   CAST_ERROR: 'Invalid record ID given',
 };
