@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
+
+import {
+  ActionFailAlert,
+  RequestValidationAlert,
+} from '~/components/common/Error';
 import Head from '~/components/common/Head';
 import { Dto } from '~/interfaces';
 import { useAxiosError } from '~/hooks';
@@ -44,23 +49,13 @@ const Signin: React.FC = () => {
     <>
       <Head title="Sign In" />
       <div className="container mt-4">
-        <h1>Signin</h1>
+        <h3>Signin</h3>
 
         {error instanceof RequestValidationError && (
-          <div className="alert alert-danger">
-            <ul className="mb-0">
-              {error.serialize().map((error) => (
-                <li key={error.field}>{error.message}</li>
-              ))}
-            </ul>
-          </div>
+          <RequestValidationAlert error={error} />
         )}
 
-        {error instanceof ActionFailError && (
-          <div className="alert alert-danger">
-            <div>{error.serialize().message}</div>
-          </div>
-        )}
+        {error instanceof ActionFailError && <ActionFailAlert error={error} />}
 
         <form onSubmit={(e) => onSubmit(e)}>
           <div className="form-group">

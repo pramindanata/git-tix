@@ -15,6 +15,21 @@ const devProxy = {
     pathRewrite: { '^/api/auth': '/' },
     changeOrigin: true,
   },
+  '/api/ticket': {
+    target: serverConfig.service.ticketBaseUrl,
+    pathRewrite: { '^/api/ticket': '/' },
+    changeOrigin: true,
+  },
+  '/api/order': {
+    target: serverConfig.service.orderBaseUrl,
+    pathRewrite: { '^/api/order': '/' },
+    changeOrigin: true,
+  },
+  '/api/payment': {
+    target: serverConfig.service.paymentBaseUrl,
+    pathRewrite: { '^/api/payment': '/' },
+    changeOrigin: true,
+  },
 };
 
 const port = parseInt(serverConfig.app.port, 10) || 3000;

@@ -29,9 +29,8 @@ const MyApp = (appProps: AppProps & MyAppProps): JSX.Element => {
       AuthService.enableStatus();
     }
 
-    // This code alwasy run after loading new page
-    // because Next.js run/render this component
-    // twice (on client and server side)
+    // Reset auth status in case local storage
+    // still hold signin key after user is logged out
     if (!userStore && AuthService.getStatus()) {
       AuthService.disableStatus();
     }

@@ -25,3 +25,11 @@ export interface CurrentUserRes {
     email: string;
   };
 }
+
+export interface CreateTicketRes {
+  id: string;
+  title: string;
+  price: number;
+  userId: string;
+  createdAt: string;
+}

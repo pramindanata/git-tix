@@ -8,5 +8,8 @@ module.exports = {
   },
   service: {
     authBaseUrl: env.SERVICE_AUTH_URL || 'http://localhost:4000',
+    ticketBaseUrl: env.SERVICE_TICKET_URL || 'http://localhost:4001',
+    orderBaseUrl: env.SERVICE_ORDER_URL || 'http://localhost:4002',
+    paymentBaseUrl: env.SERVICE_PAYMENT_URL || 'http://localhost:4003',
   },
 };

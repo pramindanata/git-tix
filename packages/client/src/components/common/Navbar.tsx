@@ -37,12 +37,12 @@ const Navbar: React.FC = () => {
   return (
     <div className="bg-dark">
       <div className="container">
-        <div className="navbar navbar-expand-lg navbar-dark bg-dark px-0">
+        <div className="navbar navbar-expand-lg navbar-dark bg-dark px-0 justify-content-between">
           <Link href="/">
             <a className="navbar-brand">GitTix</a>
           </Link>
 
-          <div className="d-flex justify-content-end">
+          <div className="d-flex">
             <ul className="navbar-nav d-flex align-items-center flex-row">
               {activeLinks.map((link) => (
                 <li key={link.label} className="nav-item">
