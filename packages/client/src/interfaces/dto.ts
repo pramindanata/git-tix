@@ -61,3 +61,7 @@ export interface TicketDetailRes {
 export interface CreateOrderRes {
   data: Order;
 }
+
+export interface OrderDetailRes {
+  data: Order;
+}

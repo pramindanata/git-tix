@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { serverAxios, clientAxios } from '~/lib/axios';
-import { Dto } from '~/interfaces';
 import { GetServerSideProps } from 'next';
+import Router from 'next/router';
 
 import { useAxiosError } from '~/hooks';
 import { ActionFailError } from '~/utils';
+import { serverAxios, clientAxios } from '~/lib/axios';
+import { Dto } from '~/interfaces';
+
 import Head from '~/components/common/Head';
 import PageTitle from '~/components/common/PageTitle';
 import { ActionFailAlert } from '~/components/common/Error';
@@ -30,7 +32,9 @@ const TicketDetail: React.FC<Props> = (props) => {
       reset();
       purchase(ticket!)
         .then((res) => {
-          console.log(res.data.data);
+          const order = res.data.data;
+
+          Router.push('/orders/[orderId]', `/orders/${order.id}`);
         })
         .catch((err) => {
           setError(err);
