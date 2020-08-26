@@ -7,6 +7,7 @@ process.env.NODE_ENV = AppEnv.test
 let mongo: MongoMemoryServer
 
 jest.mock('../lib/stan')
+jest.unmock('../lib/stripe')
 
 beforeAll(async () => {
   const mongooseConnectionState = mongoose.connection.readyState

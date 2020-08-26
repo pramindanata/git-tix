@@ -38,6 +38,14 @@ router.post(
       throw new ActionFailError(ActionFailType.PAY_CANCELLED_ORDER)
     }
 
+    const existedPayment = await Payment.findOne({
+      orderId: order.id,
+    })
+
+    if (existedPayment) {
+      throw new ActionFailError(ActionFailType.ORDER_ALREADY_PAID)
+    }
+
     const charge = await stripe.charges.create({
       currency: 'usd',
       amount: order.price * 100,

@@ -66,7 +66,47 @@ describe('# POST /', () => {
     expect(response.body.type).toEqual(ActionFailType.PAY_CANCELLED_ORDER)
   })
 
-  it('returns 200 with valid input', async () => {
+  it('returns 403 when purchasing paid order', async () => {
+    jest.spyOn(Payment.prototype, 'save')
+    jest.spyOn(stripe.charges, 'create')
+
+    const orderId = generateMongooseId()
+    const authCookie = createAuthCookie('user')
+    const order = Order.build({
+      price: 25,
+      status: OrderStatus.CREATED,
+      userId: 'user',
+      version: 1,
+      id: orderId,
+    })
+    const payment = Payment.build({
+      orderId: order.id,
+      stripeChargeId: 'test',
+    })
+    const reqBody = {
+      token: 'tok_visa',
+      orderId: order.id,
+    }
+
+    await order.save()
+    await payment.save()
+
+    const response = await doCreatePaymentReq<ActionFailBody>(
+      authCookie,
+      reqBody,
+    )
+
+    const payments = await Payment.find({
+      orderId: reqBody.orderId,
+    })
+
+    expect(response.status).toEqual(403)
+    expect(response.body.type).toEqual(ActionFailType.ORDER_ALREADY_PAID)
+    expect(stripe.charges.create).not.toHaveBeenCalled()
+    expect(payments.length).toEqual(1)
+  })
+
+  it.only('returns 200 with valid input', async () => {
     jest.spyOn(stripe.charges, 'create')
 
     const orderId = generateMongooseId()
