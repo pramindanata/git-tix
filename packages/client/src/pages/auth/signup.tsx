@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 
+import { Dto } from '~/interfaces';
+import { useAxiosError } from '~/hooks';
+import { clientAxios } from '~/lib/axios';
+import { ActionFailError, RequestValidationError, AuthService } from '~/utils';
+
 import {
   ActionFailAlert,
   RequestValidationAlert,
 } from '~/components/common/Error';
 import Head from '~/components/common/Head';
-import { Dto } from '~/interfaces';
-import { useAxiosError } from '~/hooks';
-import { clientAxios } from '~/lib/axios';
-import { ActionFailError, RequestValidationError, AuthService } from '~/utils';
+import PageTitle from '~/components/common/PageTitle';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -49,7 +51,7 @@ const Signup: React.FC = () => {
     <>
       <Head title="Sign Up" />
       <div className="container mt-4">
-        <h3>Signup</h3>
+        <PageTitle value="Sign Up" />
 
         {error instanceof RequestValidationError && (
           <RequestValidationAlert error={error} />

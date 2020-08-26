@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import Router from 'next/router';
 import { clientAxios } from '~/lib/axios';
 import { useAxiosError } from '~/hooks';
+import { RequestValidationError, ActionFailError } from '~/utils';
+import type { Dto } from '~/interfaces';
+
 import Head from '~/components/common/Head';
+import PageTitle from '~/components/common/PageTitle';
 import {
   ActionFailAlert,
   RequestValidationAlert,
 } from '~/components/common/Error';
-import { RequestValidationError, ActionFailError } from '~/utils';
-import type { Dto } from '~/interfaces';
 
 const TicketCreate: React.FC = () => {
   const [title, setTitle] = useState<string>('');
@@ -35,6 +38,8 @@ const TicketCreate: React.FC = () => {
         .then(() => {
           setTitle('');
           setPrice('');
+
+          Router.push('/tickets');
         })
         .catch((err) => {
           setError(err);
@@ -57,7 +62,7 @@ const TicketCreate: React.FC = () => {
       <Head title="Create Ticket" />
 
       <div className="container mt-4">
-        <h3>Create Ticket</h3>
+        <PageTitle value="Create Ticket" />
 
         {error instanceof RequestValidationError && (
           <RequestValidationAlert error={error} />

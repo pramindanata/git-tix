@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
-import Head from '~/components/common/Head';
 import { GlobalContext } from '~/context';
+
+import Head from '~/components/common/Head';
+import PageTitle from '~/components/common/PageTitle';
 
 const Home: React.FC = () => {
   const user = useContext(GlobalContext).user;
@@ -9,7 +11,9 @@ const Home: React.FC = () => {
     <>
       <Head title="Home" />
       <div className="container mt-4">
-        <h1>{user ? 'You are signed in' : 'You are NOT signed in'}</h1>
+        <PageTitle
+          value={user ? 'You are signed in' : 'You are NOT signed in'}
+        />
 
         {user && <p>Hello {user.email}</p>}
 

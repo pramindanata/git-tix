@@ -26,10 +26,18 @@ export interface CurrentUserRes {
   };
 }
 
-export interface CreateTicketRes {
+export interface Ticket {
   id: string;
   title: string;
   price: number;
   userId: string;
   createdAt: string;
+}
+
+export interface CreateTicketRes {
+  data: Ticket;
+}
+
+export interface TicketListRes {
+  data: Ticket[];
 }
