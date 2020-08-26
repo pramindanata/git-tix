@@ -1,5 +1,6 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { serverAxios } from '~/lib/axios';
 import { Dto } from '~/interfaces';
 
@@ -25,6 +26,7 @@ const TicketIndex: React.FC<Props> = (props) => {
             <tr>
               <th>Title</th>
               <th>Price</th>
+              <th>Link</th>
             </tr>
           </thead>
 
@@ -34,6 +36,14 @@ const TicketIndex: React.FC<Props> = (props) => {
                 <tr key={ticket.id}>
                   <td>{ticket.title}</td>
                   <td>$ {ticket.price}</td>
+                  <td>
+                    <Link
+                      href="/tickets/[ticketId]"
+                      as={`/tickets/${ticket.id}`}
+                    >
+                      <a>View</a>
+                    </Link>
+                  </td>
                 </tr>
               );
             })}

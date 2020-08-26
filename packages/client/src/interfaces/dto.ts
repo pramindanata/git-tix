@@ -34,10 +34,30 @@ export interface Ticket {
   createdAt: string;
 }
 
+export interface Order {
+  id: string;
+  status: string;
+  createdAt: string;
+  expiredAt: string;
+  ticket: {
+    id: string;
+    title: string;
+    price: number;
+  };
+}
+
 export interface CreateTicketRes {
   data: Ticket;
 }
 
 export interface TicketListRes {
   data: Ticket[];
+}
+
+export interface TicketDetailRes {
+  data: Ticket;
+}
+
+export interface CreateOrderRes {
+  data: Order;
 }
