@@ -13,7 +13,7 @@ interface Props {
 
 function getOrderStatusColor(status: string) {
   if (status === 'CREATED') {
-    return 'info';
+    return 'primary';
   } else if (status === 'COMPLETE') {
     return 'success';
   }
