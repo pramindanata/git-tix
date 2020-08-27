@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { serverAxios, clientAxios } from '~/lib/axios';
-import { Dto } from '~/interfaces';
+import React, { useState, useEffect, useContext } from 'react';
 import { GetServerSideProps } from 'next';
+import StripeCheckout, { Token } from 'react-stripe-checkout';
 
 import { getReadableTime } from '~/utils/time';
 import { useAxiosError } from '~/hooks';
 import { ActionFailError } from '~/utils';
+import { serverAxios, clientAxios } from '~/lib/axios';
+import { GlobalContext } from '~/context';
+import type { Dto } from '~/interfaces';
+
 import Head from '~/components/common/Head';
 import PageTitle from '~/components/common/PageTitle';
 import { ActionFailAlert } from '~/components/common/Error';
@@ -21,10 +24,13 @@ interface Query {
 }
 
 const OrderDetail: React.FC<Props> = (props) => {
-  const { order } = props;
+  const { order: orderProps } = props;
+  const user = useContext(GlobalContext).user;
+  const [order, setOrder] = useState(orderProps);
   const [isSubmit, setIsSubmit] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [error, setError, reset] = useAxiosError();
+  const stripePubKey = process.env.NEXT_PUBLIC_STRIPE_PUB_KEY;
 
   useEffect(() => {
     const msPerSec = 1000;
@@ -50,28 +56,40 @@ const OrderDetail: React.FC<Props> = (props) => {
     return () => clearInterval(timerId);
   }, []);
 
-  // function onClickBtnPurchase() {
-  //   if (!isSubmit) {
-  //     setIsSubmit(true);
-  //     reset();
-  //     purchase(order!)
-  //       .then((res) => {
-  //         console.log(res.data.data);
-  //       })
-  //       .catch((err) => {
-  //         setError(err);
-  //       })
-  //       .finally(() => {
-  //         setIsSubmit(false);
-  //       });
-  //   }
-  // }
+  function onStripeTokenReceived(token: Token) {
+    if (!isSubmit) {
+      setIsSubmit(true);
+      reset();
+      purchase(order!, token)
+        .then(() => {
+          setOrder({
+            ...order!,
+            status: 'COMPLETE',
+          });
+        })
+        .catch((err) => {
+          setError(err);
+        })
+        .finally(() => {
+          setIsSubmit(false);
+        });
+    }
+  }
 
-  // function purchase(order: Dto.Order) {
-  //   return clientAxios.post<Dto.CreateOrderRes>('/api/order', {
-  //     orderId: order.id,
-  //   });
-  // }
+  function purchase(order: Dto.Order, token: Token) {
+    return clientAxios.post<Dto.CreateOrderRes>('/api/payment', {
+      orderId: order.id,
+      token: token.id,
+    });
+  }
+
+  function isOrderComplete() {
+    return order?.status === 'COMPLETE';
+  }
+
+  function isOrderExpired() {
+    return timeLeft <= 0 && !isOrderComplete();
+  }
 
   if (!order) {
     return <NotFound />;
@@ -96,11 +114,23 @@ const OrderDetail: React.FC<Props> = (props) => {
           </div>
         </div>
 
-        {timeLeft <= 0 ? (
+        {isOrderComplete() && (
           <div>
-            <p className="text-danger">Order expired</p>
+            <p className="text-success">
+              <strong>Order has been paid</strong>
+            </p>
           </div>
-        ) : (
+        )}
+
+        {isOrderExpired() && (
+          <div>
+            <p className="text-danger">
+              <strong>Order expired</strong>
+            </p>
+          </div>
+        )}
+
+        {!isOrderComplete() && !isOrderExpired() && (
           <div>
             <p>
               Time left to pay until order expires:{' '}
@@ -109,12 +139,16 @@ const OrderDetail: React.FC<Props> = (props) => {
             {error instanceof ActionFailError && (
               <ActionFailAlert error={error} />
             )}
-            <button
-              className="btn btn-primary"
-              // onClick={() => onClickBtnPurchase()}
+            <StripeCheckout
+              token={onStripeTokenReceived}
+              stripeKey={stripePubKey!}
+              amount={order.ticket.price * 100}
+              email={user?.email}
             >
-              Pay
-            </button>
+              <button className="btn btn-primary" disabled={isSubmit}>
+                Pay with card
+              </button>
+            </StripeCheckout>
           </div>
         )}
       </div>
