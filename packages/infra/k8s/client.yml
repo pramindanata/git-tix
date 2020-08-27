@@ -24,6 +24,11 @@ spec:
               value: 'git-tix.dev'
             - name: NEXT_PUBLIC_PROXY_HOST
               value: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local'
+            - name: NEXT_PUBLIC_STRIPE_PUB_KEY
+              valueFrom:  
+                secretKeyRef:
+                  name: stripe-key
+                  key: STRIPE_PUBLISH_KEY
 ---
 apiVersion: v1
 kind: Service

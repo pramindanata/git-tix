@@ -15,7 +15,7 @@ spec:
             backend:
               serviceName: payment-service-cluster-ip
               servicePort: 4000
-          - path: /api/payment/?(.*)
+          - path: /api/ticket/?(.*)
             backend:
               serviceName: ticket-service-cluster-ip
               servicePort: 4000

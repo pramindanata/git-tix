@@ -20,6 +20,9 @@ Ticketing app built with microservice approach.
 - MongoDB: `v4.2.3`
 - Redis: `v6`
 - NATS Streaming: `v0.18`
+- Stripe publishable & secret key
+
+Stripe publishable and secret key can be obtained by creating Stripe account.
 
 ## Development
 
@@ -35,14 +38,14 @@ Please read `README.md` in each service and client app directory for more detail
 
 Make sure your cluster already has NGINX Ingress Controller (^0.34.1) installed. Please read [this](https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac) for more information about NGINX Ingress Controller installation process.
 
-And create some secret value for JWT secret and Stripe Public secret. Example:
+And create some secret value for JWT secret and Stripe key. Example:
 
 ```sh
 # JWT
 kubectl create secret generic jwt-secret --from-literal JWT_SECRET=<your_jwt_secret>
 
-# Stripe Public Key
-kubectl create secret generic stripe-secret --from-literal STRIPE_SECRET=<secret>
+# Stripe Publish Key
+kubectl create secret generic stripe-key --from-literal STRIPE_SECRET_KEY=<secret_key> --from-literal STRIPE_PUBLISH_KEY=<publishable_key>
 ```
 
 Then run:
