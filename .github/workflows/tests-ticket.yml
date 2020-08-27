@@ -1,4 +1,4 @@
-name: tests
+name: tests-ticket
 
 on:
   pull_request
@@ -16,4 +16,4 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Run Tests
-        run: cd packages/auth && npm install && npm run test -- --runInBand
+        run: cd packages/ticket && npm install && npm run test -- --runInBand
