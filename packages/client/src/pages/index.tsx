@@ -1,31 +1,72 @@
 import React, { useContext } from 'react';
+import { GetServerSideProps } from 'next';
+import Link from 'next/link';
+import { serverAxios } from '~/lib/axios';
 import { GlobalContext } from '~/context';
+import { Dto } from '~/interfaces';
 
 import Head from '~/components/common/Head';
 import PageTitle from '~/components/common/PageTitle';
 
-const Home: React.FC = () => {
+interface Props {
+  ticketList: Dto.Ticket[];
+}
+
+const Home: React.FC<Props> = (props) => {
+  const { ticketList } = props;
   const user = useContext(GlobalContext).user;
 
   return (
     <>
       <Head title="Home" />
+
       <div className="container mt-4">
-        <PageTitle
-          value={user ? 'You are signed in' : 'You are NOT signed in'}
-        />
+        <PageTitle value="Tickets" />
 
         {user && <p>Hello {user.email}</p>}
 
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Inx esse
-          consectetur quod, iure quia aperiam rerum veniam dignissimos itaque
-          magni. Suscipit, exercitationem dolor reprehenderit delectus saepe
-          sapiente neque voluptas commodi!
-        </p>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {ticketList.map((ticket) => {
+              return (
+                <tr key={ticket.id}>
+                  <td>{ticket.title}</td>
+                  <td>$ {ticket.price}</td>
+                  <td>
+                    <Link
+                      href="/tickets/[ticketId]"
+                      as={`/tickets/${ticket.id}`}
+                    >
+                      <a>View</a>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const ticketListRes = await serverAxios.get<Dto.TicketListRes>('/api/ticket');
+  const ticketList = ticketListRes.data.data;
+
+  return {
+    props: {
+      ticketList,
+    },
+  };
 };
 
 export default Home;
