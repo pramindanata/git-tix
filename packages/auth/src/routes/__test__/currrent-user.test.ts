@@ -17,6 +17,8 @@ describe('GET /current-user', () => {
   it('return 401, empty body, and message if not authenticated', async () => {
     const res = await composeGetCurUser().expect(401)
 
+    expect(1).toEqual(2)
+
     expect(res.body).toEqual({})
     expect(res.text).toEqual('Unauthorized')
   })
