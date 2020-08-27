@@ -39,7 +39,7 @@ const TicketCreate: React.FC = () => {
           setTitle('');
           setPrice('');
 
-          Router.push('/tickets');
+          Router.push('/');
         })
         .catch((err) => {
           setError(err);

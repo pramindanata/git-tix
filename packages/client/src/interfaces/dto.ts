@@ -62,6 +62,10 @@ export interface CreateOrderRes {
   data: Order;
 }
 
+export interface OrderListRes {
+  data: Order[];
+}
+
 export interface OrderDetailRes {
   data: Order;
 }
