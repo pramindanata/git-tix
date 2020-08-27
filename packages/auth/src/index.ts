@@ -10,6 +10,8 @@ const start = async () => {
   const dbHost = config.db.host
   const dbName = config.db.name
 
+  console.log('Starting up')
+
   await mongoose.connect(`${dbHost}/${dbName}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
