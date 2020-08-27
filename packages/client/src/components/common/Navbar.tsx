@@ -15,10 +15,6 @@ const Navbar: React.FC = () => {
       label: 'Home',
       href: '/',
     },
-    {
-      label: 'Test',
-      href: '/test',
-    },
     !isUserSignin && {
       label: 'Sign Up',
       href: '/auth/signup',
@@ -26,6 +22,14 @@ const Navbar: React.FC = () => {
     !isUserSignin && {
       label: 'Sign In',
       href: '/auth/signin',
+    },
+    isUserSignin && {
+      label: 'My Order',
+      href: '/orders',
+    },
+    isUserSignin && {
+      label: 'Sells Ticket',
+      href: '/tickets/create',
     },
     isUserSignin && {
       label: 'Sign Out',
