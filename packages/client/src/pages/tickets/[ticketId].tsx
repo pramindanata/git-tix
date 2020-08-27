@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { GetServerSideProps } from 'next';
 import Router from 'next/router';
 
@@ -6,6 +6,7 @@ import { useAxiosError } from '~/hooks';
 import { ActionFailError } from '~/utils';
 import { serverAxios, clientAxios } from '~/lib/axios';
 import { Dto } from '~/interfaces';
+import { GlobalContext } from '~/context';
 
 import Head from '~/components/common/Head';
 import PageTitle from '~/components/common/PageTitle';
@@ -23,10 +24,15 @@ interface Query {
 
 const TicketDetail: React.FC<Props> = (props) => {
   const { ticket } = props;
+  const user = useContext(GlobalContext).user;
   const [isSubmit, setIsSubmit] = useState(false);
   const [error, setError, reset] = useAxiosError();
 
   function onClickBtnPurchase() {
+    if (!user) {
+      return Router.push('/auth/signin');
+    }
+
     if (!isSubmit) {
       setIsSubmit(true);
       reset();

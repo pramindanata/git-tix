@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Router from 'next/router';
 import Head from '~/components/common/Head';
 import { clientAxios } from '~/lib/axios';
 import { AuthService } from '~/utils';
@@ -13,7 +12,7 @@ const Signout: React.FC = () => {
     await clientAxios.post('/api/auth/signout');
 
     AuthService.disableStatus();
-    Router.push('/');
+    window.location.href = '/';
   }
 
   return (

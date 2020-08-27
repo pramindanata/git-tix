@@ -27,6 +27,9 @@ const MyApp = (appProps: AppProps & MyAppProps): JSX.Element => {
       userStore = user;
       // Make sure auth is active on each navigation if user data exist.
       AuthService.enableStatus();
+    } else {
+      userStore = null;
+      AuthService.disableStatus();
     }
 
     // Reset auth status in case local storage
@@ -83,6 +86,10 @@ MyApp.getInitialProps = async ({
   };
 };
 
+/**
+ * User data only fetched from client side if
+ * current page does not use getServerSideProps
+ */
 async function getCurrentUserByEnv(
   isInServer: boolean,
   reqHeaders: any,
