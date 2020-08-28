@@ -30,7 +30,7 @@ const OrderDetail: React.FC<Props> = (props) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [error, setError, reset] = useAxiosError();
-  const stripePubKey = process.env.NEXT_PUBLIC_STRIPE_PUB_KEY;
+  const stripePubKey = process.env.stripePublishableKey;
 
   useEffect(() => {
     const msPerSec = 1000;
