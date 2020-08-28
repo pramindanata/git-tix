@@ -34,6 +34,7 @@ const start = async () => {
 
   app.listen(config.app.port, () => {
     /* eslint-disable */
+    console.log('testing')
     console.log(`# order-service is listening on http://localhost:${appConfig.port}`)
   })
 }
