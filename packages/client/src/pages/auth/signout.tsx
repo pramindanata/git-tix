@@ -18,7 +18,9 @@ const Signout: React.FC = () => {
   return (
     <>
       <Head title="Signin you out..." />
-      <div>Signing you out...</div>
+      <div className="container mt-4">
+        <div>Signing you out...</div>
+      </div>
     </>
   );
 };

@@ -42,26 +42,34 @@ const OrderIndex: React.FC<Props> = (props) => {
           </thead>
 
           <tbody>
-            {orderList.map((order) => {
-              return (
-                <tr key={order.id}>
-                  <td>{order.ticket.title}</td>
-                  <td>$ {order.ticket.price}</td>
-                  <td>
-                    <strong
-                      className={`text-${getOrderStatusColor(order.status)}`}
-                    >
-                      {order.status}
-                    </strong>
-                  </td>
-                  <td>
-                    <Link href="/orders/[orderId]" as={`/orders/${order.id}`}>
-                      <a>View</a>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {orderList.length > 0 ? (
+              orderList.map((order) => {
+                return (
+                  <tr key={order.id}>
+                    <td>{order.ticket.title}</td>
+                    <td>$ {order.ticket.price}</td>
+                    <td>
+                      <strong
+                        className={`text-${getOrderStatusColor(order.status)}`}
+                      >
+                        {order.status}
+                      </strong>
+                    </td>
+                    <td>
+                      <Link href="/orders/[orderId]" as={`/orders/${order.id}`}>
+                        <a>View</a>
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td className="text-center" colSpan={3}>
+                  You don&apos;t have any order
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
