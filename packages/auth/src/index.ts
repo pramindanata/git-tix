@@ -18,6 +18,7 @@ const start = async () => {
 
   app.listen(config.app.port, () => {
     /* eslint-disable */
+    console.log('testing')
     console.log(`# auth-service is listening on http://localhost:${config.app.port}`)
   })
 }
