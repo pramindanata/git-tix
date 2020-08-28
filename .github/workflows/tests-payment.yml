@@ -17,3 +17,5 @@ jobs:
             ${{ runner.os }}-node-
       - name: Run Tests
         run: cd packages/payment && npm install && npm run test -- --runInBand
+        env:
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
