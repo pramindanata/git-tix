@@ -38,14 +38,14 @@ Please read `README.md` in each service and client app directory for more detail
 
 Make sure your cluster already has NGINX Ingress Controller (^0.34.1) installed. Please read [this](https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac) for more information about NGINX Ingress Controller installation process.
 
-And create some secret value for JWT secret and Stripe key. Example:
+And create some secret object for JWT secret and Stripe secret key. Example:
 
 ```sh
 # JWT
-kubectl create secret generic jwt-secret --from-literal JWT_SECRET=<your_jwt_secret>
+kubectl create secret generic jwt-secret --from-literal JWT_SECRET=<jwt_secret_key>
 
-# Stripe Publish Key
-kubectl create secret generic stripe-key --from-literal STRIPE_SECRET_KEY=<secret_key> --from-literal STRIPE_PUBLISH_KEY=<publishable_key>
+# Stripe secret Key
+kubectl create secret generic stripe-secret --from-literal STRIPE_SECRET_KEY=<stripe_secret_key>
 ```
 
 Then run:
@@ -54,4 +54,18 @@ Then run:
 kubectl apply -f ./packages/infra/k8s
 ```
 
-Or, if you prefer use [Tilt](https://tilt.dev/) run: `tilt up`.
+### Create Your Own Docker Images
+
+If you want to use your own Docker Images, please build `client` image with `stripePublishableKey` arg. Example:
+
+```sh
+docker build -t my/tix-client --build-arg stripePublishableKey=<YOUR_STRIPE_PUBLISHABLE_KEY> .
+```
+
+### With Tilt
+
+If you prefer to use [Tilt](https://tilt.dev/), you can create a new `./Tiltfile` file in this project directory based from `./Tiltfile.example` file and make sure to fill `stripePublishableKey` varible value with your `STRIPE_PUBLISHABLE_KEY`. And then run this command:
+
+```sh
+tilt up
+```

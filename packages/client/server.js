@@ -50,7 +50,7 @@ app
     server = express();
 
     // Set up the proxy.
-    if (serverConfig.app.useLocalProxy) {
+    if (isDev) {
       /* eslint-disable */
       const { createProxyMiddleware } = require('http-proxy-middleware');
       Object.keys(devProxy).forEach(function (context) {
