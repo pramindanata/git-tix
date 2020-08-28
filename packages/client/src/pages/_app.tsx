@@ -75,9 +75,9 @@ MyApp.getInitialProps = async ({
       } else {
         throw new Error(err);
       }
+    } else {
+      throw err;
     }
-
-    throw err;
   }
 
   if (Component.getInitialProps) {

@@ -35,22 +35,30 @@ const Home: React.FC<Props> = (props) => {
           </thead>
 
           <tbody>
-            {ticketList.map((ticket) => {
-              return (
-                <tr key={ticket.id}>
-                  <td>{ticket.title}</td>
-                  <td>$ {ticket.price}</td>
-                  <td>
-                    <Link
-                      href="/tickets/[ticketId]"
-                      as={`/tickets/${ticket.id}`}
-                    >
-                      <a>View</a>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {ticketList.length > 0 ? (
+              ticketList.map((ticket) => {
+                return (
+                  <tr key={ticket.id}>
+                    <td>{ticket.title}</td>
+                    <td>$ {ticket.price}</td>
+                    <td>
+                      <Link
+                        href="/tickets/[ticketId]"
+                        as={`/tickets/${ticket.id}`}
+                      >
+                        <a>View</a>
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td className="text-center" colSpan={3}>
+                  No ticket available right now
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
