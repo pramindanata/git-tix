@@ -1,0 +1,22 @@
+name: deploy-auth
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - packages/auth/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd packages/auth && docker build -t pramindanata/tix-auth .
+      - run: echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
+        env:
+          DOCKER_USERNAME: ${{ DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ DOCKER_PASSWORD }}
+      - run: docker push pramindanata/tix-auth
+
+    
