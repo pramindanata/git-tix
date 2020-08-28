@@ -19,7 +19,9 @@
     "build": "npm run clean && npm run tsc",
     "dev": "npm run tsc -- -w",
     "clean": "del-cli ./dist/*",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "lint": "eslint",
+    "lint:fix": "npm run lint -- ./src/**/*.{tsx,ts} --fix"
   },
   "keywords": [],
   "author": "pramindanata.eksa@gmail.com",
