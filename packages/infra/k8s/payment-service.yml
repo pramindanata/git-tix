@@ -44,7 +44,7 @@ spec:
             - name: STRIPE_SECRET
               valueFrom:  
                 secretKeyRef:
-                  name: stripe-key
+                  name: stripe-secret
                   key: STRIPE_SECRET_KEY
 ---
 apiVersion: v1

@@ -69,11 +69,15 @@ MyApp.getInitialProps = async ({
 
     user = currentUserResDto?.data || null;
   } catch (err) {
-    if (err.response.status === 401) {
-      user = null;
-    } else {
-      throw new Error(err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        user = null;
+      } else {
+        throw new Error(err);
+      }
     }
+
+    throw err;
   }
 
   if (Component.getInitialProps) {

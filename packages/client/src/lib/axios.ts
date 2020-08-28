@@ -2,9 +2,9 @@ import axios, { AxiosInstance } from 'axios';
 import { EnvService } from '~/utils';
 
 export const serverAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_PROXY_HOST,
+  baseURL: process.env.APP_PROXY_HOST,
   headers: {
-    host: process.env.NEXT_PUBLIC_HOST,
+    host: process.env.APP_HOST,
   },
 });
 

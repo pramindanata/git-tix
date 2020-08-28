@@ -1,3 +1,5 @@
+stripePublishableKey = "<YOUR_STRIPE_PUBLISHABLE_KEY>"
+
 k8s_yaml([
   './packages/infra/k8s/client.yml',
   './packages/infra/k8s/auth-mongo.yml',
@@ -18,7 +20,10 @@ k8s_yaml([
 docker_build(
   'pramindanata/tix-client',
   'packages/client',
-  dockerfile='./packages/client/Dockerfile'
+  dockerfile='./packages/client/Dockerfile',
+  build_args={
+    'stripePublishableKey':stripePublishableKey
+  }
 )
 
 docker_build(
