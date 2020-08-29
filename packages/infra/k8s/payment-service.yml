@@ -23,7 +23,7 @@ spec:
             - name: APP_PORT
               value: '4000'
             - name: APP_USE_HTTPS
-              value: 'true'
+              value: 'false'
             - name: DB_HOST
               value: 'mongodb://payment-mongo-cluster-ip'
             - name: DB_NAME
