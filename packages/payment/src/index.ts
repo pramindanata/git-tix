@@ -26,7 +26,7 @@ const start = async () => {
   stan.getInstance().on('close', () => {
     /* eslint-disable */
     console.log('# STAN connection closed')
-    process.exit()
+    process.exit(1)
   })
 
   process.on('SIGINT', () => stan.getInstance().close())
@@ -42,4 +42,5 @@ const start = async () => {
 start().catch((err) => {
   /* eslint-disable */
   console.log(err)
+  process.exit(1)
 })

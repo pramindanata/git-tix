@@ -26,4 +26,5 @@ const start = async () => {
 start().catch((err) => {
   /* eslint-disable */
   console.log(err)
+  process.exit(1)
 })
