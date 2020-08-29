@@ -12,16 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: cd packages/expiration && docker build -t pramindanata/tix-expiration .
-      - run: echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push pramindanata/tix-expiration
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_API_TOKEN }}
-      - run: doctl kubernetes cluster kubeconfig save git-tix
-      - run: kubectl rollout restart deployment expiration-service
+      - run: |
+          cd packages/expiration && docker build -t pramindanata/tix-expiration .
+          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push pramindanata/tix-expiration
+          doctl kubernetes cluster kubeconfig save git-tix
+          kubectl rollout restart deployment expiration-service
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     

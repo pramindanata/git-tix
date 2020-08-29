@@ -12,18 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: cd packages/client && docker build -t pramindanata/tix-client --build-arg stripePublishableKey="$STRIPE_PUBLISHABLE_KEY" .
-        env:
-          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
-      - run: echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push pramindanata/tix-client
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_API_TOKEN }}
-      - run: doctl kubernetes cluster kubeconfig save git-tix
-      - run: kubectl rollout restart deployment client
-
-    
+      - run: |
+          cd packages/client && docker build -t pramindanata/tix-client --build-arg stripePublishableKey="$STRIPE_PUBLISHABLE_KEY" .
+          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push pramindanata/tix-client
+          doctl kubernetes cluster kubeconfig save git-tix
+          kubectl rollout restart deployment client
+        env:
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

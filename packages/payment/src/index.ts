@@ -34,7 +34,6 @@ const start = async () => {
 
   app.listen(config.app.port, () => {
     /* eslint-disable */
-    console.log('test deploy')
     console.log(`# payment-service is listening on http://localhost:${appConfig.port}`)
   })
 }
