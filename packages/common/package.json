@@ -1,6 +1,6 @@
 {
   "name": "@teh-tix/common",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Common functionality for git-tix app.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
