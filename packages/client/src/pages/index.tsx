@@ -67,8 +67,8 @@ const Home: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  console.log(headers);
   const { headers } = ctx.req;
+  console.log(headers);
   const ticketListRes = await serverAxios.get<Dto.TicketListRes>(
     '/api/ticket',
     { headers },
