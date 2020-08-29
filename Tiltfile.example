@@ -19,6 +19,7 @@ k8s_yaml([
   
   './packages/infra/k8s/stan.yml',
 
+  './packages/infra/k8s-dev/client.yml',
   './packages/infra/k8s-dev/auth-pvc.yml',
   './packages/infra/k8s-dev/ticket-pvc.yml',
   './packages/infra/k8s-dev/order-pvc.yml',

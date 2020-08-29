@@ -21,9 +21,9 @@ spec:
             - name: APP_PORT
               value: '3000'
             - name: APP_HOST
-              value: 'http://www.yeetzz.xyz/'
+              value: 'http://www.yeetzz.xyz'
             - name: APP_PROXY_HOST
-              value: 'http://www.yeetzz.xyz/'
+              value: 'http://www.yeetzz.xyz'
 ---
 apiVersion: v1
 kind: Service
