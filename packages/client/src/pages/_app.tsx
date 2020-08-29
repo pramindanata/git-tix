@@ -75,6 +75,8 @@ MyApp.getInitialProps = async ({
       } else {
         throw new Error(err);
       }
+    } else {
+      throw new Error(err);
     }
   }
 

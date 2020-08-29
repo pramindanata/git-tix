@@ -87,12 +87,14 @@ const TicketDetail: React.FC<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps<any, Query> = async (
   ctx,
 ) => {
-  const { params } = ctx;
+  const { params, req } = ctx;
+  const { headers } = req;
   let ticketDetail: Dto.Ticket | null = null;
 
   try {
     const ticketDetailRes = await serverAxios.get<Dto.TicketDetailRes>(
       `/api/ticket/${params?.ticketId}`,
+      { headers },
     );
 
     ticketDetail = ticketDetailRes.data.data;
