@@ -34,11 +34,11 @@ To run development server in each service and client app run `npm run dev` in ea
 
 Please read `README.md` in each service and client app directory for more details.
 
-## [WIP] Production
+## Production
 
-Make sure your cluster already has NGINX Ingress Controller (^0.34.1) installed. Please read [this](https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac) for more information about NGINX Ingress Controller installation process.
+Make sure your cluster has NGINX Ingress Controller (^0.34.1) installed. Please read [this](https://kubernetes.github.io/ingress-nginx/deploy) for more information about NGINX Ingress Controller installation process.
 
-And create some secret object for JWT secret and Stripe secret key. Example:
+And create secret objects for JWT secret and Stripe secret key. For example:
 
 ```sh
 # JWT
@@ -52,7 +52,10 @@ Then run:
 
 ```sh
 kubectl apply -f ./packages/infra/k8s
+kubectl apply -f ./packages/infra/k8s-dev
 ```
+
+If you prefer to run production K8S, please replace `www.yeetzz.xyz` inside `./k8s-prod/client.yml` and `./k8s-prod/ingress.yml` with your own hostname. And run `kubectl apply -f ./packages/infra/k8s-prod` instead of `k8s-dev`. Those K8S configs are designed for **DigitalOcean Kubernetes** service.
 
 ### Create Your Own Docker Images
 
