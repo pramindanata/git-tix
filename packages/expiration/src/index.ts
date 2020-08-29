@@ -26,6 +26,7 @@ const start = async () => {
 
 start()
   .then(() => {
+    console.log('test deploy')
     console.log('# expiration-service is listening')
   })
   .catch((err) => {

@@ -1,4 +1,4 @@
-console.log(process.env.STRIPE_PUBLISHABLE_KEY);
+console.log('test deploy');
 
 module.exports = {
   env: {
