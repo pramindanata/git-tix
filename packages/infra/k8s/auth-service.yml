@@ -18,8 +18,6 @@ spec:
           ports:
             - containerPort: 4000
           env:
-            - name: NODE_ENV
-              value: 'development'
             - name: APP_PORT
               value: '4000'
             - name: APP_USE_HTTPS

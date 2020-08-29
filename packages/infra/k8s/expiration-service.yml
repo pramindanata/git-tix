@@ -18,8 +18,6 @@ spec:
           ports:
             - containerPort: 4000
           env:
-            - name: NODE_ENV
-              value: 'development'
             - name: STAN_CLUSTER_ID
               value: 'git-tix'
             - name: STAN_CLIENT_ID
