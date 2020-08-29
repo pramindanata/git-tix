@@ -21,7 +21,7 @@ spec:
             - containerPort: 8222
           args: [
             '-st', 'FILE',
-            '--dir', '/data/nats',
+            '--dir', '/data/stan',
             '-m', '8222',
             '-p', '4222',
             '-hbi', '5s',
@@ -31,12 +31,12 @@ spec:
             '-cid', 'git-tix'
           ]
           volumeMounts:
-            - name: nats-storage
-              mountPath: /data/nats
+            - name: stan-storage
+              mountPath: /data/stan
       volumes:
-        - name: nats-storage
+        - name: stan-storage
           persistentVolumeClaim:
-            claimName: app-pvc
+            claimName: stan-pvc
 ---
 apiVersion: v1
 kind: Service

@@ -21,11 +21,10 @@ spec:
           volumeMounts:
             - name: order-mongo-storage
               mountPath: /data/db
-              subPath: order-service
       volumes:
         - name: order-mongo-storage
           persistentVolumeClaim:
-            claimName: app-pvc
+            claimName: order-pvc
 ---
 apiVersion: v1
 kind: Service

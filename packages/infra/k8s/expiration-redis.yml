@@ -24,11 +24,10 @@ spec:
           volumeMounts:
             - name: expiration-redis-storage
               mountPath: /data
-              subPath: auth-service
       volumes:
         - name: expiration-redis-storage
           persistentVolumeClaim:
-            claimName: app-pvc
+            claimName: expiration-pvc
 ---
 apiVersion: v1
 kind: Service

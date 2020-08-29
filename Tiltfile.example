@@ -4,17 +4,22 @@ k8s_yaml([
   './packages/infra/k8s/client.yml',
   './packages/infra/k8s/auth-mongo.yml',
   './packages/infra/k8s/auth-service.yml',
+  './packages/infra/k8s/auth-pvc.yml',
   './packages/infra/k8s/ticket-mongo.yml',
   './packages/infra/k8s/ticket-service.yml',
+  './packages/infra/k8s/ticket-pvc.yml',
   './packages/infra/k8s/order-mongo.yml',
   './packages/infra/k8s/order-service.yml',
+  './packages/infra/k8s/order-pvc.yml',
   './packages/infra/k8s/expiration-redis.yml',
   './packages/infra/k8s/expiration-service.yml',
+  './packages/infra/k8s/expiration-pvc.yml',
   './packages/infra/k8s/payment-mongo.yml',
   './packages/infra/k8s/payment-service.yml',
-  './packages/infra/k8s/pvc.yml',
+  './packages/infra/k8s/payment-pvc.yml',
   './packages/infra/k8s/stan.yml',
-  './packages/infra/k8s-dev/ingress.yml',
+  './packages/infra/k8s/stan-pvc.yml',
+  './packages/infra/k8s-dev/ingress.yml'
 ])
 
 docker_build(

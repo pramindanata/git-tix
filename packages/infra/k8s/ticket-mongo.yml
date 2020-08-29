@@ -21,11 +21,10 @@ spec:
           volumeMounts:
             - name: ticket-mongo-storage
               mountPath: /data/db
-              subPath: ticket-service
       volumes:
         - name: ticket-mongo-storage
           persistentVolumeClaim:
-            claimName: app-pvc
+            claimName: ticket-pvc
 ---
 apiVersion: v1
 kind: Service

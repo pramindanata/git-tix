@@ -21,11 +21,10 @@ spec:
           volumeMounts:
             - name: payment-mongo-storage
               mountPath: /data/db
-              subPath: payment-service
       volumes:
         - name: payment-mongo-storage
           persistentVolumeClaim:
-            claimName: app-pvc
+            claimName: payment-pvc
 ---
 apiVersion: v1
 kind: Service
