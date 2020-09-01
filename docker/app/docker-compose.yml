@@ -1,0 +1,91 @@
+version: '3'
+
+networks:
+  git-tix-net:
+    driver: bridge
+  
+volumes:
+  git-tix-db:
+    driver: local
+  git-tix-nats:
+    driver: local
+  git-tix-redis:
+    driver: local
+
+services:
+  db-mongo:
+    container_name: app-db
+    image: mongo:4.2.3
+    ports:
+      - 27017:27017
+    networks:
+      - git-tix-net
+    restart: on-failure
+    volumes:
+      - git-tix-db:/data/db
+
+  redis:
+    container_name: app-redis
+    image: redis:6-alpine
+    command: [
+      '--appendonly', 'yes'
+    ]
+    ports:
+      - 6379:6379
+    networks:
+      - git-tix-net
+    restart: on-failure
+    volumes:
+      - git-tix-redis:/data
+
+  redis-commander:
+    container_name: app-redis-commander
+    image: rediscommander/redis-commander:latest
+    depends_on:
+      - redis
+    ports:
+      - 8081:8081
+    restart: on-failure
+    environment: 
+      - 'REDIS_HOST=redis'
+      - 'REDIS_PORT=6379'
+    networks:
+      - git-tix-net
+
+  stan:
+    container_name: app-stan
+    image: nats-streaming:0.18-alpine
+    command: [
+      '-st', 'FILE',
+      '--dir', '/data/nats',
+      '-m', '8222',
+      '-p', '4222',
+      '-hbi', '5s',
+      '-hbt', '5s',
+      '-hbf', '2',
+      '-SD',
+      '-cid', 'git-tix'
+    ]
+    ports:
+      - 4222:4222
+      - 8222:8222
+    restart: on-failure
+    networks:
+      - git-tix-net
+    volumes:
+      - git-tix-nats:/data/nats
+    
+  stan-console:
+    container_name: app-stan-console
+    image: mozgoo/nats-streaming-console
+    depends_on:
+      - stan
+    ports:
+      - 8282:8282
+    restart: on-failure
+    networks:
+      - git-tix-net
+    environment: 
+      - 'STAN_URL=http://stan:4222'
+      - 'STAN_MONITOR_URL=http://stan:8222'
+      - 'STAN_CLUSTER=git-tix'
