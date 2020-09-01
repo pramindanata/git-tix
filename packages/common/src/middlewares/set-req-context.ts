@@ -11,7 +11,7 @@ export const setReqContext = (jwtSecret: string) => (
     authUser: undefined,
   };
 
-  const token = req.session?.token as string | null;
+  const token = req.cookies?.token as string | null;
 
   // Only set user context here.
   // The checking process if the token payload is invalid
