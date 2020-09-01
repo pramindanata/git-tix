@@ -11,6 +11,9 @@ import { currentUserRouter } from './routes/current-user'
 import { signInRouter } from './routes/signin'
 import { signOutRouter } from './routes/signout'
 import { signUpRouter } from './routes/signup'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import appPackage from '../package.json'
 
 const app = express()
 const logger = morgan(
@@ -32,6 +35,14 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
+
+app.get('/', (req, res) => {
+  res.json({
+    name: config.app.name,
+    version: appPackage.version,
+    env: config.app.env,
+  })
+})
 
 app.use(currentUserRouter)
 app.use(signInRouter)

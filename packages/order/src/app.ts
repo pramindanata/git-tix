@@ -12,6 +12,9 @@ import { getOrderListRouter } from './routes/getList'
 import { getOrderDetailRouter } from './routes/getDetail'
 import { createOrderRouter } from './routes/create'
 import { cancelOrderRouter } from './routes/cancel'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import appPackage from '../package.json'
 
 const app = express()
 const logger = morgan(
@@ -33,6 +36,14 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
+
+app.get('/', (req, res) => {
+  res.json({
+    name: config.app.name,
+    version: appPackage.version,
+    env: config.app.env,
+  })
+})
 
 app.use(getOrderListRouter)
 app.use(getOrderDetailRouter)

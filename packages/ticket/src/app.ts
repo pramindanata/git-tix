@@ -12,6 +12,9 @@ import { createTicketRouter } from './routes/create'
 import { getListRouter } from './routes/getList'
 import { getOneRouter } from './routes/getOne'
 import { updateOneRouter } from './routes/updateOne'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import appPackage from '../package.json'
 
 const app = express()
 const logger = morgan(
@@ -33,6 +36,15 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
+
+app.get('/', (req, res) => {
+  res.json({
+    name: config.app.name,
+    version: appPackage.version,
+    env: config.app.env,
+  })
+})
+
 app.use(createTicketRouter)
 app.use(getOneRouter)
 app.use(getListRouter)
