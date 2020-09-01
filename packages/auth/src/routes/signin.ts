@@ -42,16 +42,16 @@ router.post(
 
     const userToken = jwt.sign(
       {
+        iss: config.app.name,
         id: existingUser.id,
         email: existingUser.email,
       },
       config.jwt.secret,
     )
 
-    req.session = {
-      ...req.session,
-      token: userToken,
-    }
+    res.cookie('token', userToken, {
+      httpOnly: true,
+    })
 
     return res.send('ok')
   },

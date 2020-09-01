@@ -44,10 +44,9 @@ router.post(
       config.jwt.secret,
     )
 
-    req.session = {
-      ...req.session,
-      token: userToken,
-    }
+    res.cookie('token', userToken, {
+      httpOnly: true,
+    })
 
     return res.status(200).json({
       data: UserMapper.toDTO(user),
