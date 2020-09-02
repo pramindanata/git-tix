@@ -7,7 +7,7 @@ import { RO } from '../interface'
 
 const router = Router()
 
-router.get('/', async (req, res: Response<RO.List<TicketDTO>>) => {
+router.get('/ticket', async (req, res: Response<RO.List<TicketDTO>>) => {
   const tickets = await Ticket.find({
     orderId: undefined,
   })

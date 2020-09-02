@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { auth, validateRequestPayload } from '@teh-tix/common/middleware'
+import { validateRequestPayload } from '@teh-tix/common/middleware'
 import type { Response, Request } from 'express'
 
 import { Ticket } from '../models/ticket'
@@ -11,8 +11,7 @@ import type { RP, RO } from '../interface'
 const router = Router()
 
 router.post(
-  '/',
-  auth(),
+  '/ticket',
   [
     body('title').not().isEmpty().withMessage('Title is required'),
     body('price')

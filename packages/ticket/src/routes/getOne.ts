@@ -9,7 +9,7 @@ import { TicketDTO } from '../dto'
 const router = Router()
 
 router.get(
-  '/:id',
+  '/ticket/:id',
   async (
     req: Request<RP.GetOneTicketParams>,
     res: Response<RO.Item<TicketDTO>>,
