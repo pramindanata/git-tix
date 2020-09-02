@@ -9,6 +9,7 @@ const target = serviceConfig.order.baseUrl
 const listRoute: Route = {
   pathRegex: '/order',
   methods: ['GET'],
+  middlewares: [auth()],
   prefix,
   target,
 }
@@ -24,6 +25,7 @@ const createRoute: Route = {
 const detailRoute: Route = {
   pathRegex: '/order/(\\w+)',
   methods: ['GET'],
+  middlewares: [auth()],
   prefix,
   target,
 }

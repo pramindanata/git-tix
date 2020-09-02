@@ -15,6 +15,7 @@ export const auth = (): RequestHandler<Protocol.HTTP> => async (
   } catch (err) {
     return res.send(
       {
+        type: 'INVALID_TOKEN_GIVEN',
         message: 'Invalid token given',
       },
       401,
