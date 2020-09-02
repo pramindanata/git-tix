@@ -5,7 +5,7 @@ import { app } from '../app'
 import { Ticket, TicketWriteAttrs, TicketDocument } from '../models/ticket'
 import { Order, OrderWriteAttrs, OrderDocument } from '../models/order'
 import { config } from '../config'
-import type { JWTPayload, SessionPayload } from '../interface'
+import type { JWTPayload } from '../interface'
 
 export function generateMongooseId(): string {
   return mongoose.Types.ObjectId().toHexString()
@@ -32,7 +32,7 @@ export async function createOrder(
 }
 
 export function composeGetOrderListReq(authCookie?: string): request.Test {
-  const req = request(app).get('/')
+  const req = request(app).get('/order')
 
   if (authCookie) {
     req.set('Cookie', [authCookie])
@@ -45,7 +45,7 @@ export function composeGetOrderDetailReq(
   orderId: string,
   authCookie?: string,
 ): request.Test {
-  const req = request(app).get(`/${orderId}`)
+  const req = request(app).get(`/order/${orderId}`)
 
   if (authCookie) {
     req.set('Cookie', [authCookie])
@@ -58,7 +58,7 @@ export function composeCreateOrderReq(
   authCookie?: string,
   body?: unknown,
 ): request.Test {
-  const req = request(app).post('/')
+  const req = request(app).post('/order')
 
   if (authCookie) {
     req.set('Cookie', [authCookie])
@@ -71,7 +71,7 @@ export function composeCancelOrderReq(
   orderId: string,
   authCookie?: string,
 ): request.Test {
-  const req = request(app).patch(`/${orderId}/cancel`)
+  const req = request(app).patch(`/order/${orderId}/cancel`)
 
   if (authCookie) {
     req.set('Cookie', [authCookie])
@@ -87,14 +87,7 @@ export function createAuthCookie(userId = 'random_id'): string {
     iat: new Date().getTime(),
   }
   const token = jwt.sign(jwtPayload, config.jwt.secret)
-  const sessionPayload: SessionPayload = {
-    token,
-  }
-  const sessionPayloadJSON = JSON.stringify(sessionPayload)
-  const encodedSessionPayload = Buffer.from(sessionPayloadJSON).toString(
-    'base64',
-  )
-  const session = `express:sess=${encodedSessionPayload}`
+  const cookie = `token=${token}`
 
-  return session
+  return cookie
 }

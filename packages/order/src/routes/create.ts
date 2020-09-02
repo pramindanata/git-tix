@@ -17,7 +17,7 @@ import type { RO, RP } from '../interface'
 const router = Router()
 
 router.post(
-  '/',
+  '/order',
   [
     body('ticketId')
       .not()

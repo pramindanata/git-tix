@@ -16,7 +16,7 @@ import type { RO, RP } from '../interface'
 const router = Router()
 
 router.patch(
-  '/:orderId/cancel',
+  '/order/:orderId/cancel',
   auth(),
   async (
     req: Request<RP.CancelOrderParams>,

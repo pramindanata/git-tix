@@ -14,7 +14,7 @@ import type { RO, RP } from '../interface'
 const router = Router()
 
 router.get(
-  '/:orderId',
+  '/order/:orderId',
   auth(),
   async (
     req: Request<RP.GetOneOrderParams>,

@@ -8,7 +8,7 @@ import type { RO } from '../interface'
 
 const router = Router()
 
-router.get('/', auth(), async (req, res: Response<RO.List<OrderDTO>>) => {
+router.get('/order', auth(), async (req, res: Response<RO.List<OrderDTO>>) => {
   const user = req.ctx.authUser!
 
   const orders = await Order.find({
