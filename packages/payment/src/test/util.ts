@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import { app } from '../app'
 import { config } from '../config'
-import type { JWTPayload, SessionPayload } from '../interface'
+import type { JWTPayload } from '../interface'
 
 interface CustomResponse<Body> extends request.Response {
   body: Body
@@ -20,16 +20,9 @@ export function createAuthCookie(userId = 'random_id'): string {
     iat: new Date().getTime(),
   }
   const token = jwt.sign(jwtPayload, config.jwt.secret)
-  const sessionPayload: SessionPayload = {
-    token,
-  }
-  const sessionPayloadJSON = JSON.stringify(sessionPayload)
-  const encodedSessionPayload = Buffer.from(sessionPayloadJSON).toString(
-    'base64',
-  )
-  const session = `express:sess=${encodedSessionPayload}`
+  const cookie = `token=${token}`
 
-  return session
+  return cookie
 }
 
 export const doCreatePaymentReq = async <Body>(
@@ -37,7 +30,7 @@ export const doCreatePaymentReq = async <Body>(
   body?: unknown,
 ): Promise<CustomResponse<Body>> => {
   const response = await request(app)
-    .post('/')
+    .post('/payment')
     .set('Cookie', [authCookie ?? ''])
     .send((body as any) || {})
 

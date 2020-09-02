@@ -2,7 +2,7 @@ import express from 'express'
 import 'express-async-errors'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
-import cookieSession from 'cookie-session'
+import cookieParser from 'cookie-parser'
 import { NotFoundError } from '@teh-tix/common/exception'
 import { setReqContext, errorHandler } from '@teh-tix/common/middleware'
 
@@ -19,19 +19,14 @@ const logger = morgan(
 const appEnv = config.app.env
 
 app.set('trust proxy', true)
-app.use(
-  cookieSession({
-    signed: false,
-    secure: config.app.useHttps,
-  }),
-)
+app.use(cookieParser())
 app.use(bodyParser.json())
 
 if (appEnv !== AppEnv.test) {
   app.use(logger)
 }
 
-app.use(setReqContext(config.jwt.secret))
+app.use(setReqContext())
 
 app.get('/', (req, res) => {
   res.json({

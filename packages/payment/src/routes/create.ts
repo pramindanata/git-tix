@@ -14,7 +14,7 @@ import { PaymentDTO, PaymentCreatedEventDTO } from '../dto'
 const router = Router()
 
 router.post(
-  '/',
+  '/payment',
   auth(),
   [body('token').not().isEmpty(), body('orderId').not().isEmpty()],
   validateRequestPayload(),
