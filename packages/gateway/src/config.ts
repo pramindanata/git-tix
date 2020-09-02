@@ -23,6 +23,9 @@ export const config = {
     order: {
       baseUrl: env.SERVICE_ORDER_URL || 'http://localhost:4002',
     },
+    payment: {
+      baseUrl: env.SERVICE_PAYMENT_URL || 'http://localhost:4003',
+    },
   },
   jwt: {
     secret: env.JWT_SECRET || 'my-secret-123',
