@@ -4,7 +4,9 @@ import type { Request, Response } from 'express'
 const router = Router()
 
 router.post('/signout', (req: Request, res: Response) => {
-  res.clearCookie('token')
+  res.clearCookie('token', {
+    httpOnly: true,
+  })
 
   return res.send('ok')
 })

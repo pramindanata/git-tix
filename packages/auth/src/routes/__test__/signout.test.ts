@@ -10,7 +10,7 @@ describe('POST /signout', () => {
     const res = await composeSignoutReq().expect(200)
 
     expect(res.get('Set-Cookie')).toEqual([
-      'express:sess=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly',
+      'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly',
     ])
   })
 })

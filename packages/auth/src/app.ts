@@ -29,7 +29,7 @@ if (appEnv !== AppEnv.test) {
   app.use(logger)
 }
 
-app.use(setReqContext(config.jwt.secret))
+app.use(setReqContext())
 
 app.get('/', (req, res) => {
   res.json({
