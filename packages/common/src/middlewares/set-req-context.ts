@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
 import type { JWTPayload } from '../interface';
 
-export const setReqContext = (jwtSecret: string) => (
+export const setReqContext = () => (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -13,13 +13,9 @@ export const setReqContext = (jwtSecret: string) => (
 
   const token = req.cookies?.token as string | null;
 
-  // Only set user context here.
-  // The checking process if the token payload is invalid
-  // (empty, expired, wrong schema, or etc) will be done
-  //  in `auth` middleware
   if (token) {
     try {
-      const tokenPayload = jwt.verify(token, jwtSecret) as JWTPayload;
+      const tokenPayload = jwt.decode(token) as JWTPayload;
       req.ctx.authUser = {
         id: tokenPayload.id,
         email: tokenPayload.email,
