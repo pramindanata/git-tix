@@ -20,6 +20,9 @@ export const config = {
     ticket: {
       baseUrl: env.SERVICE_TICKET_URL || 'http://localhost:4001',
     },
+    order: {
+      baseUrl: env.SERVICE_ORDER_URL || 'http://localhost:4002',
+    },
   },
   jwt: {
     secret: env.JWT_SECRET || 'my-secret-123',

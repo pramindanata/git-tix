@@ -6,7 +6,7 @@ import gateway from 'fast-gateway'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { config } from './config'
-import { authRoutes, ticketRoutes } from './routes'
+import { authRoutes, ticketRoutes, orderRoutes } from './routes'
 
 const { app: appConfig } = config
 const logger = morgan(
@@ -15,7 +15,7 @@ const logger = morgan(
 
 const server = gateway({
   middlewares: [logger, cookieParser()],
-  routes: [...authRoutes, ...ticketRoutes],
+  routes: [...authRoutes, ...ticketRoutes, ...orderRoutes],
 })
 
 server.start(appConfig.port).then(() => {
