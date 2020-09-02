@@ -4,13 +4,13 @@ import mongoose from 'mongoose'
 import { app } from '../app'
 import { config } from '../config'
 import { TicketDTO } from '../dto'
-import type { JWTPayload, SessionPayload, RP, RO } from '../interface'
+import type { JWTPayload, RP, RO } from '../interface'
 
 export function composeCreateTicketReq(
   authCookie?: string,
   body?: unknown,
 ): request.Test {
-  const req = request(app).post('/')
+  const req = request(app).post('/ticket')
 
   if (authCookie) {
     req.set('Cookie', [authCookie])
@@ -24,7 +24,7 @@ export function composeUpdateTicketReq(
   authCookie?: string,
   body?: unknown,
 ): request.Test {
-  const req = request(app).put(`/${ticketId}`)
+  const req = request(app).put(`/ticket/${ticketId}`)
 
   if (authCookie) {
     req.set('Cookie', [authCookie])
@@ -36,7 +36,7 @@ export function composeUpdateTicketReq(
 export async function fetchGetTicketDetailResult(
   ticketId: string,
 ): Promise<TicketDTO> {
-  const ticketDetailRes = await request(app).get(`/${ticketId}`).send()
+  const ticketDetailRes = await request(app).get(`/ticket/${ticketId}`).send()
   const ticketDetailResBody = ticketDetailRes.body as RO.Item<TicketDTO>
   const ticketDetail = ticketDetailResBody.data
 
@@ -81,14 +81,7 @@ export function createAuthCookie(userId = 'random_id'): string {
     iat: new Date().getTime(),
   }
   const token = jwt.sign(jwtPayload, config.jwt.secret)
-  const sessionPayload: SessionPayload = {
-    token,
-  }
-  const sessionPayloadJSON = JSON.stringify(sessionPayload)
-  const encodedSessionPayload = Buffer.from(sessionPayloadJSON).toString(
-    'base64',
-  )
-  const session = `express:sess=${encodedSessionPayload}`
+  const cookie = `token=${token}`
 
-  return session
+  return cookie
 }

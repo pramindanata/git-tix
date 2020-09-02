@@ -11,7 +11,7 @@ describe('GET /:id', () => {
   it('return 404 it ticket is not found', async () => {
     const id = generateMongooseId()
 
-    await request(app).get(`/${id}`).expect(404)
+    await request(app).get(`/ticket/${id}`).expect(404)
   })
 
   it('return ticket if it found', async () => {
@@ -26,7 +26,7 @@ describe('GET /:id', () => {
     ).expect(200)
     const createdTicket = createTicketRes.body.data as TicketDTO
     const showTicketRes = await request(app)
-      .get(`/${createdTicket.id}`)
+      .get(`/ticket/${createdTicket.id}`)
       .expect(200)
     const showedTicket = showTicketRes.body.data as TicketDTO
 
