@@ -1,11 +1,17 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 import gateway from 'fast-gateway'
+import cookieParser from 'cookie-parser'
 import { config } from './config'
-import { auth, ticket } from './routes'
+import { authRoutes, ticketRoutes } from './routes'
 
 const { app: appConfig } = config
 
 const server = gateway({
-  routes: [...auth, ...ticket],
+  middlewares: [cookieParser()],
+  routes: [...authRoutes, ...ticketRoutes],
 })
 
 // eslint-disable-next-line no-console

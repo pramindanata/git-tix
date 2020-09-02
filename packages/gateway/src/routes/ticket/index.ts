@@ -1,5 +1,6 @@
 import type { Route } from 'fast-gateway'
 import { config } from '../../config'
+import { auth } from '../../middlewares'
 
 const { app: appConfig, service: serviceConfig } = config
 const prefix = appConfig.prefix
@@ -15,6 +16,7 @@ const listRoute: Route = {
 const createRoute: Route = {
   pathRegex: '/ticket',
   methods: ['POST'],
+  middlewares: [auth()],
   prefix,
   target,
 }
@@ -29,11 +31,12 @@ const detailRoute: Route = {
 const updateRoute: Route = {
   pathRegex: '/ticket/(\\w+)',
   methods: ['PUT'],
+  middlewares: [auth()],
   prefix,
   target,
 }
 
-export const ticket: Route[] = [
+export const ticketRoutes: Route[] = [
   listRoute,
   createRoute,
   detailRoute,

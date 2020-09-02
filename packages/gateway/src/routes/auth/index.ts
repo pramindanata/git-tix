@@ -26,4 +26,4 @@ const currentUserRoute: Route = {
   target,
 }
 
-export const auth: Route[] = [signInRoute, signUpRoute, currentUserRoute]
+export const authRoutes: Route[] = [signInRoute, signUpRoute, currentUserRoute]
