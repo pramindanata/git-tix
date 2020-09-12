@@ -33,10 +33,10 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
-app.use(createTicketRouter)
-app.use(getOneRouter)
-app.use(getListRouter)
-app.use(updateOneRouter)
+app.use('/ticket', createTicketRouter)
+app.use('/ticket', getOneRouter)
+app.use('/ticket', getListRouter)
+app.use('/ticket', updateOneRouter)
 
 app.all('*', async () => {
   throw new NotFoundError()

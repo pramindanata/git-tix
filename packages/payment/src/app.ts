@@ -29,7 +29,7 @@ if (appEnv !== AppEnv.test) {
 }
 
 app.use(setReqContext(config.jwt.secret))
-app.use(createChargeRouter)
+app.use('/payment/', createChargeRouter)
 
 app.all('*', async () => {
   throw new NotFoundError()

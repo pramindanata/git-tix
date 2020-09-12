@@ -26,7 +26,7 @@ describe('GET /', () => {
 
     await Promise.all(getTicketBatch())
 
-    const indexRes = await request(app).get('/').expect(200)
+    const indexRes = await request(app).get('/ticket').expect(200)
     const ticketList = (indexRes.body as RO.List<TicketDTO>).data
 
     expect(ticketList.length).toEqual(2)

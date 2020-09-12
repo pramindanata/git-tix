@@ -11,15 +11,15 @@ spec:
     - host: www.yeetzz.xyz
       http:
         paths:
-          - path: /api/payment/?(.*)
+          - path: /api/(payment/?.*)
             backend:
               serviceName: payment-service-cluster-ip
               servicePort: 4000
-          - path: /api/ticket/?(.*)
+          - path: /api/(ticket/?.*)
             backend:
               serviceName: ticket-service-cluster-ip
               servicePort: 4000
-          - path: /api/order/?(.*)
+          - path: /api/(order/?.*)
             backend:
               serviceName: order-service-cluster-ip
               servicePort: 4000

@@ -37,7 +37,7 @@ export const doCreatePaymentReq = async <Body>(
   body?: unknown,
 ): Promise<CustomResponse<Body>> => {
   const response = await request(app)
-    .post('/')
+    .post('/payment')
     .set('Cookie', [authCookie ?? ''])
     .send((body as any) || {})
 

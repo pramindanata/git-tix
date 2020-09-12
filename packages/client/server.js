@@ -17,17 +17,17 @@ const devProxy = {
   },
   '/api/ticket': {
     target: serverConfig.service.ticketBaseUrl,
-    pathRewrite: { '^/api/ticket': '/' },
+    pathRewrite: { '^/api/ticket': '/ticket' },
     changeOrigin: true,
   },
   '/api/order': {
     target: serverConfig.service.orderBaseUrl,
-    pathRewrite: { '^/api/order': '/' },
+    pathRewrite: { '^/api/order': '/order' },
     changeOrigin: true,
   },
   '/api/payment': {
     target: serverConfig.service.paymentBaseUrl,
-    pathRewrite: { '^/api/payment': '/' },
+    pathRewrite: { '^/api/payment': '/payment' },
     changeOrigin: true,
   },
 };

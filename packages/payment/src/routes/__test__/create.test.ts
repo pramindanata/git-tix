@@ -106,7 +106,7 @@ describe('# POST /', () => {
     expect(payments.length).toEqual(1)
   })
 
-  it.only('returns 200 with valid input', async () => {
+  it('returns 200 with valid input', async () => {
     jest.spyOn(stripe.charges, 'create')
 
     const orderId = generateMongooseId()
